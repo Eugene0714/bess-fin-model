@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>测试报告 - 2026/1/27 05:10:31</title>
+    <style>
+        body { font-family: 'Microsoft YaHei', sans-serif; background: #0f172a; color: #f1f5f9; padding: 40px; }
+        .header { text-align: center; margin-bottom: 40px; border-bottom: 2px solid #00d4aa; padding-bottom: 20px; }
+        .header h1 { color: #00d4aa; font-size: 2rem; }
+        .summary { display: grid; grid-template-columns: repeat(4, 1fr); gap: 20px; margin-bottom: 40px; }
+        .card { background: #1e293b; padding: 25px; border-radius: 12px; text-align: center; }
+        .card .num { font-size: 2.5rem; font-weight: bold; margin-bottom: 5px; }
+        .card.total .num { color: #f1f5f9; }
+        .card.pass .num { color: #00d4aa; }
+        .card.fail .num { color: #ef4444; }
+        .card.rate .num { color: #3b82f6; }
+        .suite { background: #1e293b; border-radius: 12px; margin-bottom: 20px; overflow: hidden; }
+        .suite-head { background: #334155; padding: 15px 20px; font-weight: bold; }
+        .tests { padding: 15px 20px; }
+        .test { display: flex; align-items: center; padding: 10px; margin: 5px 0; background: #0f172a; border-radius: 8px; }
+        .test.pass { border-left: 4px solid #00d4aa; }
+        .test.fail { border-left: 4px solid #ef4444; }
+        .icon { width: 24px; height: 24px; border-radius: 50%; display: flex; align-items: center; justify-content: center; margin-right: 15px; }
+        .test.pass .icon { background: #00d4aa; color: #0f172a; }
+        .test.fail .icon { background: #ef4444; color: white; }
+        .error { color: #ef4444; font-size: 0.9rem; margin-left: 40px; margin-top: 5px; }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔋 德国独立储能电站财务模型 - 测试报告</h1>
+        <p>测试时间: 2026/1/27 05:10:31</p>
+    </div>
+    <div class="summary">
+        <div class="card total"><div class="num">82</div><div>测试总数</div></div>
+        <div class="card pass"><div class="num">82</div><div>通过</div></div>
+        <div class="card fail"><div class="num">0</div><div>失败</div></div>
+        <div class="card rate"><div class="num">100.0%</div><div>通过率</div></div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">1. 格式化函数测试 (通过: 6, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>formatNumber - 正常数字格式化</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>formatNumber - null值处理</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>formatNumber - undefined值处理</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>formatNumber - NaN值处理</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>formatInt - 整数格式化</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>formatPercent - 百分比格式化</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">2. CAPEX计算测试 (通过: 9, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>电池系统成本计算正确</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>PCS系统成本计算正确</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>中压变压器成本计算正确</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>升压变压器成本计算正确</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>总投资大于零</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>动态投资大于静态投资</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>设备费小计等于各项设备之和</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>电网接入费小计正确</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>投资总额在合理范围内 (1000-10000万EUR)</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">3. OPEX计算测试 (通过: 5, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>返回正确年数的OPEX数据</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>第一年OPEX各项大于零</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>OPEX年度递增（通胀因素）</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>每年OPEX总计等于各项之和</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>OPEX年均值在合理范围 (50-500万EUR)</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">4. 收入计算测试 (通过: 6, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>返回正确年数的收入数据</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>Tolling期内有Tolling收入</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>Tolling期后无Tolling收入</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>容量因子随时间衰减</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>年收入总计大于零</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>收入组成等于总收入</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">5. 折旧计算测试 (通过: 5, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>返回正确年数的折旧数据</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>折旧期内有折旧</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>直线法折旧各年相等</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>折旧年限后折旧为零</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>直线法折旧总额等于可折旧金额</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">6. 贷款计算测试 (通过: 7, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>返回正确年数的贷款数据</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>初始贷款余额正确</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>宽限期内只付息不还本</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>利息计算正确</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>贷款到期后余额为零</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>每期还款额等于本金加利息</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>期末余额等于期初余额减本金</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">7. 利润表计算测试 (通过: 7, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>返回正确年数的利润表数据</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>毛利润等于收入减成本</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>EBIT等于EBITDA减折旧</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>EBT等于EBIT减利息</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>净利润等于EBT减税</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>税额为非负数</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>亏损年份税额为零</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">8. 现金流计算测试 (通过: 6, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>现金流包含建设期</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>建设期投资现金流为负</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>建设期股权和贷款流入正确</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>运营期经营现金流等于净利润加折旧</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>全投资现金流第0年为负投资</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>资本金现金流第0年为负权益</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">9. IRR/NPV计算测试 (通过: 6, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>IRR计算-简单案例验证</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>IRR计算-全正现金流应返回高IRR</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>NPV计算-零折现率等于现金流总和</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>NPV计算-正折现率结果小于零折现率</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>静态回收期计算正确</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>动态回收期大于静态回收期</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">10. 财务指标综合测试 (通过: 8, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>静态投资等于CAPEX总额</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>动态投资等于含利息CAPEX</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>项目IRR为有效数值</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>权益IRR大于项目IRR（杠杆效应）</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>回收期在合理范围内 (1-20年)</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>ROI为正值</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>DSCR大于1（偿债能力足够）</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>总收入等于各年收入之和</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">11. 边界条件测试 (通过: 6, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>零功率情况处理</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>100%股权融资情况</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>零Tolling比例情况</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>零衰减率情况</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>最小运营年限（1年）</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>零残值率情况</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">12. 数据一致性测试 (通过: 7, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>资产负债表平衡</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>利润表收入与收入表一致</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>利润表成本与OPEX一致</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>利润表折旧与折旧表一致</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>利润表利息与贷款表一致</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>现金流净利润与利润表一致</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>累计还本金额等于贷款总额</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div class="suite">
+        <div class="suite-head">13. 敏感性分析功能测试 (通过: 4, 失败: 0)</div>
+        <div class="tests">
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>CAPEX变化影响项目IRR</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>Tolling价格变化影响项目IRR</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>OPEX变化影响项目IRR</span>
+            </div>
+            
+            
+            <div class="test pass">
+                <div class="icon">✓</div>
+                <span>贷款利率变化影响权益IRR</span>
+            </div>
+            
+            
+        </div>
+    </div>
+    
+    <div style="text-align:center;margin-top:40px;color:#94a3b8;">
+        ✅ 所有测试通过！
+    </div>
+</body>
+</html>

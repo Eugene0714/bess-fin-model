@@ -1,0 +1,1325 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>德国独立储能电站财务模型 - 测试报告</title>
+    <style>
+        :root {
+            --bg-primary: #0f172a;
+            --bg-secondary: #1e293b;
+            --bg-tertiary: #334155;
+            --text-primary: #f1f5f9;
+            --text-secondary: #94a3b8;
+            --accent-green: #00d4aa;
+            --accent-red: #ef4444;
+            --accent-yellow: #fbbf24;
+            --accent-blue: #3b82f6;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', 'Microsoft YaHei', sans-serif;
+            background: var(--bg-primary);
+            color: var(--text-primary);
+            min-height: 100vh;
+            padding: 40px;
+        }
+        
+        .header {
+            text-align: center;
+            margin-bottom: 40px;
+            padding-bottom: 20px;
+            border-bottom: 2px solid var(--accent-green);
+        }
+        
+        .header h1 {
+            font-size: 2.5rem;
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin-bottom: 10px;
+        }
+        
+        .header .subtitle {
+            color: var(--text-secondary);
+            font-size: 1.1rem;
+        }
+        
+        .summary {
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 20px;
+            margin-bottom: 40px;
+        }
+        
+        .summary-card {
+            background: var(--bg-secondary);
+            padding: 25px;
+            border-radius: 12px;
+            text-align: center;
+            border: 1px solid var(--bg-tertiary);
+        }
+        
+        .summary-card .number {
+            font-size: 3rem;
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .summary-card .label {
+            color: var(--text-secondary);
+            font-size: 0.9rem;
+        }
+        
+        .summary-card.total .number { color: var(--text-primary); }
+        .summary-card.passed .number { color: var(--accent-green); }
+        .summary-card.failed .number { color: var(--accent-red); }
+        .summary-card.rate .number { color: var(--accent-blue); }
+        
+        .progress-bar {
+            width: 100%;
+            height: 12px;
+            background: var(--bg-tertiary);
+            border-radius: 6px;
+            overflow: hidden;
+            margin: 20px 0;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--accent-green), var(--accent-blue));
+            border-radius: 6px;
+            transition: width 0.5s ease;
+        }
+        
+        .test-suite {
+            background: var(--bg-secondary);
+            border-radius: 12px;
+            margin-bottom: 20px;
+            overflow: hidden;
+            border: 1px solid var(--bg-tertiary);
+        }
+        
+        .suite-header {
+            padding: 20px 25px;
+            background: var(--bg-tertiary);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            cursor: pointer;
+        }
+        
+        .suite-header:hover {
+            background: rgba(59, 130, 246, 0.1);
+        }
+        
+        .suite-title {
+            font-size: 1.2rem;
+            font-weight: 600;
+        }
+        
+        .suite-stats {
+            display: flex;
+            gap: 15px;
+        }
+        
+        .suite-stat {
+            font-size: 0.9rem;
+            padding: 4px 12px;
+            border-radius: 20px;
+        }
+        
+        .suite-stat.passed {
+            background: rgba(0, 212, 170, 0.2);
+            color: var(--accent-green);
+        }
+        
+        .suite-stat.failed {
+            background: rgba(239, 68, 68, 0.2);
+            color: var(--accent-red);
+        }
+        
+        .test-cases {
+            padding: 15px 25px;
+        }
+        
+        .test-case {
+            display: flex;
+            align-items: center;
+            padding: 12px 15px;
+            border-radius: 8px;
+            margin-bottom: 8px;
+            background: var(--bg-primary);
+        }
+        
+        .test-case:last-child {
+            margin-bottom: 0;
+        }
+        
+        .test-icon {
+            width: 24px;
+            height: 24px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-right: 15px;
+            font-size: 14px;
+        }
+        
+        .test-case.passed .test-icon {
+            background: var(--accent-green);
+            color: var(--bg-primary);
+        }
+        
+        .test-case.failed .test-icon {
+            background: var(--accent-red);
+            color: white;
+        }
+        
+        .test-name {
+            flex: 1;
+            font-size: 0.95rem;
+        }
+        
+        .test-duration {
+            color: var(--text-secondary);
+            font-size: 0.85rem;
+            margin-left: 15px;
+        }
+        
+        .test-details {
+            font-size: 0.85rem;
+            color: var(--text-secondary);
+            margin-left: 39px;
+            margin-top: 5px;
+            padding: 10px;
+            background: var(--bg-secondary);
+            border-radius: 6px;
+        }
+        
+        .test-details.error {
+            color: var(--accent-red);
+            background: rgba(239, 68, 68, 0.1);
+        }
+        
+        .test-details code {
+            font-family: 'Consolas', 'Courier New', monospace;
+            background: var(--bg-tertiary);
+            padding: 2px 6px;
+            border-radius: 4px;
+        }
+        
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            padding-top: 20px;
+            border-top: 1px solid var(--bg-tertiary);
+            color: var(--text-secondary);
+        }
+        
+        .timestamp {
+            font-size: 0.9rem;
+        }
+        
+        .run-button {
+            background: linear-gradient(135deg, var(--accent-green), var(--accent-blue));
+            border: none;
+            color: white;
+            padding: 15px 40px;
+            font-size: 1.1rem;
+            border-radius: 8px;
+            cursor: pointer;
+            margin: 20px auto;
+            display: block;
+            font-weight: 600;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        
+        .run-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 30px rgba(0, 212, 170, 0.3);
+        }
+        
+        .run-button:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+            transform: none;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .test-suite {
+            animation: fadeIn 0.3s ease forwards;
+        }
+        
+        .loading {
+            text-align: center;
+            padding: 40px;
+            color: var(--text-secondary);
+        }
+        
+        .spinner {
+            width: 40px;
+            height: 40px;
+            border: 4px solid var(--bg-tertiary);
+            border-top-color: var(--accent-green);
+            border-radius: 50%;
+            animation: spin 1s linear infinite;
+            margin: 0 auto 20px;
+        }
+        
+        @keyframes spin {
+            to { transform: rotate(360deg); }
+        }
+    </style>
+</head>
+<body>
+    <div class="header">
+        <h1>🔋 德国独立储能电站财务模型</h1>
+        <div class="subtitle">自动化测试报告 - 软件测试工程师</div>
+    </div>
+    
+    <button class="run-button" id="runTestsBtn" onclick="runAllTests()">▶ 运行测试</button>
+    
+    <div id="testResults">
+        <div class="loading" id="loadingIndicator" style="display: none;">
+            <div class="spinner"></div>
+            <p>正在执行测试用例...</p>
+        </div>
+    </div>
+    
+    <div class="footer">
+        <p class="timestamp" id="timestamp"></p>
+        <p style="margin-top: 10px;">测试框架版本: 1.0.0 | 覆盖核心计算模块</p>
+    </div>
+
+    <!-- 引入财务模型核心代码 -->
+    <script src="financial-model.js"></script>
+    
+    <!-- 测试框架和测试用例 -->
+    <script>
+        /**
+         * 简易测试框架
+         * @description 用于测试德国独立储能电站财务模型
+         */
+        class TestFramework {
+            constructor() {
+                this.suites = [];
+                this.currentSuite = null;
+                this.totalTests = 0;
+                this.passedTests = 0;
+                this.failedTests = 0;
+            }
+            
+            /**
+             * 定义测试套件
+             * @param {string} name 套件名称
+             * @param {Function} fn 测试函数
+             */
+            describe(name, fn) {
+                this.currentSuite = {
+                    name: name,
+                    tests: [],
+                    passed: 0,
+                    failed: 0
+                };
+                fn();
+                this.suites.push(this.currentSuite);
+                this.currentSuite = null;
+            }
+            
+            /**
+             * 定义测试用例
+             * @param {string} name 用例名称
+             * @param {Function} fn 测试函数
+             */
+            it(name, fn) {
+                const test = {
+                    name: name,
+                    passed: false,
+                    error: null,
+                    details: null,
+                    duration: 0
+                };
+                
+                const start = performance.now();
+                try {
+                    fn();
+                    test.passed = true;
+                    this.currentSuite.passed++;
+                    this.passedTests++;
+                } catch (e) {
+                    test.passed = false;
+                    test.error = e.message;
+                    this.currentSuite.failed++;
+                    this.failedTests++;
+                }
+                test.duration = (performance.now() - start).toFixed(2);
+                
+                this.currentSuite.tests.push(test);
+                this.totalTests++;
+            }
+            
+            /**
+             * 断言相等
+             */
+            assertEqual(actual, expected, message = '') {
+                if (actual !== expected) {
+                    throw new Error(`${message} 预期: ${expected}, 实际: ${actual}`);
+                }
+            }
+            
+            /**
+             * 断言近似相等（用于浮点数）
+             */
+            assertAlmostEqual(actual, expected, tolerance = 0.01, message = '') {
+                if (Math.abs(actual - expected) > tolerance) {
+                    throw new Error(`${message} 预期: ${expected}±${tolerance}, 实际: ${actual}`);
+                }
+            }
+            
+            /**
+             * 断言为真
+             */
+            assertTrue(condition, message = '') {
+                if (!condition) {
+                    throw new Error(message || '断言失败：条件应为真');
+                }
+            }
+            
+            /**
+             * 断言为假
+             */
+            assertFalse(condition, message = '') {
+                if (condition) {
+                    throw new Error(message || '断言失败：条件应为假');
+                }
+            }
+            
+            /**
+             * 断言不为空/undefined
+             */
+            assertNotNull(value, message = '') {
+                if (value === null || value === undefined) {
+                    throw new Error(message || '断言失败：值不应为空');
+                }
+            }
+            
+            /**
+             * 断言为数字
+             */
+            assertIsNumber(value, message = '') {
+                if (typeof value !== 'number' || isNaN(value)) {
+                    throw new Error(message || `断言失败：${value} 应为有效数字`);
+                }
+            }
+            
+            /**
+             * 断言大于
+             */
+            assertGreaterThan(actual, expected, message = '') {
+                if (actual <= expected) {
+                    throw new Error(`${message} ${actual} 应大于 ${expected}`);
+                }
+            }
+            
+            /**
+             * 断言小于
+             */
+            assertLessThan(actual, expected, message = '') {
+                if (actual >= expected) {
+                    throw new Error(`${message} ${actual} 应小于 ${expected}`);
+                }
+            }
+            
+            /**
+             * 断言在范围内
+             */
+            assertInRange(actual, min, max, message = '') {
+                if (actual < min || actual > max) {
+                    throw new Error(`${message} ${actual} 应在 [${min}, ${max}] 范围内`);
+                }
+            }
+            
+            /**
+             * 渲染测试结果
+             */
+            renderResults() {
+                const container = document.getElementById('testResults');
+                const passRate = this.totalTests > 0 ? 
+                    ((this.passedTests / this.totalTests) * 100).toFixed(1) : 0;
+                
+                let html = `
+                    <div class="summary">
+                        <div class="summary-card total">
+                            <div class="number">${this.totalTests}</div>
+                            <div class="label">测试用例总数</div>
+                        </div>
+                        <div class="summary-card passed">
+                            <div class="number">${this.passedTests}</div>
+                            <div class="label">通过</div>
+                        </div>
+                        <div class="summary-card failed">
+                            <div class="number">${this.failedTests}</div>
+                            <div class="label">失败</div>
+                        </div>
+                        <div class="summary-card rate">
+                            <div class="number">${passRate}%</div>
+                            <div class="label">通过率</div>
+                        </div>
+                    </div>
+                    <div class="progress-bar">
+                        <div class="progress-fill" style="width: ${passRate}%"></div>
+                    </div>
+                `;
+                
+                this.suites.forEach((suite, index) => {
+                    html += `
+                        <div class="test-suite" style="animation-delay: ${index * 0.1}s">
+                            <div class="suite-header">
+                                <span class="suite-title">${suite.name}</span>
+                                <div class="suite-stats">
+                                    <span class="suite-stat passed">✓ ${suite.passed}</span>
+                                    ${suite.failed > 0 ? `<span class="suite-stat failed">✗ ${suite.failed}</span>` : ''}
+                                </div>
+                            </div>
+                            <div class="test-cases">
+                    `;
+                    
+                    suite.tests.forEach(test => {
+                        html += `
+                            <div class="test-case ${test.passed ? 'passed' : 'failed'}">
+                                <div class="test-icon">${test.passed ? '✓' : '✗'}</div>
+                                <span class="test-name">${test.name}</span>
+                                <span class="test-duration">${test.duration}ms</span>
+                            </div>
+                        `;
+                        if (test.error) {
+                            html += `<div class="test-details error">❌ ${test.error}</div>`;
+                        }
+                    });
+                    
+                    html += `</div></div>`;
+                });
+                
+                container.innerHTML = html;
+                
+                document.getElementById('timestamp').textContent = 
+                    `测试执行时间: ${new Date().toLocaleString('zh-CN')}`;
+            }
+        }
+        
+        // 创建测试实例
+        const test = new TestFramework();
+        
+        /**
+         * 获取测试用的默认参数
+         * @returns {Object} 默认参数对象
+         */
+        function getTestParameters() {
+            return {
+                // 基础参数
+                power_mw: 100,
+                capacity_mwh: 200,
+                operation_years: 20,
+                initial_capacity_pct: 100,
+                
+                // 融资参数
+                equity_ratio: 0.25,
+                loan_years: 12,
+                loan_rate: 0.045,
+                grace_period: 1,
+                repayment_method: 'equal_principal',
+                // 建设期与通胀参数
+                construction_period: 1,
+                construction_fund_usage: 0.5,
+                inflation_rate: 0.02,
+                
+                // 折旧参数
+                depreciation_years: 15,
+                salvage_rate: 0.05,
+                depreciation_method: 'straight_line',
+                amortization_years: 20,
+                
+                // 效率参数
+                charge_efficiency: 0.95,
+                discharge_efficiency: 0.95,
+                degradation_rate: 0.025,
+                annual_cycles: 365,
+                
+                // 税费参数
+                corporate_tax_rate: 0.15,
+                solidarity_tax_rate: 0.055,
+                trade_tax_rate: 0.14,
+                vat_rate: 0.19,
+                other_tax_rate: 0,
+                
+                // Tolling参数
+                tolling_years: 10,
+                tolling_ratio: 0.8,
+                tolling_price: 75,
+                tolling_escalation: 0.02,
+                
+                // 主设备参数
+                battery_cabinet_capacity: 5.0,
+                battery_cabinet_count: 40,
+                battery_unit_price: 85,
+                pcs_power: 5.5,
+                pcs_count: 19,
+                pcs_unit_price: 28,
+                mv_transformer_capacity: 6300,
+                mv_transformer_count: 19,
+                mv_transformer_price: 35000,
+                hv_transformer_capacity: 120,
+                hv_transformer_count: 1,
+                hv_transformer_price: 750000,
+                
+                // 辅助设备参数
+                ems_cost: 200000,
+                scada_cost: 120000,
+                switchgear_price: 18000,
+                switchgear_count: 25,
+                collector_line_cost: 250000,
+                thermal_cost: 20,
+                fire_protection_cost: 12,
+                
+                // 电网接入参数
+                substation_cost: 800000,
+                grid_line_cost: 500000,
+                grid_study_cost: 80000,
+                metering_cost: 100000,
+                
+                // 土地与基建参数
+                land_acquisition_cost: 50,
+                concrete_cost: 25,
+                fence_cost: 80000,
+                road_cost: 120000,
+                drainage_cost: 50000,
+                
+                // 安装与施工参数
+                installation_cost_pct: 0.06,
+                construction_mgmt_pct: 0.025,
+                commissioning_cost: 150000,
+                
+                // 建设期保险参数
+                car_insurance_pct: 0.003,
+                ear_insurance_pct: 0.002,
+                cargo_insurance_pct: 0.0015,
+                liability_insurance: 50000,
+                
+                // 开发与业主费用参数
+                spv_acquisition_cost: 50000,
+                permit_cost: 180000,
+                environmental_cost: 60000,
+                project_mgmt_pct: 0.02,
+                legal_cost: 100000,
+                engineering_pct: 0.025,
+                contingency_pct: 0.05,
+                
+                // 拆除准备金（按年摊销）
+                decommissioning_total: 500000,
+                
+                // OPEX参数
+                opex_technical: 6,
+                opex_technical_esc: 0.02,
+                opex_insurance: 0.004,
+                opex_insurance_esc: 0.015,
+                opex_grid: 12000,
+                opex_grid_esc: 0.02,
+                opex_land: 60000,
+                opex_land_esc: 0.02,
+                opex_commercial: 4000,
+                opex_commercial_esc: 0.02,
+                opex_other: 1500,
+                opex_other_esc: 0.02
+            };
+        }
+        
+        /**
+         * 运行所有测试
+         */
+        function runAllTests() {
+            const btn = document.getElementById('runTestsBtn');
+            const loading = document.getElementById('loadingIndicator');
+            
+            btn.disabled = true;
+            loading.style.display = 'block';
+            
+            // 重置测试框架
+            test.suites = [];
+            test.totalTests = 0;
+            test.passedTests = 0;
+            test.failedTests = 0;
+            
+            setTimeout(() => {
+                try {
+                    // ========== 1. 格式化函数测试 ==========
+                    test.describe('1. 格式化函数测试', () => {
+                        test.it('formatNumber - 正常数字格式化', () => {
+                            const result = formatNumber(12345.678);
+                            test.assertTrue(result.includes('12') && result.includes('345'), 
+                                'formatNumber应正确格式化数字');
+                        });
+                        
+                        test.it('formatNumber - null值处理', () => {
+                            const result = formatNumber(null);
+                            test.assertEqual(result, '-', 'null值应返回"-"');
+                        });
+                        
+                        test.it('formatNumber - undefined值处理', () => {
+                            const result = formatNumber(undefined);
+                            test.assertEqual(result, '-', 'undefined值应返回"-"');
+                        });
+                        
+                        test.it('formatNumber - NaN值处理', () => {
+                            const result = formatNumber(NaN);
+                            test.assertEqual(result, '-', 'NaN值应返回"-"');
+                        });
+                        
+                        test.it('formatInt - 整数格式化', () => {
+                            const result = formatInt(12345.67);
+                            test.assertTrue(result.includes('12') && result.includes('346'),
+                                'formatInt应四舍五入并格式化');
+                        });
+                        
+                        test.it('formatPercent - 百分比格式化', () => {
+                            const result = formatPercent(15.5);
+                            test.assertTrue(result.includes('15') && result.includes('5'),
+                                'formatPercent应正确格式化百分比');
+                        });
+                    });
+                    
+                    // ========== 2. CAPEX计算测试 ==========
+                    test.describe('2. CAPEX计算测试', () => {
+                        const params = getTestParameters();
+                        const capex = calculateCapex(params);
+                        
+                        test.it('电池系统成本计算正确', () => {
+                            // 200MWh * 1000 * 85EUR/kWh / 10000 = 1700万EUR
+                            const expected = params.capacity_mwh * 1000 * params.battery_unit_price / 10000;
+                            test.assertAlmostEqual(capex.battery, expected, 0.1, '电池成本');
+                        });
+                        
+                        test.it('PCS系统成本计算正确', () => {
+                            // 100MW * 1000 * 28EUR/kW / 10000 = 280万EUR
+                            const expected = params.power_mw * 1000 * params.pcs_unit_price / 10000;
+                            test.assertAlmostEqual(capex.pcs, expected, 0.1, 'PCS成本');
+                        });
+                        
+                        test.it('中压变压器成本计算正确', () => {
+                            const expected = params.mv_transformer_count * params.mv_transformer_price / 10000;
+                            test.assertAlmostEqual(capex.mv_transformer, expected, 0.1, '中压变成本');
+                        });
+                        
+                        test.it('升压变压器成本计算正确', () => {
+                            const expected = params.hv_transformer_count * params.hv_transformer_price / 10000;
+                            test.assertAlmostEqual(capex.hv_transformer, expected, 0.1, '升压变成本');
+                        });
+                        
+                        test.it('总投资大于零', () => {
+                            test.assertGreaterThan(capex.total, 0, 'CAPEX总投资');
+                        });
+                        
+                        test.it('动态投资大于静态投资', () => {
+                            test.assertGreaterThan(capex.dynamic_total, capex.total, 
+                                '动态投资应大于静态投资（含建设期利息）');
+                        });
+                        
+                        test.it('设备费小计等于各项设备之和', () => {
+                            const sum = capex.battery + capex.pcs + capex.mv_transformer + 
+                                       capex.hv_transformer + capex.ems + capex.scada + 
+                                       capex.switchgear + capex.collector_line + 
+                                       capex.thermal + capex.fire_protection;
+                            test.assertAlmostEqual(capex.equipment_subtotal, sum, 0.1, '设备费小计');
+                        });
+                        
+                        test.it('电网接入费小计正确', () => {
+                            const sum = capex.substation + capex.grid_line + 
+                                       capex.grid_study + capex.metering;
+                            test.assertAlmostEqual(capex.grid_connection_subtotal, sum, 0.1, '电网接入小计');
+                        });
+                        
+                        test.it('投资总额在合理范围内 (1000-10000万EUR)', () => {
+                            test.assertInRange(capex.total, 1000, 10000, 'CAPEX总额');
+                        });
+                    });
+                    
+                    // ========== 3. OPEX计算测试 ==========
+                    test.describe('3. OPEX计算测试', () => {
+                        const params = getTestParameters();
+                        const capex = calculateCapex(params);
+                        const opexData = calculateOpex(params, capex);
+                        
+                        test.it('返回正确年数的OPEX数据', () => {
+                            test.assertEqual(opexData.length, params.operation_years, 'OPEX数据年数');
+                        });
+                        
+                        test.it('第一年OPEX各项大于零', () => {
+                            test.assertGreaterThan(opexData[0].technical, 0, '技术运维费');
+                            test.assertGreaterThan(opexData[0].insurance, 0, '保险费');
+                            test.assertGreaterThan(opexData[0].grid, 0, '电网费用');
+                        });
+                        
+                        test.it('OPEX年度递增（通胀因素）', () => {
+                            test.assertGreaterThan(opexData[1].total, opexData[0].total, 
+                                '第二年OPEX应大于第一年');
+                        });
+                        
+                        test.it('每年OPEX总计等于各项之和', () => {
+                            const year1 = opexData[0];
+                            const sum = year1.technical + year1.insurance + year1.grid + 
+                                       year1.land + year1.commercial + year1.other;
+                            test.assertAlmostEqual(year1.total, sum, 0.01, '第一年OPEX总计');
+                        });
+                        
+                        test.it('OPEX年均值在合理范围 (50-500万EUR)', () => {
+                            const avgOpex = opexData.reduce((a, b) => a + b.total, 0) / opexData.length;
+                            test.assertInRange(avgOpex, 50, 500, 'OPEX年均值');
+                        });
+
+                        test.it('拆除准备金按年摊销计入OPEX', () => {
+                            const expected = params.decommissioning_total / params.operation_years / 10000;
+                            test.assertAlmostEqual(opexData[0].decommissioning, expected, 0.01, '拆除准备金年摊销');
+                        });
+                    });
+                    
+                    // ========== 4. 收入计算测试 ==========
+                    test.describe('4. 收入计算测试', () => {
+                        const params = getTestParameters();
+                        // 创建测试用现货价格
+                        const spotPrices = [];
+                        for (let i = 0; i < params.operation_years; i++) {
+                            spotPrices.push(35000 * Math.pow(1.015, i));
+                        }
+                        const revenueData = calculateRevenueWithPrices(params, spotPrices);
+                        
+                        test.it('返回正确年数的收入数据', () => {
+                            test.assertEqual(revenueData.length, params.operation_years, '收入数据年数');
+                        });
+                        
+                        test.it('Tolling期内有Tolling收入', () => {
+                            test.assertGreaterThan(revenueData[0].tollingRevenue, 0, 
+                                'Tolling期第一年应有Tolling收入');
+                        });
+                        
+                        test.it('Tolling期后无Tolling收入', () => {
+                            if (revenueData.length > params.tolling_years) {
+                                test.assertEqual(revenueData[params.tolling_years].tollingRevenue, 0, 
+                                    'Tolling期后不应有Tolling收入');
+                            }
+                        });
+                        
+                        test.it('容量因子随时间衰减', () => {
+                            test.assertGreaterThan(revenueData[0].capacityFactor, 
+                                                  revenueData[9].capacityFactor, 
+                                                  '容量因子应随电池衰减而降低');
+                        });
+                        
+                        test.it('年收入总计大于零', () => {
+                            revenueData.forEach((data, index) => {
+                                test.assertGreaterThan(data.totalRevenue, 0, 
+                                    `第${index + 1}年收入应大于零`);
+                            });
+                        });
+                        
+                        test.it('收入组成等于总收入', () => {
+                            const year1 = revenueData[0];
+                            test.assertAlmostEqual(year1.totalRevenue, 
+                                year1.tollingRevenue + year1.spotRevenue, 0.01, '收入组成');
+                        });
+                    });
+                    
+                    // ========== 5. 折旧计算测试 ==========
+                    test.describe('5. 折旧计算测试', () => {
+                        const params = getTestParameters();
+                        const capex = calculateCapex(params);
+                        const depreciation = calculateDepreciation(params, capex);
+                        
+                        test.it('返回正确年数的折旧数据', () => {
+                            test.assertEqual(depreciation.length, params.operation_years, '折旧数据年数');
+                        });
+                        
+                        test.it('折旧期内有折旧', () => {
+                            test.assertGreaterThan(depreciation[0].depreciation, 0, '第一年应有折旧');
+                        });
+                        
+                        test.it('直线法折旧各年相等', () => {
+                            if (params.depreciation_method === 'straight_line') {
+                                test.assertAlmostEqual(depreciation[0].depreciation, 
+                                    depreciation[1].depreciation, 0.01, '直线法折旧应相等');
+                            }
+                        });
+                        
+                        test.it('折旧年限后折旧为零', () => {
+                            if (depreciation.length > params.depreciation_years) {
+                                test.assertEqual(depreciation[params.depreciation_years].depreciation, 0, 
+                                    '折旧年限后折旧应为零');
+                            }
+                        });
+                        
+                        test.it('直线法折旧总额等于可折旧金额', () => {
+                            const totalDep = depreciation.slice(0, params.depreciation_years)
+                                .reduce((a, b) => a + b.depreciation, 0);
+                            const depreciableAmount = capex.total * (1 - params.salvage_rate);
+                            test.assertAlmostEqual(totalDep, depreciableAmount, 1, '折旧总额');
+                        });
+                    });
+                    
+                    // ========== 6. 贷款计算测试 ==========
+                    test.describe('6. 贷款计算测试', () => {
+                        const params = getTestParameters();
+                        const capex = calculateCapex(params);
+                        const loanData = calculateLoan(params, capex);
+                        
+                        test.it('返回正确年数的贷款数据', () => {
+                            test.assertEqual(loanData.length, params.operation_years, '贷款数据年数');
+                        });
+                        
+                        test.it('初始贷款余额正确', () => {
+                            const expectedLoan = capex.dynamic_total * (1 - params.equity_ratio);
+                            test.assertAlmostEqual(loanData[0].beginBalance, expectedLoan, 1, '初始贷款额');
+                        });
+                        
+                        test.it('宽限期内只付息不还本', () => {
+                            if (params.grace_period >= 1) {
+                                test.assertEqual(loanData[0].principal, 0, '宽限期内本金为零');
+                                test.assertGreaterThan(loanData[0].interest, 0, '宽限期内应有利息');
+                            }
+                        });
+                        
+                        test.it('利息计算正确', () => {
+                            const expectedInterest = loanData[0].beginBalance * params.loan_rate;
+                            test.assertAlmostEqual(loanData[0].interest, expectedInterest, 0.1, '第一年利息');
+                        });
+                        
+                        test.it('贷款到期后余额为零', () => {
+                            test.assertEqual(loanData[params.loan_years - 1].endBalance, 0, 
+                                '贷款到期后余额应为零');
+                        });
+                        
+                        test.it('每期还款额等于本金加利息', () => {
+                            loanData.forEach((data, i) => {
+                                test.assertAlmostEqual(data.payment, data.principal + data.interest, 
+                                    0.01, `第${i + 1}年还款额`);
+                            });
+                        });
+                        
+                        test.it('期末余额等于期初余额减本金', () => {
+                            loanData.forEach((data, i) => {
+                                if (data.beginBalance > 0) {
+                                    test.assertAlmostEqual(data.endBalance, 
+                                        Math.max(0, data.beginBalance - data.principal), 0.01, 
+                                        `第${i + 1}年期末余额`);
+                                }
+                            });
+                        });
+                    });
+                    
+                    // ========== 7. 利润表计算测试 ==========
+                    test.describe('7. 利润表计算测试', () => {
+                        const params = getTestParameters();
+                        const capex = calculateCapex(params);
+                        const opexData = calculateOpex(params, capex);
+                        const spotPrices = [];
+                        for (let i = 0; i < params.operation_years; i++) {
+                            spotPrices.push(35000 * Math.pow(1.015, i));
+                        }
+                        const revenueData = calculateRevenueWithPrices(params, spotPrices);
+                        const depreciation = calculateDepreciation(params, capex);
+                        const loanData = calculateLoan(params, capex);
+                        const incomeData = calculateIncomeStatement(params, revenueData, opexData, depreciation, loanData);
+                        
+                        test.it('返回正确年数的利润表数据', () => {
+                            test.assertEqual(incomeData.length, params.operation_years, '利润表数据年数');
+                        });
+                        
+                        test.it('毛利润等于收入减成本', () => {
+                            const year1 = incomeData[0];
+                            test.assertAlmostEqual(year1.grossProfit, year1.revenue - year1.opex, 
+                                0.01, '毛利润计算');
+                        });
+                        
+                        test.it('EBIT等于EBITDA减折旧', () => {
+                            const year1 = incomeData[0];
+                            test.assertAlmostEqual(year1.ebit, year1.ebitda - year1.depreciation, 
+                                0.01, 'EBIT计算');
+                        });
+                        
+                        test.it('EBT等于EBIT减利息', () => {
+                            const year1 = incomeData[0];
+                            test.assertAlmostEqual(year1.ebt, year1.ebit - year1.interest, 
+                                0.01, 'EBT计算');
+                        });
+                        
+                        test.it('净利润等于EBT减税', () => {
+                            const year1 = incomeData[0];
+                            test.assertAlmostEqual(year1.netProfit, year1.ebt - year1.tax, 
+                                0.01, '净利润计算');
+                        });
+                        
+                        test.it('税额为非负数', () => {
+                            incomeData.forEach((data, i) => {
+                                test.assertTrue(data.tax >= 0, `第${i + 1}年税额应非负`);
+                            });
+                        });
+                        
+                        test.it('亏损年份税额为零', () => {
+                            incomeData.forEach((data, i) => {
+                                if (data.ebt < 0) {
+                                    test.assertEqual(data.tax, 0, `第${i + 1}年亏损时税额应为零`);
+                                }
+                            });
+                        });
+                    });
+                    
+                    // ========== 8. 现金流计算测试 ==========
+                    test.describe('8. 现金流计算测试', () => {
+                        const params = getTestParameters();
+                        const capex = calculateCapex(params);
+                        const opexData = calculateOpex(params, capex);
+                        const spotPrices = [];
+                        for (let i = 0; i < params.operation_years; i++) {
+                            spotPrices.push(35000 * Math.pow(1.015, i));
+                        }
+                        const revenueData = calculateRevenueWithPrices(params, spotPrices);
+                        const depreciation = calculateDepreciation(params, capex);
+                        const loanData = calculateLoan(params, capex);
+                        const incomeData = calculateIncomeStatement(params, revenueData, opexData, depreciation, loanData);
+                        const cashFlowData = calculateCashFlow(params, capex, incomeData, depreciation, loanData);
+                        
+                        test.it('现金流包含建设期', () => {
+                            test.assertEqual(cashFlowData[0].year, 0, '第一条应为建设期');
+                        });
+                        
+                        test.it('建设期投资现金流为负', () => {
+                            test.assertLessThan(cashFlowData[0].investingCashFlow, 0, 
+                                '建设期投资现金流应为负');
+                        });
+                        
+                        test.it('建设期股权和贷款流入正确', () => {
+                            const equity = capex.dynamic_total * params.equity_ratio;
+                            const loan = capex.dynamic_total * (1 - params.equity_ratio);
+                            test.assertAlmostEqual(cashFlowData[0].equityInflow, equity, 1, '股权流入');
+                            test.assertAlmostEqual(cashFlowData[0].loanInflow, loan, 1, '贷款流入');
+                        });
+                        
+                        test.it('运营期经营现金流等于净利润加折旧', () => {
+                            const year1 = cashFlowData[1];
+                            test.assertAlmostEqual(year1.operatingCashFlow, 
+                                year1.netProfit + year1.depreciation, 0.01, '经营现金流');
+                        });
+                        
+                        test.it('全投资现金流第0年为负投资', () => {
+                            test.assertAlmostEqual(cashFlowData[0].projectCashFlow, 
+                                -capex.dynamic_total, 1, '全投资现金流第0年');
+                        });
+                        
+                        test.it('资本金现金流第0年为负权益', () => {
+                            const equity = capex.dynamic_total * params.equity_ratio;
+                            test.assertAlmostEqual(cashFlowData[0].equityCashFlow, -equity, 1, 
+                                '资本金现金流第0年');
+                        });
+
+                        test.it('末年投资现金流仅包含残值回收', () => {
+                            const intangibleAssets = (capex.dev_cost || 0) + (capex.land || 0);
+                            const fixedAssetOriginal = capex.dynamic_total - intangibleAssets;
+                            const expectedSalvage = fixedAssetOriginal * params.salvage_rate;
+                            const lastYear = cashFlowData[params.operation_years];
+                            test.assertAlmostEqual(lastYear.investingCashFlow, expectedSalvage, 0.01, '末年投资现金流');
+                        });
+                    });
+                    
+                    // ========== 9. IRR/NPV计算测试 ==========
+                    test.describe('9. IRR/NPV计算测试', () => {
+                        test.it('IRR计算-简单案例验证', () => {
+                            // 测试案例: 投资100，每年回收50，共3年
+                            const cashFlows = [-100, 50, 50, 50];
+                            const irr = calculateIRR(cashFlows);
+                            // 理论上约23.38%
+                            test.assertInRange(irr, 20, 26, 'IRR应在合理范围');
+                        });
+                        
+                        test.it('IRR计算-全正现金流应返回高IRR', () => {
+                            const cashFlows = [-100, 200];
+                            const irr = calculateIRR(cashFlows);
+                            test.assertGreaterThan(irr, 50, '翻倍投资IRR应大于50%');
+                        });
+                        
+                        test.it('NPV计算-零折现率等于现金流总和', () => {
+                            const cashFlows = [-100, 50, 50, 50];
+                            const npv = calculateNPV(cashFlows, 0);
+                            test.assertAlmostEqual(npv, 50, 0.01, '零折现率NPV');
+                        });
+                        
+                        test.it('NPV计算-正折现率结果小于零折现率', () => {
+                            const cashFlows = [-100, 50, 50, 50];
+                            const npv0 = calculateNPV(cashFlows, 0);
+                            const npv8 = calculateNPV(cashFlows, 0.08);
+                            test.assertGreaterThan(npv0, npv8, '正折现率NPV应更小');
+                        });
+                        
+                        test.it('静态回收期计算正确', () => {
+                            const cashFlows = [-100, 40, 40, 40, 40];
+                            const payback = calculateStaticPayback(cashFlows);
+                            test.assertInRange(payback, 2, 3, '回收期应在2-3年');
+                        });
+                        
+                        test.it('动态回收期大于静态回收期', () => {
+                            const cashFlows = [-100, 40, 40, 40, 40];
+                            const staticPB = calculateStaticPayback(cashFlows);
+                            const dynamicPB = calculateDynamicPayback(cashFlows, 0.08);
+                            test.assertGreaterThan(dynamicPB, staticPB, '动态回收期应大于静态回收期');
+                        });
+                    });
+                    
+                    // ========== 10. 财务指标测试 ==========
+                    test.describe('10. 财务指标综合测试', () => {
+                        const params = getTestParameters();
+                        const capex = calculateCapex(params);
+                        const opexData = calculateOpex(params, capex);
+                        const spotPrices = [];
+                        for (let i = 0; i < params.operation_years; i++) {
+                            spotPrices.push(35000 * Math.pow(1.015, i));
+                        }
+                        const revenueData = calculateRevenueWithPrices(params, spotPrices);
+                        const depreciation = calculateDepreciation(params, capex);
+                        const loanData = calculateLoan(params, capex);
+                        const incomeData = calculateIncomeStatement(params, revenueData, opexData, depreciation, loanData);
+                        const cashFlowData = calculateCashFlow(params, capex, incomeData, depreciation, loanData);
+                        const balanceData = calculateBalanceSheet(params, capex, incomeData, depreciation, loanData, cashFlowData);
+                        const indicators = calculateIndicators(params, capex, revenueData, incomeData, cashFlowData, balanceData, loanData);
+                        
+                        test.it('静态投资等于CAPEX总额', () => {
+                            test.assertAlmostEqual(indicators.static_investment, capex.total, 0.1, '静态投资');
+                        });
+                        
+                        test.it('动态投资等于含利息CAPEX', () => {
+                            test.assertAlmostEqual(indicators.dynamic_investment, capex.dynamic_total, 0.1, '动态投资');
+                        });
+                        
+                        test.it('项目IRR为有效数值', () => {
+                            test.assertIsNumber(indicators.project_irr, '项目IRR应为数字');
+                        });
+                        
+                        test.it('权益IRR大于项目IRR（杠杆效应）', () => {
+                            if (!isNaN(indicators.equity_irr) && !isNaN(indicators.project_irr)) {
+                                test.assertGreaterThan(indicators.equity_irr, indicators.project_irr, 
+                                    '权益IRR应大于项目IRR（正杠杆）');
+                            }
+                        });
+                        
+                        test.it('回收期在合理范围内 (1-20年)', () => {
+                            test.assertInRange(indicators.static_payback, 1, 20, '静态回收期');
+                        });
+                        
+                        test.it('ROI为正值', () => {
+                            test.assertGreaterThan(indicators.roi, 0, 'ROI应为正');
+                        });
+                        
+                        test.it('DSCR大于1（偿债能力足够）', () => {
+                            test.assertGreaterThan(indicators.dscr, 1, 'DSCR应大于1');
+                        });
+                        
+                        test.it('总收入等于各年收入之和', () => {
+                            const sum = revenueData.reduce((a, b) => a + b.totalRevenue, 0);
+                            test.assertAlmostEqual(indicators.total_revenue, sum, 0.1, '总收入');
+                        });
+                    });
+                    
+                    // ========== 11. 边界条件测试 ==========
+                    test.describe('11. 边界条件测试', () => {
+                        test.it('零功率情况处理', () => {
+                            const params = getTestParameters();
+                            params.power_mw = 0;
+                            const capex = calculateCapex(params);
+                            test.assertIsNumber(capex.total, '零功率CAPEX应可计算');
+                        });
+                        
+                        test.it('100%股权融资情况', () => {
+                            const params = getTestParameters();
+                            params.equity_ratio = 1.0;
+                            const capex = calculateCapex(params);
+                            const loanData = calculateLoan(params, capex);
+                            test.assertEqual(loanData[0].beginBalance, 0, '100%股权时贷款应为零');
+                        });
+                        
+                        test.it('零Tolling比例情况', () => {
+                            const params = getTestParameters();
+                            params.tolling_ratio = 0;
+                            const spotPrices = Array(20).fill(35000);
+                            const revenueData = calculateRevenueWithPrices(params, spotPrices);
+                            test.assertEqual(revenueData[0].tollingRevenue, 0, '零Tolling比例时Tolling收入为零');
+                        });
+                        
+                        test.it('零衰减率情况', () => {
+                            const params = getTestParameters();
+                            params.degradation_rate = 0;
+                            const spotPrices = Array(20).fill(35000);
+                            const revenueData = calculateRevenueWithPrices(params, spotPrices);
+                            test.assertEqual(revenueData[0].capacityFactor, revenueData[19].capacityFactor, 
+                                '零衰减时容量因子应不变');
+                        });
+                        
+                        test.it('最小运营年限（1年）', () => {
+                            const params = getTestParameters();
+                            params.operation_years = 1;
+                            const capex = calculateCapex(params);
+                            const opexData = calculateOpex(params, capex);
+                            test.assertEqual(opexData.length, 1, '1年运营应只有1年OPEX');
+                        });
+                        
+                        test.it('零残值率情况', () => {
+                            const params = getTestParameters();
+                            params.salvage_rate = 0;
+                            const capex = calculateCapex(params);
+                            const depreciation = calculateDepreciation(params, capex);
+                            const totalDep = depreciation.slice(0, params.depreciation_years)
+                                .reduce((a, b) => a + b.depreciation, 0);
+                            test.assertAlmostEqual(totalDep, capex.total, 1, '零残值时折旧总额等于原值');
+                        });
+                    });
+                    
+                    // ========== 12. 数据一致性测试 ==========
+                    test.describe('12. 数据一致性测试', () => {
+                        const params = getTestParameters();
+                        const capex = calculateCapex(params);
+                        const opexData = calculateOpex(params, capex);
+                        const spotPrices = [];
+                        for (let i = 0; i < params.operation_years; i++) {
+                            spotPrices.push(35000 * Math.pow(1.015, i));
+                        }
+                        const revenueData = calculateRevenueWithPrices(params, spotPrices);
+                        const depreciation = calculateDepreciation(params, capex);
+                        const loanData = calculateLoan(params, capex);
+                        const incomeData = calculateIncomeStatement(params, revenueData, opexData, depreciation, loanData);
+                        const cashFlowData = calculateCashFlow(params, capex, incomeData, depreciation, loanData);
+                        const balanceData = calculateBalanceSheet(params, capex, incomeData, depreciation, loanData, cashFlowData);
+                        
+                        test.it('资产负债表平衡', () => {
+                            balanceData.forEach((data, i) => {
+                                const diff = Math.abs(data.totalAssets - data.totalLiabilitiesAndEquity);
+                                test.assertLessThan(diff, 1, `第${i}年资产负债应平衡`);
+                            });
+                        });
+                        
+                        test.it('利润表收入与收入表一致', () => {
+                            incomeData.forEach((income, i) => {
+                                test.assertAlmostEqual(income.revenue, revenueData[i].totalRevenue, 
+                                    0.01, `第${i + 1}年收入一致性`);
+                            });
+                        });
+                        
+                        test.it('利润表成本与OPEX一致', () => {
+                            incomeData.forEach((income, i) => {
+                                test.assertAlmostEqual(income.opex, opexData[i].total, 
+                                    0.01, `第${i + 1}年成本一致性`);
+                            });
+                        });
+                        
+                        test.it('利润表折旧与折旧表一致', () => {
+                            incomeData.forEach((income, i) => {
+                                test.assertAlmostEqual(income.depreciation, depreciation[i].total, 
+                                    0.01, `第${i + 1}年折旧一致性`);
+                            });
+                        });
+                        
+                        test.it('利润表利息与贷款表一致', () => {
+                            incomeData.forEach((income, i) => {
+                                test.assertAlmostEqual(income.interest, loanData[i].interest, 
+                                    0.01, `第${i + 1}年利息一致性`);
+                            });
+                        });
+                        
+                        test.it('现金流净利润与利润表一致', () => {
+                            for (let i = 1; i <= params.operation_years; i++) {
+                                test.assertAlmostEqual(cashFlowData[i].netProfit, incomeData[i - 1].netProfit, 
+                                    0.01, `第${i}年净利润一致性`);
+                            }
+                        });
+                        
+                        test.it('累计还本金额等于贷款总额', () => {
+                            const totalPrincipal = loanData.reduce((a, b) => a + b.principal, 0);
+                            const loanAmount = capex.dynamic_total * (1 - params.equity_ratio);
+                            test.assertAlmostEqual(totalPrincipal, loanAmount, 1, '累计还本');
+                        });
+                    });
+                    
+                    // ========== 13. 敏感性分析参数测试 ==========
+                    test.describe('13. 敏感性分析功能测试', () => {
+                        const params = getTestParameters();
+                        
+                        test.it('CAPEX变化影响项目IRR', () => {
+                            const params1 = JSON.parse(JSON.stringify(params));
+                            const params2 = JSON.parse(JSON.stringify(params));
+                            applyVariableChange(params2, 'capex', 0.1); // 增加10%
+                            
+                            const irr1 = calculateTargetIndicator(params1, 'project_irr');
+                            const irr2 = calculateTargetIndicator(params2, 'project_irr');
+                            
+                            test.assertGreaterThan(irr1, irr2, 'CAPEX增加应降低IRR');
+                        });
+                        
+                        test.it('Tolling价格变化影响项目IRR', () => {
+                            const params1 = JSON.parse(JSON.stringify(params));
+                            const params2 = JSON.parse(JSON.stringify(params));
+                            applyVariableChange(params2, 'tolling_price', 0.1); // 增加10%
+                            
+                            const irr1 = calculateTargetIndicator(params1, 'project_irr');
+                            const irr2 = calculateTargetIndicator(params2, 'project_irr');
+                            
+                            test.assertLessThan(irr1, irr2, 'Tolling价格增加应提高IRR');
+                        });
+                        
+                        test.it('OPEX变化影响项目IRR', () => {
+                            const params1 = JSON.parse(JSON.stringify(params));
+                            const params2 = JSON.parse(JSON.stringify(params));
+                            applyVariableChange(params2, 'opex', 0.2); // 增加20%
+                            
+                            const irr1 = calculateTargetIndicator(params1, 'project_irr');
+                            const irr2 = calculateTargetIndicator(params2, 'project_irr');
+                            
+                            test.assertGreaterThan(irr1, irr2, 'OPEX增加应降低IRR');
+                        });
+                        
+                        test.it('贷款利率变化影响权益IRR', () => {
+                            const params1 = JSON.parse(JSON.stringify(params));
+                            const params2 = JSON.parse(JSON.stringify(params));
+                            applyVariableChange(params2, 'loan_rate', 0.2); // 增加20%
+                            
+                            const irr1 = calculateTargetIndicator(params1, 'equity_irr');
+                            const irr2 = calculateTargetIndicator(params2, 'equity_irr');
+                            
+                            test.assertGreaterThan(irr1, irr2, '贷款利率增加应降低权益IRR');
+                        });
+                    });
+                    
+                } catch (e) {
+                    console.error('测试执行错误:', e);
+                }
+                
+                // 渲染结果
+                test.renderResults();
+                loading.style.display = 'none';
+                btn.disabled = false;
+                
+            }, 100);
+        }
+        
+        // 页面加载后自动运行测试
+        window.addEventListener('load', () => {
+            setTimeout(runAllTests, 500);
+        });
+    </script>
+</body>
+</html>
