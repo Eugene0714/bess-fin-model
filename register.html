@@ -1041,16 +1041,32 @@
                 
                 await simulateDelay(1500);
                 
-                // 保存用户信息到本地存储（模拟）
-                const users = JSON.parse(localStorage.getItem('users') || '[]');
-                users.push({
-                    id: Date.now(),
-                    ...data,
-                    password: btoa(data.password), // 简单编码，实际应使用哈希
-                    created_at: new Date().toISOString(),
-                    plan_expiry: selectedPlan === 'free' ? null : new Date(Date.now() + 30 * 24 * 60 * 60 * 1000).toISOString()
+                // ========== 核心修改：修复用户信息保存逻辑 ==========
+                // 1. 读取已注册用户（和登录页的键名保持一致：registeredUsers）
+                let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
+                
+                // 2. 检查用户名是否已存在（新增：避免重复注册）
+                const isUsernameExist = registeredUsers.some(user => user.username === data.username);
+                if (isUsernameExist) {
+                    showMessage('用户名已存在，请更换用户名', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = '完成注册';
+                    return;
+                }
+                
+                // 3. 保存用户信息（密码不编码，和登录页验证逻辑匹配）
+                registeredUsers.push({
+                    username: data.username,  // 登录页验证的核心字段
+                    password: data.password,  // 密码不编码，保持原始值
+                    email: data.email,
+                    plan: data.plan_id,
+                    registerTime: new Date().toLocaleString()
                 });
-                localStorage.setItem('users', JSON.stringify(users));
+                
+                // 4. 保存到localStorage（键名和登录页一致：registeredUsers）
+                localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+                
+                // ==================================================
                 
                 // 显示成功页面
                 document.getElementById('registerForm').style.display = 'none';
