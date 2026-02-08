@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* 原有样式完全保留，此处省略（和之前修改的登录页样式一致） */
+        /* 原有样式完全保留，无任何修改 */
         * {
             margin: 0;
             padding: 0;
@@ -349,6 +349,12 @@
             border-top: 1px solid rgba(255, 255, 255, 0.08);
         }
 
+        .register-link-text {
+            color: rgba(255, 255, 255, 0.6);
+            font-size: 14px;
+            margin-right: 5px;
+        }
+
         .register-link a {
             color: #00d4aa;
             font-size: 14px;
@@ -360,12 +366,6 @@
         .register-link a:hover {
             color: #00f5c4;
             text-decoration: underline;
-        }
-
-        .register-link-text {
-            color: rgba(255, 255, 255, 0.6);
-            font-size: 14px;
-            margin-right: 5px;
         }
 
         .login-footer {
@@ -587,6 +587,7 @@
     </div>
 
     <script>
+        // 保留原有预设账号（兼容旧逻辑）
         const VALID_USERS = {
             'admin': 'admin123',
             'temax': 'temax2025',
@@ -596,6 +597,9 @@
         const MAX_ATTEMPTS = 5;
         let loginAttempts = parseInt(localStorage.getItem('loginAttempts') || '0');
         let isLocked = localStorage.getItem('isLocked') === 'true';
+
+        // 后端接口地址（对接json-server）
+        const API_URL = 'http://localhost:3000/users';
 
         document.addEventListener('DOMContentLoaded', function() {
             if (isLocked) {
@@ -610,7 +614,8 @@
             updateAttemptsDisplay();
         });
 
-        function handleLogin(event) {
+        // 🌟 核心修改：异步登录逻辑，对接后端接口
+        async function handleLogin(event) {
             event.preventDefault();
 
             if (isLocked) {
@@ -620,58 +625,80 @@
 
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
+            const loginBtn = document.getElementById('loginBtn');
 
-            // 🌟 核心修改：读取注册用户 + 兼容预设账号
-            let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-            let userFound = false;
-            
-            // 检查注册用户
-            for (let user of registeredUsers) {
-                if (user.username === username && user.password === password) {
+            // 禁用按钮防止重复提交
+            loginBtn.disabled = true;
+            loginBtn.textContent = '登录中...';
+
+            try {
+                // 1. 调用后端接口查询用户
+                const response = await fetch(`${API_URL}?username=${encodeURIComponent(username)}`);
+                if (!response.ok) {
+                    throw new Error('网络请求失败');
+                }
+                const users = await response.json();
+
+                // 2. 检查用户是否存在
+                let userFound = false;
+                if (users.length > 0) {
+                    const user = users[0];
+                    if (user.password === password) {
+                        userFound = true;
+                    }
+                }
+
+                // 3. 兼容原有预设账号（保证旧逻辑可用）
+                if (!userFound && VALID_USERS[username] && VALID_USERS[username] === password) {
                     userFound = true;
-                    break;
                 }
-            }
-            
-            // 检查预设账号
-            if (!userFound && VALID_USERS[username] && VALID_USERS[username] === password) {
-                userFound = true;
-            }
 
-            if (userFound) {
-                // 登录成功逻辑
-                loginAttempts = 0;
-                localStorage.setItem('loginAttempts', '0');
-                sessionStorage.setItem('isLoggedIn', 'true');
-                sessionStorage.setItem('username', username);
-                
-                const btn = document.getElementById('loginBtn');
-                btn.textContent = '✓ 登录成功';
-                btn.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
-                
-                setTimeout(() => {
-                    window.location.href = 'index.html';
-                }, 800);
-            } else {
-                // 登录失败逻辑
-                loginAttempts++;
-                localStorage.setItem('loginAttempts', loginAttempts.toString());
-
-                if (loginAttempts >= MAX_ATTEMPTS) {
-                    isLocked = true;
-                    localStorage.setItem('isLocked', 'true');
-                    showLockModal();
-                    disableForm();
+                // 4. 登录结果处理
+                if (userFound) {
+                    // 登录成功
+                    loginAttempts = 0;
+                    localStorage.setItem('loginAttempts', '0');
+                    sessionStorage.setItem('isLoggedIn', 'true');
+                    sessionStorage.setItem('username', username);
+                    
+                    loginBtn.textContent = '✓ 登录成功';
+                    loginBtn.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
+                    
+                    setTimeout(() => {
+                        window.location.href = 'index.html';
+                    }, 800);
                 } else {
-                    showError(`用户名或密码错误，您还有 ${MAX_ATTEMPTS - loginAttempts} 次尝试机会`);
-                }
+                    // 登录失败
+                    loginAttempts++;
+                    localStorage.setItem('loginAttempts', loginAttempts.toString());
 
-                updateAttemptsDisplay();
+                    if (loginAttempts >= MAX_ATTEMPTS) {
+                        isLocked = true;
+                        localStorage.setItem('isLocked', 'true');
+                        showLockModal();
+                        disableForm();
+                    } else {
+                        showError(`用户名或密码错误，您还有 ${MAX_ATTEMPTS - loginAttempts} 次尝试机会`);
+                    }
+
+                    updateAttemptsDisplay();
+                }
+            } catch (error) {
+                // 网络错误/服务未启动
+                showError('登录失败：请检查后端服务是否已启动');
+                console.error('登录错误：', error);
+            } finally {
+                // 恢复按钮状态（除非登录成功）
+                if (sessionStorage.getItem('isLoggedIn') !== 'true') {
+                    loginBtn.disabled = false;
+                    loginBtn.textContent = '登 录 系 统';
+                }
             }
 
             return false;
         }
 
+        // 原有辅助函数完全保留
         function showError(message) {
             const errorDiv = document.getElementById('errorMessage');
             const errorText = document.getElementById('errorText');
