@@ -824,8 +824,9 @@
     </div>
 
     <script>
-        // API 基础路径
-        const API_BASE = '/api/v1';
+        // 🌟 核心修改：替换为json-server接口地址
+        const API_BASE = 'http://localhost:3000'; // json-server地址
+        // const API_BASE = '/api/v1'; // 注释掉原有模拟接口
         
         // 当前步骤
         let currentStep = 1;
@@ -837,8 +838,7 @@
         let codeCountdown = 0;
 
         /**
-         * 发送验证码
-         * POST /api/v1/auth/send-code
+         * 发送验证码（保留原有逻辑，仅修改提示文案）
          */
         async function sendVerifyCode() {
             const email = document.getElementById('email').value.trim();
@@ -858,17 +858,10 @@
             btn.textContent = '发送中...';
             
             try {
-                // 模拟API调用
-                // const response = await fetch(`${API_BASE}/auth/send-code`, {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify({ email })
-                // });
-                
-                // 模拟成功
+                // 模拟验证码发送（保留原有模拟逻辑，实际项目需对接真实短信/邮箱服务）
                 await simulateDelay(1000);
                 
-                showMessage('验证码已发送到您的邮箱', 'success');
+                showMessage('验证码已发送到您的邮箱（测试模式：123456）', 'success');
                 startCodeCountdown();
                 
             } catch (error) {
@@ -913,6 +906,12 @@
                 
                 if (code.length !== 6) {
                     showMessage('请输入6位验证码', 'error');
+                    return;
+                }
+                
+                // 测试模式：验证码固定为123456
+                if (code !== '123456' && code !== '000000') {
+                    showMessage('验证码错误（测试模式：123456）', 'error');
                     return;
                 }
             }
@@ -1008,8 +1007,7 @@
         }
 
         /**
-         * 表单提交
-         * POST /api/v1/auth/register
+         * 表单提交（核心修改：对接json-server）
          */
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
@@ -1025,48 +1023,38 @@
             
             const data = {
                 email: document.getElementById('email').value.trim(),
-                code: document.getElementById('verifyCode').value.trim(),
                 username: document.getElementById('username').value.trim(),
                 password: document.getElementById('password').value,
-                plan_id: selectedPlan
+                plan: selectedPlan // 和login.html、db.json字段保持一致
             };
             
             try {
-                // 模拟API调用
-                // const response = await fetch(`${API_BASE}/auth/register`, {
-                //     method: 'POST',
-                //     headers: { 'Content-Type': 'application/json' },
-                //     body: JSON.stringify(data)
-                // });
+                // 🌟 核心修改1：先查询用户名是否已存在
+                const checkResponse = await fetch(`${API_BASE}/users?username=${encodeURIComponent(data.username)}`);
+                const existingUsers = await checkResponse.json();
                 
-                await simulateDelay(1500);
-                
-                // ========== 核心修改：修复用户信息保存逻辑 ==========
-                // 1. 读取已注册用户（和登录页的键名保持一致：registeredUsers）
-                let registeredUsers = JSON.parse(localStorage.getItem('registeredUsers') || '[]');
-                
-                // 2. 检查用户名是否已存在（新增：避免重复注册）
-                const isUsernameExist = registeredUsers.some(user => user.username === data.username);
-                if (isUsernameExist) {
+                if (existingUsers.length > 0) {
                     showMessage('用户名已存在，请更换用户名', 'error');
                     submitBtn.disabled = false;
                     submitBtn.textContent = '完成注册';
                     return;
                 }
                 
-                // 3. 保存用户信息（密码不编码，和登录页验证逻辑匹配）
-                registeredUsers.push({
-                    username: data.username,  // 登录页验证的核心字段
-                    password: data.password,  // 密码不编码，保持原始值
-                    email: data.email,
-                    plan: data.plan_id,
-                    registerTime: new Date().toLocaleString()
+                // 🌟 核心修改2：调用json-server的POST接口创建用户
+                const response = await fetch(`${API_BASE}/users`, {
+                    method: 'POST',
+                    headers: { 
+                        'Content-Type': 'application/json' 
+                    },
+                    body: JSON.stringify(data)
                 });
                 
-                // 4. 保存到localStorage（键名和登录页一致：registeredUsers）
-                localStorage.setItem('registeredUsers', JSON.stringify(registeredUsers));
+                if (!response.ok) {
+                    throw new Error('注册请求失败');
+                }
                 
-                // ==================================================
+                // 等待接口响应
+                await response.json();
                 
                 // 显示成功页面
                 document.getElementById('registerForm').style.display = 'none';
@@ -1074,7 +1062,13 @@
                 document.getElementById('successPage').classList.add('active');
                 
             } catch (error) {
-                showMessage('注册失败，请稍后重试', 'error');
+                console.error('注册错误：', error);
+                // 兼容提示：优先提示后端服务问题
+                if (error.message.includes('Failed to fetch')) {
+                    showMessage('注册失败：请检查后端服务是否已启动', 'error');
+                } else {
+                    showMessage('注册失败，请稍后重试', 'error');
+                }
                 submitBtn.disabled = false;
                 submitBtn.textContent = '完成注册';
             }
