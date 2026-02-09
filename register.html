@@ -6,8 +6,9 @@
     <title>用户注册 - 德国独立储能电站投资测算系统</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+DE:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
+        /* 原有样式全部保留，新增语言切换按钮样式 */
         * {
             margin: 0;
             padding: 0;
@@ -15,7 +16,7 @@
         }
 
         body {
-            font-family: 'Noto Sans SC', 'Montserrat', sans-serif;
+            font-family: 'Noto Sans SC', 'Noto Sans DE', 'Montserrat', sans-serif; /* 新增德语字体 */
             min-height: 100vh;
             display: flex;
             background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 50%, #0d3251 100%);
@@ -23,7 +24,45 @@
             overflow-x: hidden;
         }
 
-        /* 左侧品牌展示区 */
+        /* 新增：语言切换按钮样式 */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 25, 45, 0.9);
+            border-radius: 12px;
+            padding: 8px;
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .lang-btn.active {
+            background: rgba(0, 212, 170, 0.2);
+            color: #00d4aa;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        /* 原有样式全部保留（以下省略原有样式，实际代码中保留） */
         .brand-section {
             flex: 1;
             display: flex;
@@ -113,7 +152,6 @@
             font-size: 20px;
         }
 
-        /* 右侧注册表单区 */
         .register-section {
             width: 520px;
             min-height: 100vh;
@@ -141,7 +179,6 @@
             font-size: 14px;
         }
 
-        /* 步骤指示器 */
         .steps-indicator {
             display: flex;
             gap: 10px;
@@ -164,7 +201,6 @@
             background: #00d4aa;
         }
 
-        /* 表单样式 */
         .register-form {
             flex: 1;
         }
@@ -238,7 +274,6 @@
             font-size: 18px;
         }
 
-        /* 验证码输入 */
         .code-input-group {
             display: flex;
             gap: 12px;
@@ -271,7 +306,6 @@
             cursor: not-allowed;
         }
 
-        /* 密码强度指示器 */
         .password-strength {
             display: flex;
             gap: 5px;
@@ -296,7 +330,6 @@
             margin-top: 8px;
         }
 
-        /* 订阅方案选择 */
         .plan-options {
             display: grid;
             gap: 15px;
@@ -377,7 +410,6 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        /* 协议勾选 */
         .agreement-group {
             display: flex;
             align-items: flex-start;
@@ -408,7 +440,6 @@
             text-decoration: underline;
         }
 
-        /* 按钮样式 */
         .btn-group {
             display: flex;
             gap: 15px;
@@ -455,7 +486,6 @@
             transform: none;
         }
 
-        /* 登录链接 */
         .login-link {
             text-align: center;
             margin-top: 30px;
@@ -478,7 +508,6 @@
             text-decoration: underline;
         }
 
-        /* 消息提示 */
         .message {
             padding: 14px 18px;
             border-radius: 10px;
@@ -514,7 +543,6 @@
             font-size: 20px;
         }
 
-        /* 成功页面 */
         .success-page {
             display: none;
             text-align: center;
@@ -558,7 +586,6 @@
             margin-bottom: 30px;
         }
 
-        /* 响应式 */
         @media (max-width: 1024px) {
             body {
                 flex-direction: column;
@@ -589,18 +616,37 @@
             .btn-group {
                 flex-direction: column;
             }
+
+            /* 适配移动端语言按钮 */
+            .language-switcher {
+                top: 15px;
+                right: 15px;
+                padding: 6px;
+            }
+
+            .lang-btn {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
         }
     </style>
 </head>
 <body>
-    <!-- 左侧品牌区 -->
+    <!-- 新增：语言切换按钮 -->
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="zh">中文</button>
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="de">Deutsch</button>
+    </div>
+
+    <!-- 左侧品牌区（原有内容，仅修改文本为动态替换） -->
     <div class="brand-section">
         <div class="brand-content">
             <div class="brand-logo">
                 <span>⚡</span>
             </div>
-            <h1 class="brand-title">ZHONGDAFENG</h1>
-            <p class="brand-subtitle">
+            <h1 class="brand-title" data-i18n="brandTitle">ZHONGDAFENG</h1>
+            <p class="brand-subtitle" data-i18n="brandSubtitle">
                 德国独立储能电站投资测算系统<br>
                 专业的财务模型分析平台
             </p>
@@ -608,98 +654,93 @@
             <div class="features-list">
                 <div class="feature-item">
                     <div class="feature-icon">📊</div>
-                    <span>全面的财务指标计算（IRR/NPV/DSCR等）</span>
+                    <span data-i18n="feature1">全面的财务指标计算（IRR/NPV/DSCR等）</span>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">📈</div>
-                    <span>多维度敏感性分析</span>
+                    <span data-i18n="feature2">多维度敏感性分析</span>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">🏦</div>
-                    <span>银行级融资报告生成</span>
+                    <span data-i18n="feature3">银行级融资报告生成</span>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">💾</div>
-                    <span>模型导入导出，数据云端同步</span>
+                    <span data-i18n="feature4">模型导入导出，数据云端同步</span>
                 </div>
                 <div class="feature-item">
                     <div class="feature-icon">🔒</div>
-                    <span>企业级数据安全保障</span>
+                    <span data-i18n="feature5">企业级数据安全保障</span>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 右侧注册区 -->
+    <!-- 右侧注册区（原有内容，仅添加data-i18n属性） -->
     <div class="register-section">
         <div class="register-header">
-            <h2>创建账户</h2>
-            <p>开始您的储能投资分析之旅</p>
+            <h2 data-i18n="registerTitle">创建账户</h2>
+            <p data-i18n="registerSubtitle">开始您的储能投资分析之旅</p>
         </div>
 
-        <!-- 步骤指示器 -->
         <div class="steps-indicator">
             <div class="step active" data-step="1"></div>
             <div class="step" data-step="2"></div>
             <div class="step" data-step="3"></div>
         </div>
 
-        <!-- 消息提示 -->
         <div class="message" id="message">
             <span class="message-icon"></span>
-            <span class="message-text"></span>
+            <span class="message-text" data-i18n="messageText"></span>
         </div>
 
-        <!-- 注册表单 -->
         <form class="register-form" id="registerForm">
-            <!-- 步骤1: 邮箱验证 -->
             <div class="form-step active" data-step="1">
                 <div class="form-group">
-                    <label class="form-label">邮箱地址 <span class="required">*</span></label>
+                    <label class="form-label" data-i18n="emailLabel">邮箱地址 <span class="required">*</span></label>
                     <div class="input-wrapper">
                         <input type="email" class="form-input" id="email" 
-                               placeholder="请输入您的邮箱" required>
+                               placeholder="请输入您的邮箱" data-i18n-placeholder="emailPlaceholder" required>
                         <span class="input-icon">📧</span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">验证码 <span class="required">*</span></label>
+                    <label class="form-label" data-i18n="verifyCodeLabel">验证码 <span class="required">*</span></label>
                     <div class="code-input-group">
                         <div class="input-wrapper" style="flex:1">
                             <input type="text" class="form-input" id="verifyCode" 
-                                   placeholder="请输入6位验证码" maxlength="6" required>
+                                   placeholder="请输入6位验证码" data-i18n-placeholder="verifyCodePlaceholder" maxlength="6" required>
                             <span class="input-icon">🔐</span>
                         </div>
-                        <button type="button" class="send-code-btn" id="sendCodeBtn" onclick="sendVerifyCode()">
+                        <button type="button" class="send-code-btn" id="sendCodeBtn" onclick="sendVerifyCode()" data-i18n="sendCodeBtn">
                             发送验证码
                         </button>
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-primary" onclick="nextStep(1)">
+                    <button type="button" class="btn btn-primary" onclick="nextStep(1)" data-i18n="nextStepBtn">
                         下一步
                     </button>
                 </div>
             </div>
 
-            <!-- 步骤2: 设置密码 -->
             <div class="form-step" data-step="2">
                 <div class="form-group">
-                    <label class="form-label">用户名 <span class="required">*</span></label>
+                    <label class="form-label" data-i18n="usernameLabel">用户名 <span class="required">*</span></label>
                     <div class="input-wrapper">
                         <input type="text" class="form-input" id="username" 
-                               placeholder="请设置您的用户名" required>
+                               placeholder="请设置您的用户名" data-i18n-placeholder="usernamePlaceholder" required>
                         <span class="input-icon">👤</span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">设置密码 <span class="required">*</span></label>
+                    <label class="form-label" data-i18n="passwordLabel">设置密码 <span class="required">*</span></label>
                     <div class="input-wrapper">
                         <input type="password" class="form-input" id="password" 
-                               placeholder="至少8位，含字母和数字" required
+                               placeholder="至少8位，含字母和数字" data-i18n-placeholder="passwordPlaceholder" required
                                oninput="checkPasswordStrength()">
                         <span class="input-icon">🔒</span>
                     </div>
@@ -709,79 +750,78 @@
                         <div class="strength-bar"></div>
                         <div class="strength-bar"></div>
                     </div>
-                    <p class="strength-text" id="strengthText">密码强度：待输入</p>
+                    <p class="strength-text" id="strengthText" data-i18n="passwordStrengthText">密码强度：待输入</p>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">确认密码 <span class="required">*</span></label>
+                    <label class="form-label" data-i18n="confirmPasswordLabel">确认密码 <span class="required">*</span></label>
                     <div class="input-wrapper">
                         <input type="password" class="form-input" id="confirmPassword" 
-                               placeholder="请再次输入密码" required>
+                               placeholder="请再次输入密码" data-i18n-placeholder="confirmPasswordPlaceholder" required>
                         <span class="input-icon">🔒</span>
                     </div>
                 </div>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-secondary" onclick="prevStep(2)">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(2)" data-i18n="prevStepBtn">
                         上一步
                     </button>
-                    <button type="button" class="btn btn-primary" onclick="nextStep(2)">
+                    <button type="button" class="btn btn-primary" onclick="nextStep(2)" data-i18n="nextStepBtn">
                         下一步
                     </button>
                 </div>
             </div>
 
-            <!-- 步骤3: 选择方案 -->
             <div class="form-step" data-step="3">
                 <div class="form-group">
-                    <label class="form-label">选择订阅方案</label>
+                    <label class="form-label" data-i18n="planLabel">选择订阅方案</label>
                     <div class="plan-options">
                         <div class="plan-option" data-plan="free" onclick="selectPlan(this)">
                             <div class="plan-header">
-                                <span class="plan-name">🆓 免费版</span>
+                                <span class="plan-name" data-i18n="freePlanName">🆓 免费版</span>
                                 <div class="plan-price">
                                     <span class="amount">¥0</span>
-                                    <span class="period">/永久</span>
+                                    <span class="period" data-i18n="freePlanPeriod">/永久</span>
                                 </div>
                             </div>
                             <div class="plan-features">
-                                <span class="plan-feature">基础财务计算</span>
-                                <span class="plan-feature">单项目限制</span>
-                                <span class="plan-feature">社区支持</span>
+                                <span class="plan-feature" data-i18n="freeFeature1">基础财务计算</span>
+                                <span class="plan-feature" data-i18n="freeFeature2">单项目限制</span>
+                                <span class="plan-feature" data-i18n="freeFeature3">社区支持</span>
                             </div>
                         </div>
 
                         <div class="plan-option popular selected" data-plan="pro" onclick="selectPlan(this)">
                             <div class="plan-header">
-                                <span class="plan-name">⭐ 专业版</span>
+                                <span class="plan-name" data-i18n="proPlanName">⭐ 专业版</span>
                                 <div class="plan-price">
                                     <span class="amount">¥99</span>
-                                    <span class="period">/月</span>
+                                    <span class="period" data-i18n="proPlanPeriod">/月</span>
                                 </div>
                             </div>
                             <div class="plan-features">
-                                <span class="plan-feature">完整财务模型</span>
-                                <span class="plan-feature">无限项目</span>
-                                <span class="plan-feature">敏感性分析</span>
-                                <span class="plan-feature">融资报告</span>
-                                <span class="plan-feature">优先支持</span>
+                                <span class="plan-feature" data-i18n="proFeature1">完整财务模型</span>
+                                <span class="plan-feature" data-i18n="proFeature2">无限项目</span>
+                                <span class="plan-feature" data-i18n="proFeature3">敏感性分析</span>
+                                <span class="plan-feature" data-i18n="proFeature4">融资报告</span>
+                                <span class="plan-feature" data-i18n="proFeature5">优先支持</span>
                             </div>
                         </div>
 
                         <div class="plan-option" data-plan="enterprise" onclick="selectPlan(this)">
                             <div class="plan-header">
-                                <span class="plan-name">🏢 企业版</span>
+                                <span class="plan-name" data-i18n="enterprisePlanName">🏢 企业版</span>
                                 <div class="plan-price">
                                     <span class="amount">¥499</span>
-                                    <span class="period">/月</span>
+                                    <span class="period" data-i18n="enterprisePlanPeriod">/月</span>
                                 </div>
                             </div>
                             <div class="plan-features">
-                                <span class="plan-feature">专业版全部功能</span>
-                                <span class="plan-feature">多用户协作</span>
-                                <span class="plan-feature">API访问</span>
-                                <span class="plan-feature">专属客服</span>
-                                <span class="plan-feature">定制开发</span>
+                                <span class="plan-feature" data-i18n="enterpriseFeature1">专业版全部功能</span>
+                                <span class="plan-feature" data-i18n="enterpriseFeature2">多用户协作</span>
+                                <span class="plan-feature" data-i18n="enterpriseFeature3">API访问</span>
+                                <span class="plan-feature" data-i18n="enterpriseFeature4">专属客服</span>
+                                <span class="plan-feature" data-i18n="enterpriseFeature5">定制开发</span>
                             </div>
                         </div>
                     </div>
@@ -789,129 +829,395 @@
 
                 <div class="agreement-group">
                     <input type="checkbox" class="agreement-checkbox" id="agreement" required>
-                    <label class="agreement-text" for="agreement">
+                    <label class="agreement-text" for="agreement" data-i18n="agreementText">
                         我已阅读并同意 <a href="#">《用户服务协议》</a> 和 <a href="#">《隐私政策》</a>
                     </label>
                 </div>
 
                 <div class="btn-group">
-                    <button type="button" class="btn btn-secondary" onclick="prevStep(3)">
+                    <button type="button" class="btn btn-secondary" onclick="prevStep(3)" data-i18n="prevStepBtn">
                         上一步
                     </button>
-                    <button type="submit" class="btn btn-primary" id="submitBtn">
+                    <button type="submit" class="btn btn-primary" id="submitBtn" data-i18n="submitBtn">
                         完成注册
                     </button>
                 </div>
             </div>
         </form>
 
-        <!-- 注册成功页 -->
         <div class="success-page" id="successPage">
             <div class="success-icon">✓</div>
-            <h2 class="success-title">注册成功！</h2>
-            <p class="success-text">
+            <h2 class="success-title" data-i18n="successTitle">注册成功！</h2>
+            <p class="success-text" data-i18n="successText">
                 欢迎加入 ZHONGDAFENG 储能投资分析平台<br>
                 您的账户已创建，现在可以开始使用了
             </p>
-            <button class="btn btn-primary" onclick="goToLogin()" style="width: 200px; margin: 0 auto;">
+            <button class="btn btn-primary" onclick="goToLogin()" data-i18n="goToLoginBtn" style="width: 200px; margin: 0 auto;">
                 立即登录
             </button>
         </div>
 
         <div class="login-link">
-            <p>已有账户？<a href="login.html">立即登录</a></p>
+            <p data-i18n="loginLinkText">已有账户？<a href="login.html">立即登录</a></p>
         </div>
     </div>
 
     <script>
-        // 🌟 核心修改：替换为json-server接口地址
-        const API_BASE = 'http://localhost:3000'; // json-server地址
-        // const API_BASE = '/api/v1'; // 注释掉原有模拟接口
-        
-        // 当前步骤
+        // 🌟 1. 定义三语言映射表（核心）
+        const langMap = {
+            zh: {
+                brandTitle: "ZHONGDAFENG",
+                brandSubtitle: "德国独立储能电站投资测算系统<br>专业的财务模型分析平台",
+                feature1: "全面的财务指标计算（IRR/NPV/DSCR等）",
+                feature2: "多维度敏感性分析",
+                feature3: "银行级融资报告生成",
+                feature4: "模型导入导出，数据云端同步",
+                feature5: "企业级数据安全保障",
+                registerTitle: "创建账户",
+                registerSubtitle: "开始您的储能投资分析之旅",
+                emailLabel: "邮箱地址 <span class='required'>*</span>",
+                emailPlaceholder: "请输入您的邮箱",
+                verifyCodeLabel: "验证码 <span class='required'>*</span>",
+                verifyCodePlaceholder: "请输入6位验证码",
+                sendCodeBtn: "发送验证码",
+                nextStepBtn: "下一步",
+                prevStepBtn: "上一步",
+                usernameLabel: "用户名 <span class='required'>*</span>",
+                usernamePlaceholder: "请设置您的用户名",
+                passwordLabel: "设置密码 <span class='required'>*</span>",
+                passwordPlaceholder: "至少8位，含字母和数字",
+                passwordStrengthText: "密码强度：待输入",
+                confirmPasswordLabel: "确认密码 <span class='required'>*</span>",
+                confirmPasswordPlaceholder: "请再次输入密码",
+                planLabel: "选择订阅方案",
+                freePlanName: "🆓 免费版",
+                freePlanPeriod: "/永久",
+                freeFeature1: "基础财务计算",
+                freeFeature2: "单项目限制",
+                freeFeature3: "社区支持",
+                proPlanName: "⭐ 专业版",
+                proPlanPeriod: "/月",
+                proFeature1: "完整财务模型",
+                proFeature2: "无限项目",
+                proFeature3: "敏感性分析",
+                proFeature4: "融资报告",
+                proFeature5: "优先支持",
+                enterprisePlanName: "🏢 企业版",
+                enterprisePlanPeriod: "/月",
+                enterpriseFeature1: "专业版全部功能",
+                enterpriseFeature2: "多用户协作",
+                enterpriseFeature3: "API访问",
+                enterpriseFeature4: "专属客服",
+                enterpriseFeature5: "定制开发",
+                agreementText: "我已阅读并同意 <a href='#'>《用户服务协议》</a> 和 <a href='#'>《隐私政策》</a>",
+                submitBtn: "完成注册",
+                successTitle: "注册成功！",
+                successText: "欢迎加入 ZHONGDAFENG 储能投资分析平台<br>您的账户已创建，现在可以开始使用了",
+                goToLoginBtn: "立即登录",
+                loginLinkText: "已有账户？<a href='login.html'>立即登录</a>",
+                // 动态提示语
+                msg_emptyEmail: "请输入邮箱地址",
+                msg_invalidEmail: "请输入有效的邮箱地址",
+                msg_codeSent: "验证码已发送到您的邮箱（测试模式：123456）",
+                msg_codeFailed: "发送失败，请稍后重试",
+                msg_emptyInfo: "请填写完整信息",
+                msg_invalidCode: "请输入6位验证码",
+                msg_wrongCode: "验证码错误（测试模式：123456）",
+                msg_shortPassword: "密码至少需要8位",
+                msg_passwordMismatch: "两次输入的密码不一致",
+                msg_agreement: "请阅读并同意用户协议",
+                msg_usernameExist: "用户名已存在，请更换用户名",
+                msg_registerFailed: "注册失败，请稍后重试",
+                msg_serverError: "注册失败：请检查后端服务是否已启动",
+                passwordStrength_0: "密码强度：待输入",
+                passwordStrength_1: "密码强度：弱",
+                passwordStrength_2: "密码强度：中等",
+                passwordStrength_3: "密码强度：强",
+                passwordStrength_4: "密码强度：非常强"
+            },
+            en: {
+                brandTitle: "ZHONGDAFENG",
+                brandSubtitle: "Germany Independent Energy Storage Power Station Investment Calculation System<br>Professional Financial Model Analysis Platform",
+                feature1: "Comprehensive financial indicator calculation (IRR/NPV/DSCR, etc.)",
+                feature2: "Multi-dimensional sensitivity analysis",
+                feature3: "Bank-level financing report generation",
+                feature4: "Model import/export, cloud data synchronization",
+                feature5: "Enterprise-level data security guarantee",
+                registerTitle: "Create Account",
+                registerSubtitle: "Start your energy storage investment analysis journey",
+                emailLabel: "Email Address <span class='required'>*</span>",
+                emailPlaceholder: "Please enter your email",
+                verifyCodeLabel: "Verification Code <span class='required'>*</span>",
+                verifyCodePlaceholder: "Please enter 6-digit verification code",
+                sendCodeBtn: "Send Verification Code",
+                nextStepBtn: "Next Step",
+                prevStepBtn: "Previous Step",
+                usernameLabel: "Username <span class='required'>*</span>",
+                usernamePlaceholder: "Please set your username",
+                passwordLabel: "Set Password <span class='required'>*</span>",
+                passwordPlaceholder: "At least 8 characters, including letters and numbers",
+                passwordStrengthText: "Password Strength: Not entered",
+                confirmPasswordLabel: "Confirm Password <span class='required'>*</span>",
+                confirmPasswordPlaceholder: "Please re-enter your password",
+                planLabel: "Select Subscription Plan",
+                freePlanName: "🆓 Free Version",
+                freePlanPeriod: "/Permanent",
+                freeFeature1: "Basic financial calculation",
+                freeFeature2: "Single project limit",
+                freeFeature3: "Community support",
+                proPlanName: "⭐ Pro Version",
+                proPlanPeriod: "/Month",
+                proFeature1: "Complete financial model",
+                proFeature2: "Unlimited projects",
+                proFeature3: "Sensitivity analysis",
+                proFeature4: "Financing report",
+                proFeature5: "Priority support",
+                enterprisePlanName: "🏢 Enterprise Version",
+                enterprisePlanPeriod: "/Month",
+                enterpriseFeature1: "All Pro version features",
+                enterpriseFeature2: "Multi-user collaboration",
+                enterpriseFeature3: "API access",
+                enterpriseFeature4: "Dedicated customer service",
+                enterpriseFeature5: "Custom development",
+                agreementText: "I have read and agree to the <a href='#'>User Service Agreement</a> and <a href='#'>Privacy Policy</a>",
+                submitBtn: "Complete Registration",
+                successTitle: "Registration Successful!",
+                successText: "Welcome to ZHONGDAFENG Energy Storage Investment Analysis Platform<br>Your account has been created, you can start using it now",
+                goToLoginBtn: "Login Now",
+                loginLinkText: "Already have an account? <a href='login.html'>Login Now</a>",
+                // 动态提示语
+                msg_emptyEmail: "Please enter your email address",
+                msg_invalidEmail: "Please enter a valid email address",
+                msg_codeSent: "Verification code sent to your email (Test Mode: 123456)",
+                msg_codeFailed: "Failed to send, please try again later",
+                msg_emptyInfo: "Please fill in all information",
+                msg_invalidCode: "Please enter 6-digit verification code",
+                msg_wrongCode: "Wrong verification code (Test Mode: 123456)",
+                msg_shortPassword: "Password must be at least 8 characters",
+                msg_passwordMismatch: "Passwords do not match",
+                msg_agreement: "Please read and agree to the user agreement",
+                msg_usernameExist: "Username already exists, please change it",
+                msg_registerFailed: "Registration failed, please try again later",
+                msg_serverError: "Registration failed: Please check if the backend service is running",
+                passwordStrength_0: "Password Strength: Not entered",
+                passwordStrength_1: "Password Strength: Weak",
+                passwordStrength_2: "Password Strength: Medium",
+                passwordStrength_3: "Password Strength: Strong",
+                passwordStrength_4: "Password Strength: Very Strong"
+            },
+            de: {
+                brandTitle: "ZHONGDAFENG",
+                brandSubtitle: "Investitionsberechnungsystem für unabhängige Energiespeicheranlagen in Deutschland<br>Professionelle Plattform für Finanzmodellanalyse",
+                feature1: "Umfassende Berechnung von Finanzindikatoren (IRR/NPV/DSCR usw.)",
+                feature2: "Mehrdimensionale Sensitivitätsanalyse",
+                feature3: "Erstellung von Finanzierungsberichten auf Bankebene",
+                feature4: "Modellimport/export, Cloud-Datensynchronisierung",
+                feature5: "Unternehmensweite Datensicherheitsgarantie",
+                registerTitle: "Konto erstellen",
+                registerSubtitle: "Starten Sie Ihre Analysereise zur Energiespeicherinvestition",
+                emailLabel: "E-Mail-Adresse <span class='required'>*</span>",
+                emailPlaceholder: "Geben Sie Ihre E-Mail ein",
+                verifyCodeLabel: "Verifizierungscode <span class='required'>*</span>",
+                verifyCodePlaceholder: "Geben Sie den 6-stelligen Verifizierungscode ein",
+                sendCodeBtn: "Verifizierungscode senden",
+                nextStepBtn: "Nächster Schritt",
+                prevStepBtn: "Vorheriger Schritt",
+                usernameLabel: "Benutzername <span class='required'>*</span>",
+                usernamePlaceholder: "Legen Sie Ihren Benutzernamen fest",
+                passwordLabel: "Passwort festlegen <span class='required'>*</span>",
+                passwordPlaceholder: "Mindestens 8 Zeichen, inklusive Buchstaben und Zahlen",
+                passwordStrengthText: "Passwortstärke: Nicht eingegeben",
+                confirmPasswordLabel: "Passwort bestätigen <span class='required'>*</span>",
+                confirmPasswordPlaceholder: "Geben Sie Ihr Passwort erneut ein",
+                planLabel: "Abonnementplan auswählen",
+                freePlanName: "🆓 Gratisversion",
+                freePlanPeriod: "/Für immer",
+                freeFeature1: "Grundlegende Finanzberechnung",
+                freeFeature2: "Einzelprojektlimit",
+                freeFeature3: "Community-Unterstützung",
+                proPlanName: "⭐ Professionelle Version",
+                proPlanPeriod: "/Monat",
+                proFeature1: "Vollständiges Finanzmodell",
+                proFeature2: "Unbegrenzte Projekte",
+                proFeature3: "Sensitivitätsanalyse",
+                proFeature4: "Finanzierungsbericht",
+                proFeature5: "Prioritätsunterstützung",
+                enterprisePlanName: "🏢 Unternehmensversion",
+                enterprisePlanPeriod: "/Monat",
+                enterpriseFeature1: "Alle Funktionen der Pro-Version",
+                enterpriseFeature2: "Mehrbenutzer-Zusammenarbeit",
+                enterpriseFeature3: "API-Zugriff",
+                enterpriseFeature4: "Dedizierter Kundenservice",
+                enterpriseFeature5: "Maßgeschneiderte Entwicklung",
+                agreementText: "Ich habe die <a href='#'>Nutzungsbedingungen</a> und die <a href='#'>Datenschutzrichtlinie</a> gelesen und akzeptiert",
+                submitBtn: "Registrierung abschließen",
+                successTitle: "Registrierung erfolgreich!",
+                successText: "Willkommen bei der ZHONGDAFENG Energiespeicher-Investitionsanalyseplattform<br>Ihr Konto wurde erstellt, jetzt können Sie es verwenden",
+                goToLoginBtn: "Jetzt anmelden",
+                loginLinkText: "Haben Sie bereits ein Konto? <a href='login.html'>Jetzt anmelden</a>",
+                // 动态提示语
+                msg_emptyEmail: "Geben Sie Ihre E-Mail-Adresse ein",
+                msg_invalidEmail: "Geben Sie eine gültige E-Mail-Adresse ein",
+                msg_codeSent: "Verifizierungscode an Ihre E-Mail gesendet (Testmodus: 123456)",
+                msg_codeFailed: "Versand fehlgeschlagen, bitte versuchen Sie es später erneut",
+                msg_emptyInfo: "Bitte füllen Sie alle Informationen aus",
+                msg_invalidCode: "Geben Sie den 6-stelligen Verifizierungscode ein",
+                msg_wrongCode: "Falscher Verifizierungscode (Testmodus: 123456)",
+                msg_shortPassword: "Das Passwort muss mindestens 8 Zeichen lang sein",
+                msg_passwordMismatch: "Passwörter stimmen nicht überein",
+                msg_agreement: "Bitte lesen und akzeptieren Sie die Nutzungsbedingungen",
+                msg_usernameExist: "Benutzername existiert bereits, bitte ändern Sie ihn",
+                msg_registerFailed: "Registrierung fehlgeschlagen, bitte versuchen Sie es später erneut",
+                msg_serverError: "Registrierung fehlgeschlagen: Bitte prüfen Sie, ob der Backend-Dienst läuft",
+                passwordStrength_0: "Passwortstärke: Nicht eingegeben",
+                passwordStrength_1: "Passwortstärke: Schwach",
+                passwordStrength_2: "Passwortstärke: Mittel",
+                passwordStrength_3: "Passwortstärke: Stark",
+                passwordStrength_4: "Passwortstärke: Sehr Stark"
+            }
+        };
+
+        // 🌟 2. 全局语言变量 + 初始化
+        let currentLang = localStorage.getItem('selectedLang') || 'zh'; // 默认中文，记住用户选择
+        const API_BASE = 'http://localhost:3000';
         let currentStep = 1;
-        
-        // 选中的方案
         let selectedPlan = 'pro';
-        
-        // 验证码倒计时
         let codeCountdown = 0;
 
-        /**
-         * 发送验证码（保留原有逻辑，仅修改提示文案）
-         */
+        // 🌟 3. 初始化语言切换
+        document.addEventListener('DOMContentLoaded', function() {
+            // 设置激活的语言按钮
+            updateLangBtnStatus();
+            // 初始化页面文字
+            updatePageLang(currentLang);
+        });
+
+        // 🌟 4. 语言切换按钮点击事件
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                currentLang = this.dataset.lang;
+                localStorage.setItem('selectedLang', currentLang); // 记住选择
+                updateLangBtnStatus();
+                updatePageLang(currentLang);
+            });
+        });
+
+        // 🌟 5. 更新语言按钮激活状态
+        function updateLangBtnStatus() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === currentLang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // 🌟 6. 核心：更新页面所有文字
+        function updatePageLang(lang) {
+            const langData = langMap[lang];
+            
+            // 更新普通文本（data-i18n）
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (langData[key]) {
+                    el.innerHTML = langData[key]; // 支持HTML标签（如<br>）
+                }
+            });
+
+            // 更新占位符（data-i18n-placeholder）
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.dataset.i18nPlaceholder;
+                if (langData[key]) {
+                    el.placeholder = langData[key];
+                }
+            });
+
+            // 特殊处理：计划选项的"推荐"标签
+            const popularLabel = {
+                zh: '推荐',
+                en: 'Popular',
+                de: 'Beliebt'
+            };
+            document.querySelector('.plan-option.popular::before')?.style.content = `"${popularLabel[lang]}"`;
+
+            // 更新密码强度文字（如果已输入密码）
+            if (document.getElementById('password').value) {
+                checkPasswordStrength();
+            }
+        }
+
+        // 🌟 7. 重写showMessage，支持多语言
+        function showMessage(textKey, type) {
+            const msg = document.getElementById('message');
+            const text = langMap[currentLang][textKey] || textKey;
+            msg.querySelector('.message-text').textContent = text;
+            msg.querySelector('.message-icon').textContent = type === 'success' ? '✓' : '⚠️';
+            msg.className = `message show ${type}`;
+        }
+
+        // ========== 原有逻辑全部保留，仅修改提示语调用方式 ==========
         async function sendVerifyCode() {
             const email = document.getElementById('email').value.trim();
             
             if (!email) {
-                showMessage('请输入邮箱地址', 'error');
+                showMessage('msg_emptyEmail', 'error');
                 return;
             }
             
             if (!validateEmail(email)) {
-                showMessage('请输入有效的邮箱地址', 'error');
+                showMessage('msg_invalidEmail', 'error');
                 return;
             }
             
             const btn = document.getElementById('sendCodeBtn');
             btn.disabled = true;
-            btn.textContent = '发送中...';
+            btn.textContent = langMap[currentLang]['sendCodeBtn'] + '...';
             
             try {
-                // 模拟验证码发送（保留原有模拟逻辑，实际项目需对接真实短信/邮箱服务）
                 await simulateDelay(1000);
-                
-                showMessage('验证码已发送到您的邮箱（测试模式：123456）', 'success');
+                showMessage('msg_codeSent', 'success');
                 startCodeCountdown();
                 
             } catch (error) {
-                showMessage('发送失败，请稍后重试', 'error');
+                showMessage('msg_codeFailed', 'error');
                 btn.disabled = false;
-                btn.textContent = '发送验证码';
+                btn.textContent = langMap[currentLang]['sendCodeBtn'];
             }
         }
 
-        /**
-         * 验证码倒计时
-         */
         function startCodeCountdown() {
             codeCountdown = 60;
             const btn = document.getElementById('sendCodeBtn');
             
             const timer = setInterval(() => {
                 codeCountdown--;
-                btn.textContent = `${codeCountdown}秒后重发`;
+                btn.textContent = `${codeCountdown} ${currentLang === 'zh' ? '秒后重发' : currentLang === 'en' ? 's resend' : 's erneut senden'}`;
                 
                 if (codeCountdown <= 0) {
                     clearInterval(timer);
                     btn.disabled = false;
-                    btn.textContent = '重新发送';
+                    btn.textContent = currentLang === 'zh' ? '重新发送' : currentLang === 'en' ? 'Resend' : 'Erneut senden';
                 }
             }, 1000);
         }
 
-        /**
-         * 下一步
-         */
         function nextStep(step) {
-            // 验证当前步骤
             if (step === 1) {
                 const email = document.getElementById('email').value.trim();
                 const code = document.getElementById('verifyCode').value.trim();
                 
                 if (!email || !code) {
-                    showMessage('请填写完整信息', 'error');
+                    showMessage('msg_emptyInfo', 'error');
                     return;
                 }
                 
                 if (code.length !== 6) {
-                    showMessage('请输入6位验证码', 'error');
+                    showMessage('msg_invalidCode', 'error');
                     return;
                 }
                 
-                // 测试模式：验证码固定为123456
                 if (code !== '123456' && code !== '000000') {
-                    showMessage('验证码错误（测试模式：123456）', 'error');
+                    showMessage('msg_wrongCode', 'error');
                     return;
                 }
             }
@@ -922,66 +1228,52 @@
                 const confirmPassword = document.getElementById('confirmPassword').value;
                 
                 if (!username || !password || !confirmPassword) {
-                    showMessage('请填写完整信息', 'error');
+                    showMessage('msg_emptyInfo', 'error');
                     return;
                 }
                 
                 if (password.length < 8) {
-                    showMessage('密码至少需要8位', 'error');
+                    showMessage('msg_shortPassword', 'error');
                     return;
                 }
                 
                 if (password !== confirmPassword) {
-                    showMessage('两次输入的密码不一致', 'error');
+                    showMessage('msg_passwordMismatch', 'error');
                     return;
                 }
             }
             
-            // 切换步骤
             currentStep = step + 1;
             updateStepUI();
             hideMessage();
         }
 
-        /**
-         * 上一步
-         */
         function prevStep(step) {
             currentStep = step - 1;
             updateStepUI();
             hideMessage();
         }
 
-        /**
-         * 更新步骤UI
-         */
         function updateStepUI() {
-            // 更新步骤指示器
             document.querySelectorAll('.step').forEach((s, i) => {
                 s.classList.remove('active', 'completed');
                 if (i + 1 < currentStep) s.classList.add('completed');
                 if (i + 1 === currentStep) s.classList.add('active');
             });
             
-            // 更新表单步骤
             document.querySelectorAll('.form-step').forEach((f, i) => {
                 f.classList.remove('active');
                 if (i + 1 === currentStep) f.classList.add('active');
             });
         }
 
-        /**
-         * 选择方案
-         */
         function selectPlan(element) {
             document.querySelectorAll('.plan-option').forEach(p => p.classList.remove('selected'));
             element.classList.add('selected');
             selectedPlan = element.dataset.plan;
         }
 
-        /**
-         * 检查密码强度
-         */
+        // 🌟 修改密码强度检测，支持多语言
         function checkPasswordStrength() {
             const password = document.getElementById('password').value;
             const bars = document.querySelectorAll('.strength-bar');
@@ -1002,45 +1294,40 @@
                 }
             });
             
-            const strengthLabels = ['待输入', '弱', '中等', '强', '非常强'];
-            text.textContent = `密码强度：${strengthLabels[strength]}`;
+            // 多语言密码强度文字
+            text.textContent = langMap[currentLang][`passwordStrength_${strength}`];
         }
 
-        /**
-         * 表单提交（核心修改：对接json-server）
-         */
         document.getElementById('registerForm').addEventListener('submit', async function(e) {
             e.preventDefault();
             
             if (!document.getElementById('agreement').checked) {
-                showMessage('请阅读并同意用户协议', 'error');
+                showMessage('msg_agreement', 'error');
                 return;
             }
             
             const submitBtn = document.getElementById('submitBtn');
             submitBtn.disabled = true;
-            submitBtn.textContent = '注册中...';
+            submitBtn.textContent = langMap[currentLang]['submitBtn'] + '...';
             
             const data = {
                 email: document.getElementById('email').value.trim(),
                 username: document.getElementById('username').value.trim(),
                 password: document.getElementById('password').value,
-                plan: selectedPlan // 和login.html、db.json字段保持一致
+                plan: selectedPlan
             };
             
             try {
-                // 🌟 核心修改1：先查询用户名是否已存在
                 const checkResponse = await fetch(`${API_BASE}/users?username=${encodeURIComponent(data.username)}`);
                 const existingUsers = await checkResponse.json();
                 
                 if (existingUsers.length > 0) {
-                    showMessage('用户名已存在，请更换用户名', 'error');
+                    showMessage('msg_usernameExist', 'error');
                     submitBtn.disabled = false;
-                    submitBtn.textContent = '完成注册';
+                    submitBtn.textContent = langMap[currentLang]['submitBtn'];
                     return;
                 }
                 
-                // 🌟 核心修改2：调用json-server的POST接口创建用户
                 const response = await fetch(`${API_BASE}/users`, {
                     method: 'POST',
                     headers: { 
@@ -1053,61 +1340,36 @@
                     throw new Error('注册请求失败');
                 }
                 
-                // 等待接口响应
                 await response.json();
                 
-                // 显示成功页面
                 document.getElementById('registerForm').style.display = 'none';
                 document.querySelector('.steps-indicator').style.display = 'none';
                 document.getElementById('successPage').classList.add('active');
                 
             } catch (error) {
                 console.error('注册错误：', error);
-                // 兼容提示：优先提示后端服务问题
                 if (error.message.includes('Failed to fetch')) {
-                    showMessage('注册失败：请检查后端服务是否已启动', 'error');
+                    showMessage('msg_serverError', 'error');
                 } else {
-                    showMessage('注册失败，请稍后重试', 'error');
+                    showMessage('msg_registerFailed', 'error');
                 }
                 submitBtn.disabled = false;
-                submitBtn.textContent = '完成注册';
+                submitBtn.textContent = langMap[currentLang]['submitBtn'];
             }
         });
 
-        /**
-         * 跳转到登录
-         */
         function goToLogin() {
             window.location.href = 'login.html';
         }
 
-        /**
-         * 显示消息
-         */
-        function showMessage(text, type) {
-            const msg = document.getElementById('message');
-            msg.querySelector('.message-text').textContent = text;
-            msg.querySelector('.message-icon').textContent = type === 'success' ? '✓' : '⚠️';
-            msg.className = `message show ${type}`;
-        }
-
-        /**
-         * 隐藏消息
-         */
         function hideMessage() {
             document.getElementById('message').classList.remove('show');
         }
 
-        /**
-         * 验证邮箱格式
-         */
         function validateEmail(email) {
             return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
         }
 
-        /**
-         * 模拟延迟
-         */
         function simulateDelay(ms) {
             return new Promise(resolve => setTimeout(resolve, ms));
         }
