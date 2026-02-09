@@ -6,7 +6,8 @@
     <title>欢迎 - 德国独立储能电站投资测算系统</title>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&display=swap" rel="stylesheet">
+    <!-- 🌟 新增德语字体支持 -->
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+DE:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
         /* 原有样式完全保留，无任何修改 */
         * {
@@ -16,7 +17,8 @@
         }
 
         body {
-            font-family: 'Noto Sans SC', 'Montserrat', sans-serif;
+            /* 🌟 新增德语字体优先级 */
+            font-family: 'Noto Sans SC', 'Noto Sans DE', 'Montserrat', sans-serif;
             min-height: 100vh;
             display: flex;
             align-items: center;
@@ -500,9 +502,67 @@
                 font-size: 36px;
             }
         }
+
+        /* 🌟 新增：语言切换按钮样式 */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 25, 45, 0.9);
+            border-radius: 12px;
+            padding: 8px;
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .lang-btn.active {
+            background: rgba(0, 212, 170, 0.2);
+            color: #00d4aa;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        /* 🌟 移动端语言按钮适配 */
+        @media (max-width: 520px) {
+            .language-switcher {
+                top: 15px;
+                right: 15px;
+                padding: 6px;
+            }
+            .lang-btn {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+        }
     </style>
 </head>
 <body>
+    <!-- 🌟 新增：语言切换按钮 -->
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="zh">中文</button>
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="de">Deutsch</button>
+    </div>
+
     <div class="bg-animation"></div>
     <div class="grid-overlay"></div>
     
@@ -523,47 +583,53 @@
                 </div>
                 <h1 class="company-name">ZHONGDAFENG</h1>
                 <p class="company-name-en">Energy Solutions</p>
-                <p class="system-title">德国独立储能电站投资测算系统</p>
+                <!-- 🌟 添加多语言标记 -->
+                <p class="system-title" data-i18n="systemTitle">德国独立储能电站投资测算系统</p>
             </div>
 
             <form class="login-form" id="loginForm" onsubmit="return handleLogin(event)">
                 <div class="error-message" id="errorMessage">
                     <span class="error-icon">⚠️</span>
-                    <span class="error-text" id="errorText">用户名或密码错误</span>
+                    <span class="error-text" id="errorText" data-i18n="errorDefault">用户名或密码错误</span>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">用户名</label>
+                    <!-- 🌟 添加多语言标记 -->
+                    <label class="form-label" data-i18n="usernameLabel">用户名</label>
                     <div class="input-wrapper">
                         <input type="text" class="form-input" id="username" 
-                               placeholder="请输入用户名" required autocomplete="username">
+                               placeholder="请输入用户名" data-i18n-placeholder="usernamePlaceholder" required autocomplete="username">
                         <span class="input-icon">👤</span>
                     </div>
                 </div>
 
                 <div class="form-group">
-                    <label class="form-label">密码</label>
+                    <!-- 🌟 添加多语言标记 -->
+                    <label class="form-label" data-i18n="passwordLabel">密码</label>
                     <div class="input-wrapper">
                         <input type="password" class="form-input" id="password" 
-                               placeholder="请输入密码" required autocomplete="current-password">
+                               placeholder="请输入密码" data-i18n-placeholder="passwordPlaceholder" required autocomplete="current-password">
                         <span class="input-icon">🔒</span>
                     </div>
                 </div>
 
-                <button type="submit" class="login-btn" id="loginBtn">
+                <!-- 🌟 添加多语言标记 -->
+                <button type="submit" class="login-btn" id="loginBtn" data-i18n="loginBtn">
                     登 录 系 统
                 </button>
 
                 <p class="attempts-count" id="attemptsCount"></p>
 
                 <div class="register-link">
-                    <span class="register-link-text">还没有账号？</span>
-                    <a href="register.html">立即注册</a>
+                    <!-- 🌟 添加多语言标记 -->
+                    <span class="register-link-text" data-i18n="registerLinkText">还没有账号？</span>
+                    <a href="register.html" data-i18n="registerLink">立即注册</a>
                 </div>
             </form>
 
             <div class="login-footer">
-                <p class="footer-text">
+                <!-- 🌟 添加多语言标记 -->
+                <p class="footer-text" data-i18n="footerText">
                     © 2025 Beijing Zhongheng Technology Co., Ltd.<br>
                     如需技术支持，请联系 <a href="mailto:lingxiao385@gmail.com">lingxiao385@gmail.com</a>
                 </p>
@@ -574,15 +640,17 @@
     <div class="modal-overlay" id="lockModal">
         <div class="modal-content">
             <div class="modal-icon">🔐</div>
-            <h2 class="modal-title">账户已锁定</h2>
-            <p class="modal-text">
+            <!-- 🌟 添加多语言标记 -->
+            <h2 class="modal-title" data-i18n="lockModalTitle">账户已锁定</h2>
+            <p class="modal-text" data-i18n="lockModalText">
                 您已连续 5 次输入错误密码，<br>
                 账户已被临时锁定。<br>
                 请联系管理员解锁：
             </p>
             <div class="modal-email">📧 zhangliu@temax.e</div>
             <br>
-            <button class="modal-btn" onclick="closeModal()">我知道了</button>
+            <!-- 🌟 添加多语言标记 -->
+            <button class="modal-btn" onclick="closeModal()" data-i18n="lockModalBtn">我知道了</button>
         </div>
     </div>
 
@@ -601,7 +669,72 @@
         // 后端接口地址（对接json-server）
         const API_URL = 'http://localhost:3000/users';
 
+        // 🌟 1. 新增：三语言映射表
+        const langMap = {
+            zh: {
+                systemTitle: "德国独立储能电站投资测算系统",
+                usernameLabel: "用户名",
+                usernamePlaceholder: "请输入用户名",
+                passwordLabel: "密码",
+                passwordPlaceholder: "请输入密码",
+                loginBtn: "登 录 系 统",
+                registerLinkText: "还没有账号？",
+                registerLink: "立即注册",
+                footerText: "© 2025 Beijing Zhongheng Technology Co., Ltd.<br>如需技术支持，请联系 <a href='mailto:lingxiao385@gmail.com'>lingxiao385@gmail.com</a>",
+                lockModalTitle: "账户已锁定",
+                lockModalText: "您已连续 5 次输入错误密码，<br>账户已被临时锁定。<br>请联系管理员解锁：",
+                lockModalBtn: "我知道了",
+                errorDefault: "用户名或密码错误",
+                errorNetwork: "登录失败：请检查后端服务是否已启动",
+                errorAttempts: "用户名或密码错误，您还有 {count} 次尝试机会",
+                attemptsDisplay: "已尝试 {current} 次，还剩 {remaining} 次机会"
+            },
+            en: {
+                systemTitle: "Germany Independent Energy Storage Power Station Investment Calculation System",
+                usernameLabel: "Username",
+                usernamePlaceholder: "Please enter your username",
+                passwordLabel: "Password",
+                passwordPlaceholder: "Please enter your password",
+                loginBtn: "LOGIN TO SYSTEM",
+                registerLinkText: "Don't have an account?",
+                registerLink: "Register Now",
+                footerText: "© 2025 Beijing Zhongheng Technology Co., Ltd.<br>For technical support, please contact <a href='mailto:lingxiao385@gmail.com'>lingxiao385@gmail.com</a>",
+                lockModalTitle: "Account Locked",
+                lockModalText: "You have entered the wrong password 5 times in a row,<br>your account has been temporarily locked.<br>Please contact administrator to unlock:",
+                lockModalBtn: "I Understand",
+                errorDefault: "Username or password is incorrect",
+                errorNetwork: "Login failed: Please check if the backend service is running",
+                errorAttempts: "Username or password is incorrect, you have {count} attempts left",
+                attemptsDisplay: "Attempted {current} times, {remaining} attempts left"
+            },
+            de: {
+                systemTitle: "Investitionsberechnungsystem für unabhängige Energiespeicheranlagen in Deutschland",
+                usernameLabel: "Benutzername",
+                usernamePlaceholder: "Geben Sie Ihren Benutzernamen ein",
+                passwordLabel: "Passwort",
+                passwordPlaceholder: "Geben Sie Ihr Passwort ein",
+                loginBtn: "SYSTEM ANMELDEN",
+                registerLinkText: "Haben Sie kein Konto?",
+                registerLink: "Jetzt registrieren",
+                footerText: "© 2025 Beijing Zhongheng Technology Co., Ltd.<br>Für technischen Support kontaktieren Sie <a href='mailto:lingxiao385@gmail.com'>lingxiao385@gmail.com</a>",
+                lockModalTitle: "Konto gesperrt",
+                lockModalText: "Sie haben das falsche Passwort 5 Mal in Folge eingegeben,<br>Ihr Konto wurde vorübergehend gesperrt.<br>Bitte kontaktieren Sie den Administrator zur Entsperrung:",
+                lockModalBtn: "Verstanden",
+                errorDefault: "Benutzername oder Passwort ist falsch",
+                errorNetwork: "Anmeldung fehlgeschlagen: Bitte prüfen Sie, ob der Backend-Dienst läuft",
+                errorAttempts: "Benutzername oder Passwort ist falsch, Sie haben {count} Versuche übrig",
+                attemptsDisplay: "{current} Versuche unternommen, {remaining} Versuche übrig"
+            }
+        };
+
+        // 🌟 2. 新增：全局语言变量 + 初始化
+        let currentLang = localStorage.getItem('selectedLang') || 'zh';
+
         document.addEventListener('DOMContentLoaded', function() {
+            // 🌟 初始化语言切换
+            updateLangBtnStatus();
+            updatePageLang(currentLang);
+
             if (isLocked) {
                 showLockModal();
                 disableForm();
@@ -614,7 +747,88 @@
             updateAttemptsDisplay();
         });
 
-        // 🌟 核心修改：异步登录逻辑，对接后端接口
+        // 🌟 3. 新增：语言切换按钮点击事件
+        document.querySelectorAll('.lang-btn').forEach(btn => {
+            btn.addEventListener('click', function() {
+                currentLang = this.dataset.lang;
+                localStorage.setItem('selectedLang', currentLang); // 记住选择
+                updateLangBtnStatus();
+                updatePageLang(currentLang);
+            });
+        });
+
+        // 🌟 4. 新增：更新语言按钮激活状态
+        function updateLangBtnStatus() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === currentLang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // 🌟 5. 新增：核心 - 更新页面所有文字
+        function updatePageLang(lang) {
+            const langData = langMap[lang];
+            
+            // 更新普通文本（data-i18n）
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (langData[key]) {
+                    el.innerHTML = langData[key]; // 支持HTML标签
+                }
+            });
+
+            // 更新占位符（data-i18n-placeholder）
+            document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
+                const key = el.dataset.i18nPlaceholder;
+                if (langData[key]) {
+                    el.placeholder = langData[key];
+                }
+            });
+
+            // 更新尝试次数显示（如果有）
+            if (loginAttempts > 0 && loginAttempts < MAX_ATTEMPTS) {
+                updateAttemptsDisplay();
+            }
+        }
+
+        // 🌟 6. 新增：多语言错误提示
+        function showError(messageKey, replaceObj = {}) {
+            const errorDiv = document.getElementById('errorMessage');
+            const errorText = document.getElementById('errorText');
+            
+            // 替换占位符（如 {count}）
+            let message = langMap[currentLang][messageKey] || messageKey;
+            Object.keys(replaceObj).forEach(key => {
+                message = message.replace(`{${key}}`, replaceObj[key]);
+            });
+
+            errorText.textContent = message;
+            errorDiv.classList.add('show');
+
+            errorDiv.style.animation = 'none';
+            setTimeout(() => {
+                errorDiv.style.animation = 'shake 0.5s ease';
+            }, 10);
+        }
+
+        // 🌟 7. 改造：更新尝试次数显示（支持多语言）
+        function updateAttemptsDisplay() {
+            const attemptsDiv = document.getElementById('attemptsCount');
+            const langData = langMap[currentLang];
+            
+            if (loginAttempts > 0 && loginAttempts < MAX_ATTEMPTS) {
+                const message = langData.attemptsDisplay
+                    .replace('{current}', loginAttempts)
+                    .replace('{remaining}', MAX_ATTEMPTS - loginAttempts);
+                attemptsDiv.textContent = message;
+            } else {
+                attemptsDiv.textContent = '';
+            }
+        }
+
+        // 🌟 核心修改：异步登录逻辑，对接后端接口（仅修改提示语调用）
         async function handleLogin(event) {
             event.preventDefault();
 
@@ -629,7 +843,8 @@
 
             // 禁用按钮防止重复提交
             loginBtn.disabled = true;
-            loginBtn.textContent = '登录中...';
+            // 🌟 多语言登录中提示
+            loginBtn.textContent = currentLang === 'zh' ? '登录中...' : currentLang === 'en' ? 'Logging in...' : 'Anmeldung läuft...';
 
             try {
                 // 1. 调用后端接口查询用户
@@ -661,7 +876,8 @@
                     sessionStorage.setItem('isLoggedIn', 'true');
                     sessionStorage.setItem('username', username);
                     
-                    loginBtn.textContent = '✓ 登录成功';
+                    // 🌟 多语言登录成功提示
+                    loginBtn.textContent = currentLang === 'zh' ? '✓ 登录成功' : currentLang === 'en' ? '✓ Login Successful' : '✓ Anmeldung erfolgreich';
                     loginBtn.style.background = 'linear-gradient(135deg, #27ae60 0%, #2ecc71 100%)';
                     
                     setTimeout(() => {
@@ -678,50 +894,32 @@
                         showLockModal();
                         disableForm();
                     } else {
-                        showError(`用户名或密码错误，您还有 ${MAX_ATTEMPTS - loginAttempts} 次尝试机会`);
+                        // 🌟 多语言失败提示
+                        showError('errorAttempts', { count: MAX_ATTEMPTS - loginAttempts });
                     }
 
                     updateAttemptsDisplay();
                 }
             } catch (error) {
                 // 网络错误/服务未启动
-                showError('登录失败：请检查后端服务是否已启动');
+                // 🌟 多语言网络错误提示
+                showError('errorNetwork');
                 console.error('登录错误：', error);
             } finally {
                 // 恢复按钮状态（除非登录成功）
                 if (sessionStorage.getItem('isLoggedIn') !== 'true') {
                     loginBtn.disabled = false;
-                    loginBtn.textContent = '登 录 系 统';
+                    // 🌟 恢复多语言按钮文字
+                    loginBtn.textContent = langMap[currentLang].loginBtn;
                 }
             }
 
             return false;
         }
 
-        // 原有辅助函数完全保留
-        function showError(message) {
-            const errorDiv = document.getElementById('errorMessage');
-            const errorText = document.getElementById('errorText');
-            errorText.textContent = message;
-            errorDiv.classList.add('show');
-
-            errorDiv.style.animation = 'none';
-            setTimeout(() => {
-                errorDiv.style.animation = 'shake 0.5s ease';
-            }, 10);
-        }
-
+        // 原有辅助函数保留，仅修改showError调用
         function hideError() {
             document.getElementById('errorMessage').classList.remove('show');
-        }
-
-        function updateAttemptsDisplay() {
-            const attemptsDiv = document.getElementById('attemptsCount');
-            if (loginAttempts > 0 && loginAttempts < MAX_ATTEMPTS) {
-                attemptsDiv.textContent = `已尝试 ${loginAttempts} 次，还剩 ${MAX_ATTEMPTS - loginAttempts} 次机会`;
-            } else {
-                attemptsDiv.textContent = '';
-            }
         }
 
         function showLockModal() {
@@ -736,7 +934,8 @@
             document.getElementById('username').disabled = true;
             document.getElementById('password').disabled = true;
             document.getElementById('loginBtn').disabled = true;
-            document.getElementById('loginBtn').textContent = '账户已锁定';
+            // 🌟 多语言锁定提示
+            document.getElementById('loginBtn').textContent = currentLang === 'zh' ? '账户已锁定' : currentLang === 'en' ? 'Account Locked' : 'Konto gesperrt';
         }
 
         document.getElementById('username').addEventListener('input', hideError);
