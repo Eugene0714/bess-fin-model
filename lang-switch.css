@@ -1,0 +1,50 @@
+/* 语言切换按钮样式（全局通用） */
+.language-switcher {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    z-index: 9999;
+    display: flex;
+    gap: 8px;
+    background: rgba(15, 25, 45, 0.9);
+    border-radius: 12px;
+    padding: 8px;
+    border: 1px solid rgba(0, 212, 170, 0.2);
+    backdrop-filter: blur(10px);
+}
+
+.lang-btn {
+    padding: 6px 12px;
+    border-radius: 8px;
+    border: none;
+    background: transparent;
+    color: rgba(255, 255, 255, 0.7);
+    font-size: 14px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.lang-btn.active {
+    background: rgba(0, 212, 170, 0.2);
+    color: #00d4aa;
+}
+
+.lang-btn:hover:not(.active) {
+    background: rgba(255, 255, 255, 0.05);
+    color: #fff;
+}
+
+/* 移动端适配 */
+@media (max-width: 480px) {
+    .language-switcher {
+        top: 15px;
+        right: 15px;
+        padding: 6px;
+    }
+    .lang-btn {
+        padding: 4px 8px;
+        font-size: 12px;
+    }
+}
