@@ -8,7 +8,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;500;600;700&family=Noto+Sans+SC:wght@300;400;500;700&family=Noto+Sans+DE:wght@300;400;500;700&display=swap" rel="stylesheet">
     <style>
-        /* 原有样式全部保留，新增语言切换按钮样式 */
+        /* 原有样式完全保留，仅新增语言切换按钮样式 */
         * {
             margin: 0;
             padding: 0;
@@ -16,7 +16,7 @@
         }
 
         body {
-            font-family: 'Noto Sans SC', 'Noto Sans DE', 'Montserrat', sans-serif; /* 新增德语字体 */
+            font-family: 'Noto Sans SC', 'Noto Sans DE', 'Montserrat', sans-serif;
             min-height: 100vh;
             display: flex;
             background: linear-gradient(135deg, #0a1628 0%, #1a2d4a 50%, #0d3251 100%);
@@ -24,7 +24,7 @@
             overflow-x: hidden;
         }
 
-        /* 新增：语言切换按钮样式 */
+        /* 语言切换按钮样式（和登录页完全一致） */
         .language-switcher {
             position: fixed;
             top: 20px;
@@ -62,7 +62,20 @@
             color: #fff;
         }
 
-        /* 原有样式全部保留（以下省略原有样式，实际代码中保留） */
+        /* 移动端适配 */
+        @media (max-width: 480px) {
+            .language-switcher {
+                top: 15px;
+                right: 15px;
+                padding: 6px;
+            }
+            .lang-btn {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+        }
+
+        /* 原有注册页样式（完整保留） */
         .brand-section {
             flex: 1;
             display: flex;
@@ -616,36 +629,24 @@
             .btn-group {
                 flex-direction: column;
             }
-
-            /* 适配移动端语言按钮 */
-            .language-switcher {
-                top: 15px;
-                right: 15px;
-                padding: 6px;
-            }
-
-            .lang-btn {
-                padding: 4px 8px;
-                font-size: 12px;
-            }
         }
     </style>
 </head>
 <body>
-    <!-- 新增：语言切换按钮 -->
+    <!-- 语言切换按钮（和登录页完全一致） -->
     <div class="language-switcher">
-        <button class="lang-btn active" data-lang="zh">中文</button>
+        <button class="lang-btn" data-lang="zh">中文</button>
         <button class="lang-btn" data-lang="en">English</button>
         <button class="lang-btn" data-lang="de">Deutsch</button>
     </div>
 
-    <!-- 左侧品牌区（原有内容，仅修改文本为动态替换） -->
+    <!-- 左侧品牌区（添加data-i18n标记） -->
     <div class="brand-section">
         <div class="brand-content">
             <div class="brand-logo">
                 <span>⚡</span>
             </div>
-            <h1 class="brand-title" data-i18n="brandTitle">ZHONGDAFENG</h1>
+            <h1 class="brand-title">ZHONGDAFENG</h1>
             <p class="brand-subtitle" data-i18n="brandSubtitle">
                 德国独立储能电站投资测算系统<br>
                 专业的财务模型分析平台
@@ -676,7 +677,7 @@
         </div>
     </div>
 
-    <!-- 右侧注册区（原有内容，仅添加data-i18n属性） -->
+    <!-- 右侧注册区（添加data-i18n标记） -->
     <div class="register-section">
         <div class="register-header">
             <h2 data-i18n="registerTitle">创建账户</h2>
@@ -863,10 +864,9 @@
     </div>
 
     <script>
-        // 🌟 1. 定义三语言映射表（核心）
+        // 1. 语言映射表（和登录页完全一致）
         const langMap = {
             zh: {
-                brandTitle: "ZHONGDAFENG",
                 brandSubtitle: "德国独立储能电站投资测算系统<br>专业的财务模型分析平台",
                 feature1: "全面的财务指标计算（IRR/NPV/DSCR等）",
                 feature2: "多维度敏感性分析",
@@ -936,7 +936,6 @@
                 passwordStrength_4: "密码强度：非常强"
             },
             en: {
-                brandTitle: "ZHONGDAFENG",
                 brandSubtitle: "Germany Independent Energy Storage Power Station Investment Calculation System<br>Professional Financial Model Analysis Platform",
                 feature1: "Comprehensive financial indicator calculation (IRR/NPV/DSCR, etc.)",
                 feature2: "Multi-dimensional sensitivity analysis",
@@ -985,7 +984,6 @@
                 successText: "Welcome to ZHONGDAFENG Energy Storage Investment Analysis Platform<br>Your account has been created, you can start using it now",
                 goToLoginBtn: "Login Now",
                 loginLinkText: "Already have an account? <a href='login.html'>Login Now</a>",
-                // 动态提示语
                 msg_emptyEmail: "Please enter your email address",
                 msg_invalidEmail: "Please enter a valid email address",
                 msg_codeSent: "Verification code sent to your email (Test Mode: 123456)",
@@ -1006,7 +1004,6 @@
                 passwordStrength_4: "Password Strength: Very Strong"
             },
             de: {
-                brandTitle: "ZHONGDAFENG",
                 brandSubtitle: "Investitionsberechnungsystem für unabhängige Energiespeicheranlagen in Deutschland<br>Professionelle Plattform für Finanzmodellanalyse",
                 feature1: "Umfassende Berechnung von Finanzindikatoren (IRR/NPV/DSCR usw.)",
                 feature2: "Mehrdimensionale Sensitivitätsanalyse",
@@ -1055,7 +1052,6 @@
                 successText: "Willkommen bei der ZHONGDAFENG Energiespeicher-Investitionsanalyseplattform<br>Ihr Konto wurde erstellt, jetzt können Sie es verwenden",
                 goToLoginBtn: "Jetzt anmelden",
                 loginLinkText: "Haben Sie bereits ein Konto? <a href='login.html'>Jetzt anmelden</a>",
-                // 动态提示语
                 msg_emptyEmail: "Geben Sie Ihre E-Mail-Adresse ein",
                 msg_invalidEmail: "Geben Sie eine gültige E-Mail-Adresse ein",
                 msg_codeSent: "Verifizierungscode an Ihre E-Mail gesendet (Testmodus: 123456)",
@@ -1077,32 +1073,46 @@
             }
         };
 
-        // 🌟 2. 全局语言变量 + 初始化
-        let currentLang = localStorage.getItem('selectedLang') || 'zh'; // 默认中文，记住用户选择
+        // 2. 全局变量（关键：从localStorage读取，实现页面同步）
+        let currentLang = localStorage.getItem('selectedLang') || 'zh';
         const API_BASE = 'http://localhost:3000';
         let currentStep = 1;
         let selectedPlan = 'pro';
         let codeCountdown = 0;
 
-        // 🌟 3. 初始化语言切换
+        // 3. 页面加载时初始化（核心：自动应用已选择的语言）
         document.addEventListener('DOMContentLoaded', function() {
-            // 设置激活的语言按钮
+            // 绑定语言切换事件（修复点击无响应问题）
+            bindLangSwitchEvent();
+            // 初始化语言状态（自动应用登录页选择的语言）
             updateLangBtnStatus();
-            // 初始化页面文字
             updatePageLang(currentLang);
+            
+            // 原有注册逻辑初始化
+            initRegisterLogic();
         });
 
-        // 🌟 4. 语言切换按钮点击事件
-        document.querySelectorAll('.lang-btn').forEach(btn => {
-            btn.addEventListener('click', function() {
-                currentLang = this.dataset.lang;
-                localStorage.setItem('selectedLang', currentLang); // 记住选择
-                updateLangBtnStatus();
-                updatePageLang(currentLang);
+        // 4. 绑定语言切换事件（修复点击无响应的核心）
+        function bindLangSwitchEvent() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                // 先移除可能重复的事件，避免冲突
+                btn.removeEventListener('click', handleLangClick);
+                // 重新绑定事件
+                btn.addEventListener('click', handleLangClick);
             });
-        });
+        }
 
-        // 🌟 5. 更新语言按钮激活状态
+        // 5. 语言切换点击处理函数
+        function handleLangClick() {
+            currentLang = this.dataset.lang;
+            // 保存到localStorage，实现登录/注册页同步
+            localStorage.setItem('selectedLang', currentLang);
+            // 更新按钮状态和页面文字
+            updateLangBtnStatus();
+            updatePageLang(currentLang);
+        }
+
+        // 6. 更新语言按钮激活状态
         function updateLangBtnStatus() {
             document.querySelectorAll('.lang-btn').forEach(btn => {
                 btn.classList.remove('active');
@@ -1112,19 +1122,20 @@
             });
         }
 
-        // 🌟 6. 核心：更新页面所有文字
+        // 7. 核心：更新页面所有文字
         function updatePageLang(lang) {
             const langData = langMap[lang];
-            
-            // 更新普通文本（data-i18n）
+            if (!langData) return;
+
+            // 更新普通文本（支持HTML）
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const key = el.dataset.i18n;
                 if (langData[key]) {
-                    el.innerHTML = langData[key]; // 支持HTML标签（如<br>）
+                    el.innerHTML = langData[key];
                 }
             });
 
-            // 更新占位符（data-i18n-placeholder）
+            // 更新占位符
             document.querySelectorAll('[data-i18n-placeholder]').forEach(el => {
                 const key = el.dataset.i18nPlaceholder;
                 if (langData[key]) {
@@ -1132,21 +1143,21 @@
                 }
             });
 
-            // 特殊处理：计划选项的"推荐"标签
-            const popularLabel = {
-                zh: '推荐',
-                en: 'Popular',
-                de: 'Beliebt'
-            };
-            document.querySelector('.plan-option.popular::before')?.style.content = `"${popularLabel[lang]}"`;
+            // 更新"推荐"标签
+            const popularLabels = { zh: '推荐', en: 'Popular', de: 'Beliebt' };
+            const popularStyle = document.querySelector('.plan-option.popular')?.style;
+            if (popularStyle) {
+                popularStyle.setProperty('--popular-text', `"${popularLabels[lang]}"`);
+                document.querySelector('.plan-option.popular::before').content = popularLabels[lang];
+            }
 
-            // 更新密码强度文字（如果已输入密码）
+            // 更新密码强度文字
             if (document.getElementById('password').value) {
                 checkPasswordStrength();
             }
         }
 
-        // 🌟 7. 重写showMessage，支持多语言
+        // 8. 多语言提示语显示
         function showMessage(textKey, type) {
             const msg = document.getElementById('message');
             const text = langMap[currentLang][textKey] || textKey;
@@ -1155,7 +1166,62 @@
             msg.className = `message show ${type}`;
         }
 
-        // ========== 原有逻辑全部保留，仅修改提示语调用方式 ==========
+        // 9. 原有注册逻辑（完整保留，仅修改提示语调用）
+        function initRegisterLogic() {
+            // 表单提交事件
+            document.getElementById('registerForm').addEventListener('submit', async function(e) {
+                e.preventDefault();
+                
+                if (!document.getElementById('agreement').checked) {
+                    showMessage('msg_agreement', 'error');
+                    return;
+                }
+                
+                const submitBtn = document.getElementById('submitBtn');
+                submitBtn.disabled = true;
+                submitBtn.textContent = langMap[currentLang]['submitBtn'] + '...';
+                
+                const data = {
+                    email: document.getElementById('email').value.trim(),
+                    username: document.getElementById('username').value.trim(),
+                    password: document.getElementById('password').value,
+                    plan: selectedPlan
+                };
+                
+                try {
+                    const checkResponse = await fetch(`${API_BASE}/users?username=${encodeURIComponent(data.username)}`);
+                    const existingUsers = await checkResponse.json();
+                    
+                    if (existingUsers.length > 0) {
+                        showMessage('msg_usernameExist', 'error');
+                        submitBtn.disabled = false;
+                        submitBtn.textContent = langMap[currentLang]['submitBtn'];
+                        return;
+                    }
+                    
+                    const response = await fetch(`${API_BASE}/users`, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(data)
+                    });
+                    
+                    if (!response.ok) throw new Error('注册失败');
+                    await response.json();
+                    
+                    document.getElementById('registerForm').style.display = 'none';
+                    document.querySelector('.steps-indicator').style.display = 'none';
+                    document.getElementById('successPage').classList.add('active');
+                    
+                } catch (error) {
+                    console.error('注册错误：', error);
+                    showMessage(error.message.includes('Failed to fetch') ? 'msg_serverError' : 'msg_registerFailed', 'error');
+                    submitBtn.disabled = false;
+                    submitBtn.textContent = langMap[currentLang]['submitBtn'];
+                }
+            });
+        }
+
+        // 验证码发送
         async function sendVerifyCode() {
             const email = document.getElementById('email').value.trim();
             
@@ -1164,7 +1230,7 @@
                 return;
             }
             
-            if (!validateEmail(email)) {
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
                 showMessage('msg_invalidEmail', 'error');
                 return;
             }
@@ -1174,10 +1240,9 @@
             btn.textContent = langMap[currentLang]['sendCodeBtn'] + '...';
             
             try {
-                await simulateDelay(1000);
+                await new Promise(resolve => setTimeout(resolve, 1000));
                 showMessage('msg_codeSent', 'success');
                 startCodeCountdown();
-                
             } catch (error) {
                 showMessage('msg_codeFailed', 'error');
                 btn.disabled = false;
@@ -1185,22 +1250,29 @@
             }
         }
 
+        // 验证码倒计时
         function startCodeCountdown() {
             codeCountdown = 60;
             const btn = document.getElementById('sendCodeBtn');
             
             const timer = setInterval(() => {
                 codeCountdown--;
-                btn.textContent = `${codeCountdown} ${currentLang === 'zh' ? '秒后重发' : currentLang === 'en' ? 's resend' : 's erneut senden'}`;
+                const countdownText = {
+                    zh: `${codeCountdown} 秒后重发`,
+                    en: `${codeCountdown} s resend`,
+                    de: `${codeCountdown} s erneut senden`
+                };
+                btn.textContent = countdownText[currentLang];
                 
                 if (codeCountdown <= 0) {
                     clearInterval(timer);
                     btn.disabled = false;
-                    btn.textContent = currentLang === 'zh' ? '重新发送' : currentLang === 'en' ? 'Resend' : 'Erneut senden';
+                    btn.textContent = { zh: '重新发送', en: 'Resend', de: 'Erneut senden' }[currentLang];
                 }
             }, 1000);
         }
 
+        // 步骤切换
         function nextStep(step) {
             if (step === 1) {
                 const email = document.getElementById('email').value.trim();
@@ -1267,13 +1339,14 @@
             });
         }
 
+        // 套餐选择
         function selectPlan(element) {
             document.querySelectorAll('.plan-option').forEach(p => p.classList.remove('selected'));
             element.classList.add('selected');
             selectedPlan = element.dataset.plan;
         }
 
-        // 🌟 修改密码强度检测，支持多语言
+        // 密码强度检测
         function checkPasswordStrength() {
             const password = document.getElementById('password').value;
             const bars = document.querySelectorAll('.strength-bar');
@@ -1288,90 +1361,20 @@
             bars.forEach((bar, i) => {
                 bar.classList.remove('weak', 'medium', 'strong');
                 if (i < strength) {
-                    if (strength <= 1) bar.classList.add('weak');
-                    else if (strength <= 2) bar.classList.add('medium');
-                    else bar.classList.add('strong');
+                    bar.classList.add(strength <= 1 ? 'weak' : strength <= 2 ? 'medium' : 'strong');
                 }
             });
             
-            // 多语言密码强度文字
             text.textContent = langMap[currentLang][`passwordStrength_${strength}`];
         }
 
-        document.getElementById('registerForm').addEventListener('submit', async function(e) {
-            e.preventDefault();
-            
-            if (!document.getElementById('agreement').checked) {
-                showMessage('msg_agreement', 'error');
-                return;
-            }
-            
-            const submitBtn = document.getElementById('submitBtn');
-            submitBtn.disabled = true;
-            submitBtn.textContent = langMap[currentLang]['submitBtn'] + '...';
-            
-            const data = {
-                email: document.getElementById('email').value.trim(),
-                username: document.getElementById('username').value.trim(),
-                password: document.getElementById('password').value,
-                plan: selectedPlan
-            };
-            
-            try {
-                const checkResponse = await fetch(`${API_BASE}/users?username=${encodeURIComponent(data.username)}`);
-                const existingUsers = await checkResponse.json();
-                
-                if (existingUsers.length > 0) {
-                    showMessage('msg_usernameExist', 'error');
-                    submitBtn.disabled = false;
-                    submitBtn.textContent = langMap[currentLang]['submitBtn'];
-                    return;
-                }
-                
-                const response = await fetch(`${API_BASE}/users`, {
-                    method: 'POST',
-                    headers: { 
-                        'Content-Type': 'application/json' 
-                    },
-                    body: JSON.stringify(data)
-                });
-                
-                if (!response.ok) {
-                    throw new Error('注册请求失败');
-                }
-                
-                await response.json();
-                
-                document.getElementById('registerForm').style.display = 'none';
-                document.querySelector('.steps-indicator').style.display = 'none';
-                document.getElementById('successPage').classList.add('active');
-                
-            } catch (error) {
-                console.error('注册错误：', error);
-                if (error.message.includes('Failed to fetch')) {
-                    showMessage('msg_serverError', 'error');
-                } else {
-                    showMessage('msg_registerFailed', 'error');
-                }
-                submitBtn.disabled = false;
-                submitBtn.textContent = langMap[currentLang]['submitBtn'];
-            }
-        });
-
-        function goToLogin() {
-            window.location.href = 'login.html';
-        }
-
+        // 辅助函数
         function hideMessage() {
             document.getElementById('message').classList.remove('show');
         }
 
-        function validateEmail(email) {
-            return /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
-        }
-
-        function simulateDelay(ms) {
-            return new Promise(resolve => setTimeout(resolve, ms));
+        function goToLogin() {
+            window.location.href = 'login.html';
         }
     </script>
 </body>
