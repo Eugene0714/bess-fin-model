@@ -2805,44 +2805,40 @@
                     exportReportBtn: "导出",
                     exportExcelBtn: "Excel",
                     calculateBtn: "计算",
-                    logoutBtn: "退出"
+                    logoutBtn: "退出",
+                    
+                    // 边界设定界面
+                    parameters: {
+                        sectionTitle: "📊 项目边界条件设定",
+                        sectionDesc: "设置储能电站的基础参数和设备配置",
+                        basicParamsCard: "电站基础参数",
+                        powerLabel: "电站装机功率",
+                        powerHint: "德国大型储能项目典型规模",
+                        capacityLabel: "电站储能容量",
+                        capacityHint: "2小时储能配置",
+                        durationLabel: "储能时长",
+                        operationYearsLabel: "电站运营年限",
+                        operationYearsHint: "行业标准运营周期",
+                        initialCapacityLabel: "首年电池可用容量",
+                        
+                        degradationCard: "容量衰减设定",
+                        degradationModeLabel: "衰减模式",
+                        degradationModeHint: "根据电池特性选择衰减模式",
+                        degradationRateLabel: "年电池容量衰减率",
+                        degradationRateHint: "线性衰减模式：固定年衰减率",
+                        firstYearDegradationLabel: "首年衰减率",
+                        firstYearDegradationHint: "非线性衰减：首年衰减率（通常较高）",
+                        annualDecreaseLabel: "年衰减率递减幅度",
+                        annualDecreaseHint: "非线性衰减：每年衰减率递减幅度",
+                        cyclesPerDegradationLabel: "每1000次循环衰减率",
+                        cyclesPerDegradationHint: "循环次数衰减：每1000次循环的容量损失",
+                        annualCyclesLabel: "年运行循环次数",
+                        annualCyclesHint: "用于循环次数衰减模式计算",
+                        capacityThresholdLabel: "容量保持率阈值",
+                        capacityThresholdHint: "低于此阈值建议更换电池"
+                    }
                 }
             },
-            
-            // 边界设定界面
-            parameters: {
-                sectionTitle: "📊 项目边界条件设定",
-                sectionDesc: "设置储能电站的基础参数和设备配置",
-                basicParamsCard: "电站基础参数",
-                powerLabel: "电站装机功率",
-                powerHint: "德国大型储能项目典型规模",
-                capacityLabel: "电站储能容量",
-                capacityHint: "2小时储能配置",
-                durationLabel: "储能时长",
-                operationYearsLabel: "电站运营年限",
-                operationYearsHint: "行业标准运营周期",
-                initialCapacityLabel: "首年电池可用容量",
-                
-                degradationCard: "容量衰减设定",
-                degradationModeLabel: "衰减模式",
-                linearDegradation: "线性衰减（固定年衰减率）",
-                nonlinearDegradation: "非线性衰减（前期快后期慢）",
-                cycleBasedDegradation: "循环次数衰减",
-                degradationModeHint: "根据电池特性选择衰减模式",
-                degradationRateLabel: "年电池容量衰减率",
-                degradationRateHint: "线性衰减模式：固定年衰减率",
-                firstYearDegradationLabel: "首年衰减率",
-                firstYearDegradationHint: "非线性衰减：首年衰减率（通常较高）",
-                annualDecreaseLabel: "年衰减率递减幅度",
-                annualDecreaseHint: "非线性衰减：每年衰减率递减幅度",
-                cyclesPerDegradationLabel: "每1000次循环衰减率",
-                cyclesPerDegradationHint: "循环次数衰减：每1000次循环的容量损失",
-                annualCyclesLabel: "年运行循环次数",
-                annualCyclesHint: "用于循环次数衰减模式计算",
-                capacityThresholdLabel: "容量保持率阈值",
-                capacityThresholdHint: "低于此阈值建议更换电池"
-            }
-        },
             en: {
                 // 导航栏
                 index: {
