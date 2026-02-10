@@ -14,48 +14,76 @@
             }
         })();
     </script>
+    
+    <!-- 语言切换代码（添加在这里） -->
+    <link rel="stylesheet" href="lang-switch.css">
+    <script src="lang-map.js"></script>
+    <script src="lang-switch.js"></script>
 </head>
 <body>
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="nav-brand">
             <span class="brand-icon">⚡</span>
-            <span class="brand-text">德国独立储能电站投资测算系统</span>
+<span class="brand-text" data-i18n="index.brandText">德国独立储能电站投资测算系统</span>
         </div>
         <div class="nav-links">
-            <a href="#" class="nav-link active" data-tab="parameters">边界设定</a>
-            <a href="#" class="nav-link" data-tab="opex">OPEX设定</a>
-            <a href="#" class="nav-link" data-tab="revenue">收入预测</a>
-            <a href="#" class="nav-link" data-tab="indicators">财务指标</a>
-            <a href="#" class="nav-link" data-tab="statements">财务报表</a>
-            <a href="#" class="nav-link" data-tab="sensitivity">敏感性分析</a>
-            <a href="#" class="nav-link" data-tab="bankReport">融资报告</a>
+<!-- 边界设定 -->
+<a href="#" class="nav-link active" data-tab="parameters" data-i18n="index.parameters">边界设定</a>
+
+<!-- OPEX设定 -->
+<a href="#" class="nav-link" data-tab="opex" data-i18n="index.opex">OPEX设定</a>
+
+<!-- 收入预测 -->
+<a href="#" class="nav-link" data-tab="revenue" data-i18n="index.revenue">收入预测</a>
+
+<!-- 财务指标 -->
+<a href="#" class="nav-link" data-tab="indicators" data-i18n="index.indicators">财务指标</a>
+
+<!-- 财务报表 -->
+<a href="#" class="nav-link" data-tab="statements" data-i18n="index.statements">财务报表</a>
+
+<!-- 敏感性分析 -->
+<a href="#" class="nav-link" data-tab="sensitivity" data-i18n="index.sensitivity">敏感性分析</a>
+
+<!-- 融资报告 -->
+<a href="#" class="nav-link" data-tab="bankReport" data-i18n="index.bankReport">融资报告</a>
         </div>
         <div class="nav-actions">
-            <button class="action-btn help-btn" onclick="showHelp()" title="使用帮助">
-                <span>❓</span> 帮助
-            </button>
-            <button class="action-btn" onclick="importModel()" title="导入模型">
-                <span>📂</span> 导入
-            </button>
-            <button class="action-btn" onclick="saveModel()" title="保存模型">
-                <span>💾</span> 保存
-            </button>
-            <button class="action-btn" onclick="exportReport()" title="导出报表">
-                <span>📤</span> 导出
-            </button>
-            <button class="action-btn" onclick="exportExcel()" title="导出Excel">
-                <span>📊</span> Excel
-            </button>
-            <button class="calculate-btn" onclick="calculateAll()">
-                <span>🔄</span> 计算
-            </button>
-            <div class="user-info">
-                <span class="user-icon">👤</span>
-                <span class="user-name" id="currentUserName"></span>
-                <button class="logout-btn" onclick="logout()" title="退出登录">
-                    退出
-                </button>
+<!-- 帮助按钮 -->
+<button class="action-btn help-btn" onclick="showHelp()" title="使用帮助" data-i18n="index.helpBtn">
+  <span>?</span> 帮助
+</button>
+
+<!-- 导入模型按钮 -->
+<button class="action-btn" onclick="importModel()" title="导入模型" data-i18n="index.importBtn">
+  <span>⬆</span> 导入
+</button>
+
+<!-- 保存模型按钮 -->
+<button class="action-btn" onclick="saveModel()" title="保存模型" data-i18n="index.saveBtn">
+  <span>💾</span> 保存
+</button>
+
+<!-- 导出报表按钮 -->
+<button class="action-btn" onclick="exportReport()" title="导出报表" data-i18n="index.exportReportBtn">
+  <span>📤</span> 导出
+</button>
+
+<!-- 导出Excel按钮 -->
+<button class="action-btn" onclick="exportExcel()" title="导出Excel" data-i18n="index.exportExcelBtn">
+  <span>📊</span> Excel
+</button>
+
+<!-- 计算按钮 -->
+<button class="calculate-btn" onclick="calculateAll()" data-i18n="index.calculateBtn">
+  <span>🔄</span> 计算
+</button>
+
+<!-- 退出按钮 -->
+<button class="logout-btn" onclick="logout()" title="退出登录" data-i18n="index.logoutBtn">
+  退出
+</button>
             </div>
         </div>
         <!-- 隐藏的文件输入 -->
