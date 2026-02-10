@@ -2195,130 +2195,131 @@
     <div id="helpModal" class="modal" style="display: none;">
         <div class="modal-content help-modal-content">
             <div class="modal-header">
-                <h2 data-i18n="helpModalTitle">📖 使用帮助</h2>
+                <h2>📖 使用帮助</h2>
                 <button class="modal-close" onclick="closeHelp()">&times;</button>
             </div>
             <div class="modal-body help-body">
                 <div class="help-tabs">
-                    <button class="help-tab active" onclick="switchHelpTab('quickstart')" data-i18n="helpTabQuickstart">快速开始</button>
-                    <button class="help-tab" onclick="switchHelpTab('parameters')" data-i18n="helpTabParameters">参数设定</button>
-                    <button class="help-tab" onclick="switchHelpTab('features')" data-i18n="helpTabFeatures">功能说明</button>
-                    <button class="help-tab" onclick="switchHelpTab('finance')" data-i18n="helpTabFinance">财务知识</button>
-                    <button class="help-tab" onclick="switchHelpTab('tips')" data-i18n="helpTabTips">使用技巧</button>
+                    <button class="help-tab active" onclick="switchHelpTab('quickstart')">快速开始</button>
+                    <button class="help-tab" onclick="switchHelpTab('parameters')">参数设定</button>
+                    <button class="help-tab" onclick="switchHelpTab('features')">功能说明</button>
+                    <button class="help-tab" onclick="switchHelpTab('finance')">财务知识</button>
+                    <button class="help-tab" onclick="switchHelpTab('tips')">使用技巧</button>
                 </div>
                 
                 <div id="help-quickstart" class="help-tab-content active">
-                    <h3 data-i18n="quickstartTitle">🚀 快速开始</h3>
+                    <h3>🚀 快速开始</h3>
                     <ol>
-                        <li data-i18n="quickstartStep1"><strong>登录系统</strong>：使用您的用户名和密码登录系统</li>
-                        <li data-i18n="quickstartStep2"><strong>设定参数</strong>：在"边界设定"标签页中设置项目基础参数
+                        <li><strong>登录系统</strong>：使用您的用户名和密码登录系统</li>
+                        <li><strong>设定参数</strong>：在"边界设定"标签页中设置项目基础参数
                             <ul>
-                                <li data-i18n="quickstartParam1">电站功率和容量</li>
-                                <li data-i18n="quickstartParam2">电池型号（选择后会自动填充衰减参数）</li>
-                                <li data-i18n="quickstartParam3">设备配置和价格</li>
-                                <li data-i18n="quickstartParam4">融资参数</li>
+                                <li>电站功率和容量</li>
+                                <li>电池型号（选择后会自动填充衰减参数）</li>
+                                <li>设备配置和价格</li>
+                                <li>融资参数</li>
                             </ul>
                         </li>
-                        <li data-i18n="quickstartStep3"><strong>设定OPEX</strong>：在"OPEX设定"标签页中设置年度运营成本</li>
-                        <li data-i18n="quickstartStep4"><strong>设定收入</strong>：在"收入预测"标签页中设置收入来源和价格</li>
-                        <li data-i18n="quickstartStep5"><strong>查看结果</strong>：点击"计算"按钮或修改参数后自动计算，查看财务指标和报表</li>
+                        <li><strong>设定OPEX</strong>：在"OPEX设定"标签页中设置年度运营成本</li>
+                        <li><strong>设定收入</strong>：在"收入预测"标签页中设置收入来源和价格</li>
+                        <li><strong>查看结果</strong>：点击"计算"按钮或修改参数后自动计算，查看财务指标和报表</li>
                     </ol>
                     <div class="help-note">
-                        <strong data-i18n="quickstartTip">💡 提示：</strong>
-                        <span data-i18n="quickstartTipContent">系统支持参数自动计算，修改参数后会在500毫秒后自动更新结果，无需手动点击计算按钮。</span>
+                        <strong>💡 提示：</strong>系统支持参数自动计算，修改参数后会在500毫秒后自动更新结果，无需手动点击计算按钮。
                     </div>
                 </div>
+                
                 <div id="help-parameters" class="help-tab-content" style="display: none;">
-                    <h3 data-i18n="parametersTitle">⚙️ 参数设定说明</h3>
+                    <h3>⚙️ 参数设定说明</h3>
                     
-                    <h4 data-i18n="parametersBasicParams">1. 电站基础参数</h4>
+                    <h4>1. 电站基础参数</h4>
                     <ul>
-                        <li data-i18n="parametersPower"><strong>电站装机功率</strong>：储能系统的额定功率（MW）</li>
-                        <li data-i18n="parametersCapacity"><strong>电站储能容量</strong>：储能系统的总容量（MWh）</li>
-                        <li data-i18n="parametersDuration"><strong>储能时长</strong>：自动计算（容量/功率），通常为2-4小时</li>
-                        <li data-i18n="parametersOperationYears"><strong>运营年限</strong>：项目运营周期，通常为15-20年</li>
-                        <li data-i18n="parametersInitialCapacity"><strong>首年电池可用容量</strong>：新电池的初始可用容量百分比</li>
+                        <li><strong>电站装机功率</strong>：储能系统的额定功率（MW）</li>
+                        <li><strong>电站储能容量</strong>：储能系统的总容量（MWh）</li>
+                        <li><strong>储能时长</strong>：自动计算（容量/功率），通常为2-4小时</li>
+                        <li><strong>运营年限</strong>：项目运营周期，通常为15-20年</li>
+                        <li><strong>首年电池可用容量</strong>：新电池的初始可用容量百分比</li>
                     </ul>
                     
-                    <h4 data-i18n="parametersDegradation">2. 容量衰减设定</h4>
+                    <h4>2. 容量衰减设定</h4>
                     <ul>
-                        <li data-i18n="parametersDegradationMode"><strong>衰减模式</strong>：
+                        <li><strong>衰减模式</strong>：
                             <ul>
-                                <li data-i18n="parametersLinearDegradation">线性衰减：固定年衰减率，适用于大多数LFP电池</li>
-                                <li data-i18n="parametersNonlinearDegradation">非线性衰减：前期衰减快，后期衰减慢</li>
-                                <li data-i18n="parametersCycleBasedDegradation">循环次数衰减：基于循环次数计算容量损失</li>
+                                <li>线性衰减：固定年衰减率，适用于大多数LFP电池</li>
+                                <li>非线性衰减：前期衰减快，后期衰减慢</li>
+                                <li>循环次数衰减：基于循环次数计算容量损失</li>
                             </ul>
                         </li>
-                        <li data-i18n="parametersAutoFill"><strong>自动填充</strong>：选择电池型号后，系统会自动填充该型号的默认衰减参数</li>
+                        <li><strong>自动填充</strong>：选择电池型号后，系统会自动填充该型号的默认衰减参数</li>
                     </ul>
                     
-                    <h4 data-i18n="parametersBatterySystem">3. 电池系统</h4>
+                    <h4>3. 电池系统</h4>
                     <ul>
-                        <li data-i18n="parametersBatteryModel"><strong>电池柜型号</strong>：选择电池厂家和型号，系统会自动填充价格和衰减参数</li>
-                        <li data-i18n="parametersBatteryPrice"><strong>电池单价</strong>：每MWh的电池价格（万EUR），会根据选择的型号自动填充</li>
-                        <li data-i18n="parametersBatteryCount"><strong>电池柜数量</strong>：系统根据总容量和单柜容量自动计算</li>
+                        <li><strong>电池柜型号</strong>：选择电池厂家和型号，系统会自动填充价格和衰减参数</li>
+                        <li><strong>电池单价</strong>：每MWh的电池价格（万EUR），会根据选择的型号自动填充</li>
+                        <li><strong>电池柜数量</strong>：系统根据总容量和单柜容量自动计算</li>
                     </ul>
                     
-                    <h4 data-i18n="parametersFinancing">4. 融资参数</h4>
+                    <h4>4. 融资参数</h4>
                     <ul>
-                        <li data-i18n="parametersEquityRatio"><strong>资本金比例</strong>：德国项目通常为25-30%</li>
-                        <li data-i18n="parametersLoanTerm"><strong>贷款年限</strong>：通常为10-15年</li>
-                        <li data-i18n="parametersLoanRate"><strong>贷款利率</strong>：2025年欧洲市场基准利率约4-5%</li>
-                        <li data-i18n="parametersRepaymentMethod"><strong>还款方式</strong>：等额本金或等额本息</li>
+                        <li><strong>资本金比例</strong>：德国项目通常为25-30%</li>
+                        <li><strong>贷款年限</strong>：通常为10-15年</li>
+                        <li><strong>贷款利率</strong>：2025年欧洲市场基准利率约4-5%</li>
+                        <li><strong>还款方式</strong>：等额本金或等额本息</li>
                     </ul>
                     
-                    <h4 data-i18n="parametersCapex">5. CAPEX设定</h4>
+                    <h4>5. CAPEX设定</h4>
                     <ul>
-                        <li data-i18n="parametersCapexAuto">系统会自动根据设备配置计算各项CAPEX</li>
-                        <li data-i18n="parametersCapexItems">包括：设备费、电网接入、土地基建、安装施工、保险、开发费用等</li>
-                        <li data-i18n="parametersCapexUpdate">所有参数修改后，CAPEX明细表会自动更新</li>
+                        <li>系统会自动根据设备配置计算各项CAPEX</li>
+                        <li>包括：设备费、电网接入、土地基建、安装施工、保险、开发费用等</li>
+                        <li>所有参数修改后，CAPEX明细表会自动更新</li>
                     </ul>
                 </div>
                 
                 <div id="help-features" class="help-tab-content" style="display: none;">
-                    <h3 data-i18n="featuresTitle">✨ 功能说明</h3>
+                    <h3>✨ 功能说明</h3>
                     
-                    <h4 data-i18n="featuresAutoCalc">1. 自动计算功能</h4>
+                    <h4>1. 自动计算功能</h4>
                     <ul>
-                        <li data-i18n="featuresAutoCalc1">修改任何参数后，系统会在500毫秒后自动重新计算</li>
-                        <li data-i18n="featuresAutoCalc2">无需手动点击"计算"按钮</li>
-                        <li data-i18n="featuresAutoCalc3">所有表格和图表会自动更新</li>
+                        <li>修改任何参数后，系统会在500毫秒后自动重新计算</li>
+                        <li>无需手动点击"计算"按钮</li>
+                        <li>所有表格和图表会自动更新</li>
                     </ul>
                     
-                    <h4 data-i18n="featuresFormatting">2. 数据格式化</h4>
+                    <h4>2. 数据格式化</h4>
                     <ul>
-                        <li data-i18n="featuresFormatting1">所有数值使用德国千分位格式显示（1.234.567,89）</li>
-                        <li data-i18n="featuresFormatting2">金额单位：万EUR</li>
-                        <li data-i18n="featuresFormatting3">百分比自动格式化</li>
+                        <li>所有数值使用德国千分位格式显示（1.234.567,89）</li>
+                        <li>金额单位：万EUR</li>
+                        <li>百分比自动格式化</li>
                     </ul>
                     
-                    <h4 data-i18n="featuresSaveImport">3. 模型保存与导入</h4>
+                    <h4>3. 模型保存与导入</h4>
                     <ul>
-                        <li data-i18n="featuresSaveModel"><strong>保存模型</strong>：点击"保存"按钮，将当前所有参数保存为JSON文件</li>
-                        <li data-i18n="featuresImportModel"><strong>导入模型</strong>：点击"导入"按钮，加载之前保存的模型参数</li>
-                        <li data-i18n="featuresCompareScenarios">方便不同场景的参数对比和方案管理</li>
+                        <li><strong>保存模型</strong>：点击"保存"按钮，将当前所有参数保存为JSON文件</li>
+                        <li><strong>导入模型</strong>：点击"导入"按钮，加载之前保存的模型参数</li>
+                        <li>方便不同场景的参数对比和方案管理</li>
                     </ul>
                     
-                    <h4 data-i18n="featuresExport">4. 报表导出</h4>
+                    <h4>4. 报表导出</h4>
                     <ul>
-                        <li data-i18n="featuresExportReport"><strong>导出报表</strong>：生成完整的财务分析报告（PDF格式）</li>
-                        <li data-i18n="featuresExportContent">包含：项目概览、CAPEX明细、财务指标、财务报表等</li>
-                        <li data-i18n="featuresExportPurpose">适用于向投资方、银行等机构展示</li>
+                        <li><strong>导出报表</strong>：生成完整的财务分析报告（PDF格式）</li>
+                        <li>包含：项目概览、CAPEX明细、财务指标、财务报表等</li>
+                        <li>适用于向投资方、银行等机构展示</li>
                     </ul>
                     
-                    <h4 data-i18n="featuresSensitivity">5. 敏感性分析</h4>
+                    <h4>5. 敏感性分析</h4>
                     <ul>
-                        <li data-i18n="featuresSensitivity1">分析关键参数变化对财务指标的影响</li>
-                        <li data-i18n="featuresSensitivity2">支持多参数同时变化分析</li>
-                        <li data-i18n="featuresSensitivity3">生成敏感性分析图表</li>
+                        <li>分析关键参数变化对财务指标的影响</li>
+                        <li>支持多参数同时变化分析</li>
+                        <li>生成敏感性分析图表</li>
                     </ul>
                     
-                    <h4 data-i18n="featuresFinancingReport">6. 融资报告</h4>
+                    <h4>6. 融资报告</h4>
                     <ul>
-                        <li data-i18n="featuresFinancingReport1">生成银行融资所需的财务报告</li>
-                        <li data-i18n="featuresFinancingReport2">包含：项目概览、财务指标、现金流预测、偿债能力分析等</li>
+                        <li>生成银行融资所需的财务报告</li>
+                        <li>包含：项目概览、财务指标、现金流预测、偿债能力分析等</li>
                     </ul>
                 </div>
+                
                 <div id="help-finance" class="help-tab-content" style="display: none;">
                     <h3>📚 财务知识专栏</h3>
                     
@@ -2851,248 +2852,12 @@
             </div>
         </div>
     </div>
+
     <!-- 页脚 -->
     <footer class="footer">
         <p>德国独立储能电站投资测算系统 v1.0 | 财务模型仅供参考，请结合实际情况决策</p>
     </footer>
 
     <script src="financial-model.js"></script>
-    <!-- 语言切换逻辑 -->
-    <script>
-        // 语言映射表（和登录页、注册页保持一致）
-        const langMap = {
-            zh: {
-                // 导航栏
-                index: {
-                    brandText: "德国独立储能电站投资测算系统",
-                    navParameters: "边界设定",
-                    navOpex: "OPEX设定",
-                    navRevenue: "收入预测",
-                    navIndicators: "财务指标",
-                    navStatements: "财务报表",
-                    navSensitivity: "敏感性分析",
-                    navBankReport: "融资报告",
-                    helpBtn: "帮助",
-                    importBtn: "导入",
-                    saveBtn: "保存",
-                    exportReportBtn: "导出",
-                    exportExcelBtn: "Excel",
-                    calculateBtn: "计算",
-                    logoutBtn: "退出",
-                    
-                    // 边界设定界面
-                    parameters: {
-                        sectionTitle: "📊 项目边界条件设定",
-                        sectionDesc: "设置储能电站的基础参数和设备配置",
-                        basicParamsCard: "电站基础参数",
-                        powerLabel: "电站装机功率",
-                        powerHint: "德国大型储能项目典型规模",
-                        capacityLabel: "电站储能容量",
-                        capacityHint: "2小时储能配置",
-                        durationLabel: "储能时长",
-                        operationYearsLabel: "电站运营年限",
-                        operationYearsHint: "行业标准运营周期",
-                        initialCapacityLabel: "首年电池可用容量",
-                        
-                        degradationCard: "容量衰减设定",
-                        degradationModeLabel: "衰减模式",
-                        degradationModeHint: "根据电池特性选择衰减模式",
-                        degradationRateLabel: "年电池容量衰减率",
-                        degradationRateHint: "线性衰减模式：固定年衰减率",
-                        firstYearDegradationLabel: "首年衰减率",
-                        firstYearDegradationHint: "非线性衰减：首年衰减率（通常较高）",
-                        annualDecreaseLabel: "年衰减率递减幅度",
-                        annualDecreaseHint: "非线性衰减：每年衰减率递减幅度",
-                        cyclesPerDegradationLabel: "每1000次循环衰减率",
-                        cyclesPerDegradationHint: "循环次数衰减：每1000次循环的容量损失",
-                        annualCyclesLabel: "年运行循环次数",
-                        annualCyclesHint: "用于循环次数衰减模式计算",
-                        capacityThresholdLabel: "容量保持率阈值",
-                        capacityThresholdHint: "低于此阈值建议更换电池"
-                    }
-                }
-            },
-            en: {
-                // 导航栏
-                index: {
-                    brandText: "German Independent Energy Storage Power Plant Investment Calculation System",
-                    navParameters: "Boundary Settings",
-                    navOpex: "OPEX Settings",
-                    navRevenue: "Revenue Forecast",
-                    navIndicators: "Financial Indicators",
-                    navStatements: "Financial Statements",
-                    navSensitivity: "Sensitivity Analysis",
-                    navBankReport: "Financing Report",
-                    helpBtn: "Help",
-                    importBtn: "Import",
-                    saveBtn: "Save",
-                    exportReportBtn: "Export",
-                    exportExcelBtn: "Excel",
-                    calculateBtn: "Calculate",
-                    logoutBtn: "Logout",
-                    
-                    // 边界设定界面
-                    parameters: {
-                        sectionTitle: "📊 Project Boundary Conditions",
-                        sectionDesc: "Set basic parameters and equipment configuration for the energy storage power plant",
-                        basicParamsCard: "Basic Power Plant Parameters",
-                        powerLabel: "Installed Power Capacity",
-                        powerHint: "Typical scale for large energy storage projects in Germany",
-                        capacityLabel: "Energy Storage Capacity",
-                        capacityHint: "2-hour storage configuration",
-                        durationLabel: "Storage Duration",
-                        operationYearsLabel: "Operation Years",
-                        operationYearsHint: "Industry standard operation cycle",
-                        initialCapacityLabel: "Initial Battery Available Capacity",
-                        
-                        degradationCard: "Capacity Degradation Settings",
-                        degradationModeLabel: "Degradation Mode",
-                        linearDegradation: "Linear Degradation (Fixed Annual Rate)",
-                        nonlinearDegradation: "Nonlinear Degradation (Fast at First, Slow Later)",
-                        cycleBasedDegradation: "Cycle-Based Degradation",
-                        degradationModeHint: "Select degradation mode based on battery characteristics",
-                        degradationRateLabel: "Annual Battery Capacity Degradation Rate",
-                        degradationRateHint: "Linear degradation mode: fixed annual degradation rate",
-                        firstYearDegradationLabel: "First Year Degradation Rate",
-                        firstYearDegradationHint: "Nonlinear degradation: first year degradation rate (usually higher)",
-                        annualDecreaseLabel: "Annual Decrease in Degradation Rate",
-                        annualDecreaseHint: "Nonlinear degradation: annual decrease in degradation rate",
-                        cyclesPerDegradationLabel: "Degradation Rate per 1000 Cycles",
-                        cyclesPerDegradationHint: "Cycle-based degradation: capacity loss per 1000 cycles",
-                        annualCyclesLabel: "Annual Operation Cycles",
-                        annualCyclesHint: "Used for cycle-based degradation mode calculation",
-                        capacityThresholdLabel: "Capacity Retention Threshold",
-                        capacityThresholdHint: "Battery replacement recommended below this threshold"
-                    }
-                }
-            },
-            de: {
-                // 导航栏
-                index: {
-                    brandText: "Deutsches unabhängiges Energiespeicher-Kraftwerk-Investitionsberechnungssystem",
-                    navParameters: "Grenzwerteinstellungen",
-                    navOpex: "OPEX-Einstellungen",
-                    navRevenue: "Einnahmenprognose",
-                    navIndicators: "Finanzindikatoren",
-                    navStatements: "Finanzberichte",
-                    navSensitivity: "Sensitivitätsanalyse",
-                    navBankReport: "Finanzierungsbericht",
-                    helpBtn: "Hilfe",
-                    importBtn: "Importieren",
-                    saveBtn: "Speichern",
-                    exportReportBtn: "Exportieren",
-                    exportExcelBtn: "Excel",
-                    calculateBtn: "Berechnen",
-                    logoutBtn: "Abmelden",
-                    
-                    // 边界设定界面
-                    parameters: {
-                        sectionTitle: "📊 Projektgrenzbedingungseinstellungen",
-                        sectionDesc: "Stellen Sie die Grundparameter und die Gerätekonfiguration des Energiespeicher-Kraftwerks ein",
-                        basicParamsCard: "Grundlegende Kraftwerksparameter",
-                        powerLabel: "Installierte Leistung",
-                        powerHint: "Typische Größe für große Energiespeicherprojekte in Deutschland",
-                        capacityLabel: "Energiespeicherkapazität",
-                        capacityHint: "2-Stunden-Speicher-Konfiguration",
-                        durationLabel: "Speicherdauer",
-                        operationYearsLabel: "Betriebsjahre",
-                        operationYearsHint: "Branchenstandardbetriebszyklus",
-                        initialCapacityLabel: "Erstjährige verfügbare Batteriekapazität",
-                        
-                        degradationCard: "Kapazitätsabbaueinstellungen",
-                        degradationModeLabel: "Abbaumodus",
-                        linearDegradation: "Lineare Degradation (feste jährliche Rate)",
-                        nonlinearDegradation: "Nichtlineare Degradation (zuerst schnell, später langsam)",
-                        cycleBasedDegradation: "Zyklusbasierte Degradation",
-                        degradationModeHint: "Wählen Sie den Abbaumodus basierend auf den Batterieeigenschaften",
-                        degradationRateLabel: "Jährliche Batteriekapazitätsabbaurate",
-                        degradationRateHint: "Linearer Abbaumodus: feste jährliche Abbaurate",
-                        firstYearDegradationLabel: "Erstjährige Abbaurate",
-                        firstYearDegradationHint: "Nichtlineare Degradation: Erstjährige Abbaurate (normalerweise höher)",
-                        annualDecreaseLabel: "Jährliche Abnahme der Abbaurate",
-                        annualDecreaseHint: "Nichtlineare Degradation: jährliche Abnahme der Abbaurate",
-                        cyclesPerDegradationLabel: "Abbaurate pro 1000 Zyklen",
-                        cyclesPerDegradationHint: "Zyklusbasierte Degradation: Kapazitätsverlust pro 1000 Zyklen",
-                        annualCyclesLabel: "Jährliche Betriebszyklen",
-                        annualCyclesHint: "Verwendet für die zyklusbasierte Abbaumodusberechnung",
-                        capacityThresholdLabel: "Kapazitätserhaltungsschwelle",
-                        capacityThresholdHint: "Batterieersatz empfohlen unterhalb dieser Schwelle"
-                    }
-                }
-            }
-        };
-
-        // 全局语言变量 + 初始化
-        let currentLang = localStorage.getItem('selectedLang') || 'zh';
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // 绑定语言切换事件
-            bindLangSwitchEvent();
-            // 初始化语言状态（自动应用登录页选择的语言）
-            updateLangBtnStatus();
-            updatePageLang(currentLang);
-        });
-
-        // 绑定语言切换事件
-        function bindLangSwitchEvent() {
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                // 先移除可能重复的事件，避免冲突
-                btn.removeEventListener('click', handleLangClick);
-                // 重新绑定事件
-                btn.addEventListener('click', handleLangClick);
-            });
-        }
-
-        // 语言切换点击处理函数
-        function handleLangClick() {
-            currentLang = this.dataset.lang;
-            // 保存到localStorage，实现登录/注册页同步
-            localStorage.setItem('selectedLang', currentLang);
-            // 更新按钮状态和页面文字
-            updateLangBtnStatus();
-            updatePageLang(currentLang);
-        }
-
-        // 更新语言按钮激活状态
-        function updateLangBtnStatus() {
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.lang === currentLang) {
-                    btn.classList.add('active');
-                }
-            });
-        }
-
-        // 核心：更新页面所有文字
-        function updatePageLang(lang) {
-            const langData = langMap[lang];
-            if (!langData) return;
-
-            // 更新页面文字
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const keyPath = el.dataset.i18n.split('.');
-                let text = langData;
-                
-                // 遍历键路径找到对应的值
-                for (const key of keyPath) {
-                    if (text && text[key]) {
-                        text = text[key];
-                    } else {
-                        // 尝试直接在langData中查找（处理顶级键）
-                        if (langData[key]) {
-                            text = langData[key];
-                        } else {
-                            text = null;
-                        }
-                        break;
-                    }
-                }
-                
-                if (text) {
-                    el.textContent = text;
-                }
-            });
-        }
-    </script>
 </body>
 </html>
