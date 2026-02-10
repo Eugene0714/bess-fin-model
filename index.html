@@ -84,25 +84,25 @@
         </div>
         <div class="nav-links">
 <!-- 边界设定 -->
-<a href="#" class="nav-link active" data-tab="parameters" data-i18n="index.parameters">边界设定</a>
+<a href="#" class="nav-link active" data-tab="parameters" data-i18n="index.navParameters">边界设定</a>
 
 <!-- OPEX设定 -->
-<a href="#" class="nav-link" data-tab="opex" data-i18n="index.opex">OPEX设定</a>
+<a href="#" class="nav-link" data-tab="opex" data-i18n="index.navOpex">OPEX设定</a>
 
 <!-- 收入预测 -->
-<a href="#" class="nav-link" data-tab="revenue" data-i18n="index.revenue">收入预测</a>
+<a href="#" class="nav-link" data-tab="revenue" data-i18n="index.navRevenue">收入预测</a>
 
 <!-- 财务指标 -->
-<a href="#" class="nav-link" data-tab="indicators" data-i18n="index.indicators">财务指标</a>
+<a href="#" class="nav-link" data-tab="indicators" data-i18n="index.navIndicators">财务指标</a>
 
 <!-- 财务报表 -->
-<a href="#" class="nav-link" data-tab="statements" data-i18n="index.statements">财务报表</a>
+<a href="#" class="nav-link" data-tab="statements" data-i18n="index.navStatements">财务报表</a>
 
 <!-- 敏感性分析 -->
-<a href="#" class="nav-link" data-tab="sensitivity" data-i18n="index.sensitivity">敏感性分析</a>
+<a href="#" class="nav-link" data-tab="sensitivity" data-i18n="index.navSensitivity">敏感性分析</a>
 
 <!-- 融资报告 -->
-<a href="#" class="nav-link" data-tab="bankReport" data-i18n="index.bankReport">融资报告</a>
+<a href="#" class="nav-link" data-tab="bankReport" data-i18n="index.navBankReport">融资报告</a>
         </div>
         <div class="nav-actions">
 <!-- 帮助按钮 -->
@@ -150,8 +150,8 @@
         <!-- 边界设定界面 -->
         <section id="parameters" class="tab-content active">
             <div class="section-header">
-                <h2>📊 项目边界条件设定</h2>
-                <p class="section-desc">设置储能电站的基础参数和设备配置</p>
+                <h2 data-i18n="index.parameters.sectionTitle">📊 项目边界条件设定</h2>
+                <p class="section-desc" data-i18n="index.parameters.sectionDesc">设置储能电站的基础参数和设备配置</p>
             </div>
             
             <div class="params-grid">
@@ -159,42 +159,42 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🔋</span>
-                        <h3>电站基础参数</h3>
+                        <h3 data-i18n="index.parameters.basicParamsCard">电站基础参数</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>电站装机功率</label>
+                            <label data-i18n="index.parameters.powerLabel">电站装机功率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="power_mw" value="100" min="1">
                                 <span class="unit">MW</span>
                             </div>
-                            <span class="hint">德国大型储能项目典型规模</span>
+                            <span class="hint" data-i18n="index.parameters.powerHint">德国大型储能项目典型规模</span>
                         </div>
                         <div class="input-group">
-                            <label>电站储能容量</label>
+                            <label data-i18n="index.parameters.capacityLabel">电站储能容量</label>
                             <div class="input-with-unit">
                                 <input type="number" id="capacity_mwh" value="200" min="1">
                                 <span class="unit">MWh</span>
                             </div>
-                            <span class="hint">2小时储能配置</span>
+                            <span class="hint" data-i18n="index.parameters.capacityHint">2小时储能配置</span>
                         </div>
                         <div class="input-group">
-                            <label>储能时长</label>
+                            <label data-i18n="index.parameters.durationLabel">储能时长</label>
                             <div class="input-with-unit">
                                 <input type="number" id="duration_hours" value="2" readonly>
                                 <span class="unit">小时</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>电站运营年限</label>
+                            <label data-i18n="index.parameters.operationYearsLabel">电站运营年限</label>
                             <div class="input-with-unit">
                                 <input type="number" id="operation_years" value="20" min="1" max="30">
                                 <span class="unit">年</span>
                             </div>
-                            <span class="hint">行业标准运营周期</span>
+                            <span class="hint" data-i18n="index.parameters.operationYearsHint">行业标准运营周期</span>
                         </div>
                         <div class="input-group">
-                            <label>首年电池可用容量</label>
+                            <label data-i18n="index.parameters.initialCapacityLabel">首年电池可用容量</label>
                             <div class="input-with-unit">
                                 <input type="number" id="initial_capacity_pct" value="100" min="80" max="100">
                                 <span class="unit">%</span>
@@ -207,17 +207,17 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">📉</span>
-                        <h3>容量衰减设定</h3>
+                        <h3 data-i18n="index.parameters.degradationCard">容量衰减设定</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>衰减模式</label>
+                            <label data-i18n="index.parameters.degradationModeLabel">衰减模式</label>
                             <select id="degradation_mode" onchange="onDegradationModeChange()">
                                 <option value="linear">线性衰减（固定年衰减率）</option>
                                 <option value="nonlinear">非线性衰减（前期快后期慢）</option>
                                 <option value="cycle_based">循环次数衰减</option>
                             </select>
-                            <span class="hint">根据电池特性选择衰减模式</span>
+                            <span class="hint" data-i18n="index.parameters.degradationModeHint">根据电池特性选择衰减模式</span>
                         </div>
                         <div class="input-group">
                             <label>年电池容量衰减率</label>
@@ -2792,13 +2792,13 @@
                 // 导航栏
                 index: {
                     brandText: "德国独立储能电站投资测算系统",
-                    parameters: "边界设定",
-                    opex: "OPEX设定",
-                    revenue: "收入预测",
-                    indicators: "财务指标",
-                    statements: "财务报表",
-                    sensitivity: "敏感性分析",
-                    bankReport: "融资报告",
+                    navParameters: "边界设定",
+                    navOpex: "OPEX设定",
+                    navRevenue: "收入预测",
+                    navIndicators: "财务指标",
+                    navStatements: "财务报表",
+                    navSensitivity: "敏感性分析",
+                    navBankReport: "融资报告",
                     helpBtn: "帮助",
                     importBtn: "导入",
                     saveBtn: "保存",
@@ -2808,44 +2808,147 @@
                     logoutBtn: "退出"
                 }
             },
+            
+            // 边界设定界面
+            parameters: {
+                sectionTitle: "📊 项目边界条件设定",
+                sectionDesc: "设置储能电站的基础参数和设备配置",
+                basicParamsCard: "电站基础参数",
+                powerLabel: "电站装机功率",
+                powerHint: "德国大型储能项目典型规模",
+                capacityLabel: "电站储能容量",
+                capacityHint: "2小时储能配置",
+                durationLabel: "储能时长",
+                operationYearsLabel: "电站运营年限",
+                operationYearsHint: "行业标准运营周期",
+                initialCapacityLabel: "首年电池可用容量",
+                
+                degradationCard: "容量衰减设定",
+                degradationModeLabel: "衰减模式",
+                linearDegradation: "线性衰减（固定年衰减率）",
+                nonlinearDegradation: "非线性衰减（前期快后期慢）",
+                cycleBasedDegradation: "循环次数衰减",
+                degradationModeHint: "根据电池特性选择衰减模式",
+                degradationRateLabel: "年电池容量衰减率",
+                degradationRateHint: "线性衰减模式：固定年衰减率",
+                firstYearDegradationLabel: "首年衰减率",
+                firstYearDegradationHint: "非线性衰减：首年衰减率（通常较高）",
+                annualDecreaseLabel: "年衰减率递减幅度",
+                annualDecreaseHint: "非线性衰减：每年衰减率递减幅度",
+                cyclesPerDegradationLabel: "每1000次循环衰减率",
+                cyclesPerDegradationHint: "循环次数衰减：每1000次循环的容量损失",
+                annualCyclesLabel: "年运行循环次数",
+                annualCyclesHint: "用于循环次数衰减模式计算",
+                capacityThresholdLabel: "容量保持率阈值",
+                capacityThresholdHint: "低于此阈值建议更换电池"
+            }
+        },
             en: {
                 // 导航栏
                 index: {
                     brandText: "German Independent Energy Storage Power Plant Investment Calculation System",
-                    parameters: "Boundary Settings",
-                    opex: "OPEX Settings",
-                    revenue: "Revenue Forecast",
-                    indicators: "Financial Indicators",
-                    statements: "Financial Statements",
-                    sensitivity: "Sensitivity Analysis",
-                    bankReport: "Financing Report",
+                    navParameters: "Boundary Settings",
+                    navOpex: "OPEX Settings",
+                    navRevenue: "Revenue Forecast",
+                    navIndicators: "Financial Indicators",
+                    navStatements: "Financial Statements",
+                    navSensitivity: "Sensitivity Analysis",
+                    navBankReport: "Financing Report",
                     helpBtn: "Help",
                     importBtn: "Import",
                     saveBtn: "Save",
                     exportReportBtn: "Export",
                     exportExcelBtn: "Excel",
                     calculateBtn: "Calculate",
-                    logoutBtn: "Logout"
+                    logoutBtn: "Logout",
+                    
+                    // 边界设定界面
+                    parameters: {
+                        sectionTitle: "📊 Project Boundary Conditions",
+                        sectionDesc: "Set basic parameters and equipment configuration for the energy storage power plant",
+                        basicParamsCard: "Basic Power Plant Parameters",
+                        powerLabel: "Installed Power Capacity",
+                        powerHint: "Typical scale for large energy storage projects in Germany",
+                        capacityLabel: "Energy Storage Capacity",
+                        capacityHint: "2-hour storage configuration",
+                        durationLabel: "Storage Duration",
+                        operationYearsLabel: "Operation Years",
+                        operationYearsHint: "Industry standard operation cycle",
+                        initialCapacityLabel: "Initial Battery Available Capacity",
+                        
+                        degradationCard: "Capacity Degradation Settings",
+                        degradationModeLabel: "Degradation Mode",
+                        linearDegradation: "Linear Degradation (Fixed Annual Rate)",
+                        nonlinearDegradation: "Nonlinear Degradation (Fast at First, Slow Later)",
+                        cycleBasedDegradation: "Cycle-Based Degradation",
+                        degradationModeHint: "Select degradation mode based on battery characteristics",
+                        degradationRateLabel: "Annual Battery Capacity Degradation Rate",
+                        degradationRateHint: "Linear degradation mode: fixed annual degradation rate",
+                        firstYearDegradationLabel: "First Year Degradation Rate",
+                        firstYearDegradationHint: "Nonlinear degradation: first year degradation rate (usually higher)",
+                        annualDecreaseLabel: "Annual Decrease in Degradation Rate",
+                        annualDecreaseHint: "Nonlinear degradation: annual decrease in degradation rate",
+                        cyclesPerDegradationLabel: "Degradation Rate per 1000 Cycles",
+                        cyclesPerDegradationHint: "Cycle-based degradation: capacity loss per 1000 cycles",
+                        annualCyclesLabel: "Annual Operation Cycles",
+                        annualCyclesHint: "Used for cycle-based degradation mode calculation",
+                        capacityThresholdLabel: "Capacity Retention Threshold",
+                        capacityThresholdHint: "Battery replacement recommended below this threshold"
+                    }
                 }
             },
             de: {
                 // 导航栏
                 index: {
                     brandText: "Deutsches unabhängiges Energiespeicher-Kraftwerk-Investitionsberechnungssystem",
-                    parameters: "Grenzwerteinstellungen",
-                    opex: "OPEX-Einstellungen",
-                    revenue: "Einnahmenprognose",
-                    indicators: "Finanzindikatoren",
-                    statements: "Finanzberichte",
-                    sensitivity: "Sensitivitätsanalyse",
-                    bankReport: "Finanzierungsbericht",
+                    navParameters: "Grenzwerteinstellungen",
+                    navOpex: "OPEX-Einstellungen",
+                    navRevenue: "Einnahmenprognose",
+                    navIndicators: "Finanzindikatoren",
+                    navStatements: "Finanzberichte",
+                    navSensitivity: "Sensitivitätsanalyse",
+                    navBankReport: "Finanzierungsbericht",
                     helpBtn: "Hilfe",
                     importBtn: "Importieren",
                     saveBtn: "Speichern",
                     exportReportBtn: "Exportieren",
                     exportExcelBtn: "Excel",
                     calculateBtn: "Berechnen",
-                    logoutBtn: "Abmelden"
+                    logoutBtn: "Abmelden",
+                    
+                    // 边界设定界面
+                    parameters: {
+                        sectionTitle: "📊 Projektgrenzbedingungseinstellungen",
+                        sectionDesc: "Stellen Sie die Grundparameter und die Gerätekonfiguration des Energiespeicher-Kraftwerks ein",
+                        basicParamsCard: "Grundlegende Kraftwerksparameter",
+                        powerLabel: "Installierte Leistung",
+                        powerHint: "Typische Größe für große Energiespeicherprojekte in Deutschland",
+                        capacityLabel: "Energiespeicherkapazität",
+                        capacityHint: "2-Stunden-Speicher-Konfiguration",
+                        durationLabel: "Speicherdauer",
+                        operationYearsLabel: "Betriebsjahre",
+                        operationYearsHint: "Branchenstandardbetriebszyklus",
+                        initialCapacityLabel: "Erstjährige verfügbare Batteriekapazität",
+                        
+                        degradationCard: "Kapazitätsabbaueinstellungen",
+                        degradationModeLabel: "Abbaumodus",
+                        linearDegradation: "Lineare Degradation (feste jährliche Rate)",
+                        nonlinearDegradation: "Nichtlineare Degradation (zuerst schnell, später langsam)",
+                        cycleBasedDegradation: "Zyklusbasierte Degradation",
+                        degradationModeHint: "Wählen Sie den Abbaumodus basierend auf den Batterieeigenschaften",
+                        degradationRateLabel: "Jährliche Batteriekapazitätsabbaurate",
+                        degradationRateHint: "Linearer Abbaumodus: feste jährliche Abbaurate",
+                        firstYearDegradationLabel: "Erstjährige Abbaurate",
+                        firstYearDegradationHint: "Nichtlineare Degradation: Erstjährige Abbaurate (normalerweise höher)",
+                        annualDecreaseLabel: "Jährliche Abnahme der Abbaurate",
+                        annualDecreaseHint: "Nichtlineare Degradation: jährliche Abnahme der Abbaurate",
+                        cyclesPerDegradationLabel: "Abbaurate pro 1000 Zyklen",
+                        cyclesPerDegradationHint: "Zyklusbasierte Degradation: Kapazitätsverlust pro 1000 Zyklen",
+                        annualCyclesLabel: "Jährliche Betriebszyklen",
+                        annualCyclesHint: "Verwendet für die zyklusbasierte Abbaumodusberechnung",
+                        capacityThresholdLabel: "Kapazitätserhaltungsschwelle",
+                        capacityThresholdHint: "Batterieersatz empfohlen unterhalb dieser Schwelle"
+                    }
                 }
             }
         };
@@ -2896,17 +2999,22 @@
             const langData = langMap[lang];
             if (!langData) return;
 
-            // 更新导航栏文字
+            // 更新页面文字
             document.querySelectorAll('[data-i18n]').forEach(el => {
                 const keyPath = el.dataset.i18n.split('.');
                 let text = langData;
                 
                 // 遍历键路径找到对应的值
                 for (const key of keyPath) {
-                    if (text[key]) {
+                    if (text && text[key]) {
                         text = text[key];
                     } else {
-                        text = null;
+                        // 尝试直接在langData中查找（处理顶级键）
+                        if (langData[key]) {
+                            text = langData[key];
+                        } else {
+                            text = null;
+                        }
                         break;
                     }
                 }
