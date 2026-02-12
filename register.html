@@ -1166,7 +1166,7 @@
             msg.className = `message show ${type}`;
         }
 
-        // 9. 原有注册逻辑（完整保留，仅修改提示语调用）
+        // 9. 注册逻辑（对接后端服务）
         function initRegisterLogic() {
             // 表单提交事件
             document.getElementById('registerForm').addEventListener('submit', async function(e) {
@@ -1189,7 +1189,9 @@
                 };
                 
                 try {
+                    // 1. 检查用户名是否已存在
                     const checkResponse = await fetch(`${API_BASE}/users?username=${encodeURIComponent(data.username)}`);
+                    if (!checkResponse.ok) throw new Error('网络请求失败');
                     const existingUsers = await checkResponse.json();
                     
                     if (existingUsers.length > 0) {
@@ -1199,6 +1201,7 @@
                         return;
                     }
                     
+                    // 2. 注册新用户到后端
                     const response = await fetch(`${API_BASE}/users`, {
                         method: 'POST',
                         headers: { 'Content-Type': 'application/json' },
@@ -1206,8 +1209,10 @@
                     });
                     
                     if (!response.ok) throw new Error('注册失败');
-                    await response.json();
+                    const newUser = await response.json();
+                    console.log('注册成功，用户数据：', newUser);
                     
+                    // 3. 显示成功页面
                     document.getElementById('registerForm').style.display = 'none';
                     document.querySelector('.steps-indicator').style.display = 'none';
                     document.getElementById('successPage').classList.add('active');
