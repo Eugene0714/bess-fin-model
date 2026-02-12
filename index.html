@@ -14,61 +14,222 @@
             }
         })();
     </script>
+    
+    <!-- 语言切换代码 -->
+    <style>
+        /* 语言切换按钮样式（和登录页完全一致） */
+        .language-switcher {
+            position: fixed;
+            top: 20px;
+            right: 20px;
+            z-index: 9999;
+            display: flex;
+            gap: 8px;
+            background: rgba(15, 25, 45, 0.9);
+            border-radius: 12px;
+            padding: 8px;
+            border: 1px solid rgba(0, 212, 170, 0.2);
+            backdrop-filter: blur(10px);
+        }
+
+        .lang-btn {
+            padding: 6px 12px;
+            border-radius: 8px;
+            border: none;
+            background: transparent;
+            color: rgba(255, 255, 255, 0.7);
+            font-size: 14px;
+            font-weight: 500;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .lang-btn.active {
+            background: rgba(0, 212, 170, 0.2);
+            color: #00d4aa;
+        }
+
+        .lang-btn:hover:not(.active) {
+            background: rgba(255, 255, 255, 0.05);
+            color: #fff;
+        }
+
+        /* 移动端适配 */
+        @media (max-width: 480px) {
+            .language-switcher {
+                top: 15px;
+                right: 15px;
+                padding: 6px;
+            }
+            .lang-btn {
+                padding: 4px 8px;
+                font-size: 12px;
+            }
+        }
+    </style>
+    
+    <!-- 引入外部语言文件 -->
+    <script src="languages.js"></script>
 </head>
 <body>
+    <!-- 语言切换按钮（和登录页完全一致） -->
+    <div class="language-switcher">
+        <button class="lang-btn active" data-lang="zh">中文</button>
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="de">Deutsch</button>
+    </div>
+    
+    <script>
+        // 全局语言变量
+        let currentLang = localStorage.getItem('selectedLang') || 'zh';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 初始化语言切换
+            updateLangBtnStatus();
+            updatePageLang(currentLang);
+
+            // 绑定语言切换事件
+            bindLangSwitchEvent();
+        });
+
+        // 绑定语言切换事件
+        function bindLangSwitchEvent() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    currentLang = this.dataset.lang;
+                    localStorage.setItem('selectedLang', currentLang);
+                    updateLangBtnStatus();
+                    updatePageLang(currentLang);
+                });
+            });
+        }
+
+        // 更新语言按钮激活状态
+        function updateLangBtnStatus() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === currentLang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // 更新页面所有文字
+        function updatePageLang(lang) {
+            const langData = languages[lang];
+            
+            // 更新所有带有data-i18n属性的元素
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const key = el.dataset.i18n;
+                if (langData[key]) {
+                    // 对于按钮，保留图标部分，只更新文本
+                    if (el.classList.contains('action-btn') || el.classList.contains('calculate-btn') || el.classList.contains('logout-btn')) {
+                        // 保留第一个<span>标签（图标），更新后面的文本
+                        const iconSpan = el.querySelector('span');
+                        if (iconSpan) {
+                            el.innerHTML = iconSpan.outerHTML + ' ' + langData[key];
+                        } else {
+                            el.textContent = langData[key];
+                        }
+                    } else if (el.classList.contains('nav-link')) {
+                        // 对于导航链接，直接更新文本
+                        el.textContent = langData[key];
+                    } else if (el.classList.contains('brand-text')) {
+                        // 对于品牌文本，直接更新文本
+                        el.textContent = langData[key];
+                    } else {
+                        // 其他元素，直接更新文本
+                        el.textContent = langData[key];
+                    }
+                }
+            });
+
+            // 更新select元素中的选项
+            document.querySelectorAll('select option[data-i18n]').forEach(option => {
+                const key = option.dataset.i18n;
+                if (langData[key]) {
+                    option.textContent = langData[key];
+                }
+            });
+        }
+    </script>
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="nav-brand">
             <span class="brand-icon">⚡</span>
-            <span class="brand-text">德国独立储能电站投资测算系统</span>
+<span class="brand-text" data-i18n="brandText">德国独立储能电站投资测算系统</span>
         </div>
         <div class="nav-links">
-            <a href="#" class="nav-link active" data-tab="parameters">边界设定</a>
-            <a href="#" class="nav-link" data-tab="opex">OPEX设定</a>
-            <a href="#" class="nav-link" data-tab="revenue">收入预测</a>
-            <a href="#" class="nav-link" data-tab="indicators">财务指标</a>
-            <a href="#" class="nav-link" data-tab="statements">财务报表</a>
-            <a href="#" class="nav-link" data-tab="sensitivity">敏感性分析</a>
-            <a href="#" class="nav-link" data-tab="bankReport">融资报告</a>
+<!-- 边界设定 -->
+<a href="#" class="nav-link active" data-tab="parameters" data-i18n="navParameters">边界设定</a>
+
+<!-- OPEX设定 -->
+<a href="#" class="nav-link" data-tab="opex" data-i18n="navOpex">OPEX设定</a>
+
+<!-- 收入预测 -->
+<a href="#" class="nav-link" data-tab="revenue" data-i18n="navRevenue">收入预测</a>
+
+<!-- 财务指标 -->
+<a href="#" class="nav-link" data-tab="indicators" data-i18n="navIndicators">财务指标</a>
+
+<!-- 财务报表 -->
+<a href="#" class="nav-link" data-tab="statements" data-i18n="navStatements">财务报表</a>
+
+<!-- 敏感性分析 -->
+<a href="#" class="nav-link" data-tab="sensitivity" data-i18n="navSensitivity">敏感性分析</a>
+
+<!-- 融资报告 -->
+<a href="#" class="nav-link" data-tab="bankReport" data-i18n="navBankReport">融资报告</a>
         </div>
         <div class="nav-actions">
-            <button class="action-btn help-btn" onclick="showHelp()" title="使用帮助">
-                <span>❓</span> 帮助
-            </button>
-            <button class="action-btn" onclick="importModel()" title="导入模型">
-                <span>📂</span> 导入
-            </button>
-            <button class="action-btn" onclick="saveModel()" title="保存模型">
-                <span>💾</span> 保存
-            </button>
-            <button class="action-btn" onclick="exportReport()" title="导出报表">
-                <span>📤</span> 导出
-            </button>
-            <button class="action-btn" onclick="exportExcel()" title="导出Excel">
-                <span>📊</span> Excel
-            </button>
-            <button class="calculate-btn" onclick="calculateAll()">
-                <span>🔄</span> 计算
-            </button>
-            <div class="user-info">
-                <span class="user-icon">👤</span>
-                <span class="user-name" id="currentUserName"></span>
-                <button class="logout-btn" onclick="logout()" title="退出登录">
-                    退出
-                </button>
-            </div>
+<!-- 帮助按钮 -->
+<button class="action-btn help-btn" onclick="showHelp()" title="使用帮助" data-i18n="btnHelp">
+  <span>?</span> 帮助
+</button>
+
+<!-- 导入模型按钮 -->
+<button class="action-btn" onclick="importModel()" title="导入模型" data-i18n="btnImport">
+  <span>⬆</span> 导入
+</button>
+
+<!-- 保存模型按钮 -->
+<button class="action-btn" onclick="saveModel()" title="保存模型" data-i18n="btnSave">
+  <span>💾</span> 保存
+</button>
+
+<!-- 导出报表按钮 -->
+<button class="action-btn" onclick="exportReport()" title="导出报表" data-i18n="btnExport">
+  <span>📤</span> 导出
+</button>
+
+<!-- 导出Excel按钮 -->
+<button class="action-btn" onclick="exportExcel()" title="导出Excel" data-i18n="btnExcel">
+  <span>📊</span> Excel
+</button>
+
+<!-- 计算按钮 -->
+<button class="calculate-btn" onclick="calculateAll()" data-i18n="btnCalculate">
+  <span>🔄</span> 计算
+</button>
+
+<!-- 退出按钮 -->
+<button class="logout-btn" onclick="logout()" title="退出登录" data-i18n="btnLogout">
+  退出
+</button>
+
+<!-- 隐藏的文件输入 -->
+<input type="file" id="modelFileInput" accept=".json" style="display:none" onchange="handleModelImport(event)">
         </div>
-        <!-- 隐藏的文件输入 -->
-        <input type="file" id="modelFileInput" accept=".json" style="display:none" onchange="handleModelImport(event)">
     </nav>
 
     <!-- 主内容区 -->
     <main class="main-content">
-        <!-- 边界设定界面 -->
+       <!-- 边界设定界面 -->
         <section id="parameters" class="tab-content active">
             <div class="section-header">
-                <h2>📊 项目边界条件设定</h2>
-                <p class="section-desc">设置储能电站的基础参数和设备配置</p>
+                <h2 data-i18n="sectionParameters">📊 项目边界条件设定</h2>
+                <p class="section-desc" data-i18n="descParameters">设置储能电站的基础参数和设备配置</p>
             </div>
             
             <div class="params-grid">
@@ -76,42 +237,42 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🔋</span>
-                        <h3>电站基础参数</h3>
+                        <h3 data-i18n="cardBasicParams">电站基础参数</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>电站装机功率</label>
+                            <label data-i18n="labelPower">电站装机功率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="power_mw" value="100" min="1">
                                 <span class="unit">MW</span>
                             </div>
-                            <span class="hint">德国大型储能项目典型规模</span>
+                            <span class="hint" data-i18n="hintPower">德国大型储能项目典型规模</span>
                         </div>
                         <div class="input-group">
-                            <label>电站储能容量</label>
+                            <label data-i18n="labelCapacity">电站储能容量</label>
                             <div class="input-with-unit">
                                 <input type="number" id="capacity_mwh" value="200" min="1">
                                 <span class="unit">MWh</span>
                             </div>
-                            <span class="hint">2小时储能配置</span>
+                            <span class="hint" data-i18n="hintCapacity">2小时储能配置</span>
                         </div>
                         <div class="input-group">
-                            <label>储能时长</label>
+                            <label data-i18n="labelDuration">储能时长</label>
                             <div class="input-with-unit">
                                 <input type="number" id="duration_hours" value="2" readonly>
                                 <span class="unit">小时</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>电站运营年限</label>
+                            <label data-i18n="labelOperationYears">电站运营年限</label>
                             <div class="input-with-unit">
                                 <input type="number" id="operation_years" value="20" min="1" max="30">
                                 <span class="unit">年</span>
                             </div>
-                            <span class="hint">行业标准运营周期</span>
+                            <span class="hint" data-i18n="hintOperationYears">行业标准运营周期</span>
                         </div>
                         <div class="input-group">
-                            <label>首年电池可用容量</label>
+                            <label data-i18n="labelInitialCapacity">首年电池可用容量</label>
                             <div class="input-with-unit">
                                 <input type="number" id="initial_capacity_pct" value="100" min="80" max="100">
                                 <span class="unit">%</span>
@@ -124,65 +285,65 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">📉</span>
-                        <h3>容量衰减设定</h3>
+                        <h3 data-i18n="cardDegradation">容量衰减设定</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>衰减模式</label>
+                            <label data-i18n="labelDegradationMode">衰减模式</label>
                             <select id="degradation_mode" onchange="onDegradationModeChange()">
-                                <option value="linear">线性衰减（固定年衰减率）</option>
-                                <option value="nonlinear">非线性衰减（前期快后期慢）</option>
-                                <option value="cycle_based">循环次数衰减</option>
+                                <option value="linear" data-i18n="optionLinear">线性衰减（固定年衰减率）</option>
+                                <option value="nonlinear" data-i18n="optionNonlinear">非线性衰减（前期快后期慢）</option>
+                                <option value="cycle_based" data-i18n="optionCycleBased">循环次数衰减</option>
                             </select>
-                            <span class="hint">根据电池特性选择衰减模式</span>
+                            <span class="hint" data-i18n="hintDegradationMode">根据电池特性选择衰减模式</span>
                         </div>
                         <div class="input-group">
-                            <label>年电池容量衰减率</label>
+                            <label data-i18n="labelDegradationRate">年电池容量衰减率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="degradation_rate" value="2.5" min="0" max="5" step="0.1">
                                 <span class="unit">%/年</span>
                             </div>
-                            <span class="hint">线性衰减模式：固定年衰减率</span>
+                            <span class="hint" data-i18n="hintDegradationRate">线性衰减模式：固定年衰减率</span>
                         </div>
                         <div class="input-group" id="degradation_first_year_group" style="display: none;">
-                            <label>首年衰减率</label>
+                            <label data-i18n="labelFirstYearDegradation">首年衰减率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="degradation_first_year" value="3.0" min="0" max="8" step="0.1">
                                 <span class="unit">%/年</span>
                             </div>
-                            <span class="hint">非线性衰减：首年衰减率（通常较高）</span>
+                            <span class="hint" data-i18n="hintFirstYearDegradation">非线性衰减：首年衰减率（通常较高）</span>
                         </div>
                         <div class="input-group" id="degradation_annual_decrease_group" style="display: none;">
-                            <label>年衰减率递减幅度</label>
+                            <label data-i18n="labelAnnualDecrease">年衰减率递减幅度</label>
                             <div class="input-with-unit">
                                 <input type="number" id="degradation_annual_decrease" value="0.1" min="0" max="1" step="0.05">
                                 <span class="unit">%/年</span>
                             </div>
-                            <span class="hint">非线性衰减：每年衰减率递减幅度</span>
+                            <span class="hint" data-i18n="hintAnnualDecrease">非线性衰减：每年衰减率递减幅度</span>
                         </div>
                         <div class="input-group" id="cycles_per_degradation_group" style="display: none;">
-                            <label>每1000次循环衰减率</label>
+                            <label data-i18n="labelCyclesPerDegradation">每1000次循环衰减率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="cycles_per_degradation" value="2.0" min="0" max="5" step="0.1">
                                 <span class="unit">%/1000次</span>
                             </div>
-                            <span class="hint">循环次数衰减：每1000次循环的容量损失</span>
+                            <span class="hint" data-i18n="hintCyclesPerDegradation">循环次数衰减：每1000次循环的容量损失</span>
                         </div>
                         <div class="input-group">
-                            <label>年运行循环次数</label>
+                            <label data-i18n="labelAnnualCycles">年运行循环次数</label>
                             <div class="input-with-unit">
                                 <input type="number" id="annual_cycles" value="365" min="100" max="730">
                                 <span class="unit">次/年</span>
                             </div>
-                            <span class="hint">用于循环次数衰减模式计算</span>
+                            <span class="hint" data-i18n="hintAnnualCycles">用于循环次数衰减模式计算</span>
                         </div>
                         <div class="input-group">
-                            <label>容量保持率阈值</label>
+                            <label data-i18n="labelCapacityThreshold">容量保持率阈值</label>
                             <div class="input-with-unit">
                                 <input type="number" id="capacity_threshold" value="80" min="60" max="90" step="5">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">低于此阈值建议更换电池</span>
+                            <span class="hint" data-i18n="hintCapacityThreshold">低于此阈值建议更换电池</span>
                         </div>
                     </div>
                 </div>
@@ -191,11 +352,11 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">💰</span>
-                        <h3>融资参数</h3>
+                        <h3 data-i18n="cardFinancing">融资参数</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>资本金比例</label>
+                            <label data-i18n="labelEquityRatio">资本金比例</label>
                             <div class="input-with-unit">
                                 <input type="number" id="equity_ratio" value="25" min="10" max="100">
                                 <span class="unit">%</span>
@@ -534,16 +695,15 @@
                         </div>
                     </div>
                 </div>
-
                 <!-- PCS系统 -->
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">⚡</span>
-                        <h3>PCS系统</h3>
+                        <h3 data-i18n="pcsSystem">PCS系统</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>PCS型号</label>
+                            <label data-i18n="pcsModel">PCS型号</label>
                             <select id="pcs_model" onchange="updatePCSSpecs()">
                                 <optgroup label="阳光电源 Sungrow (德国市场份额领先)">
                                     <option value="Sungrow_ST5220" data-power="5.5" data-price="28" selected>Sungrow ST5220KWH 5.5MW ★推荐</option>
@@ -587,10 +747,10 @@
                                     <option value="CUSTOM" data-power="5.0" data-price="28">自定义</option>
                                 </optgroup>
                             </select>
-                            <span class="hint">2025年德国市场主流PCS供应商</span>
+                            <span class="hint" data-i18n="pcsHint">2025年德国市场主流PCS供应商</span>
                         </div>
                         <div class="input-group">
-                            <label>单台PCS功率</label>
+                            <label data-i18n="pcsPower">单台PCS功率</label>
                             <div class="input-combo">
                                 <select id="pcs_power_select" onchange="onPCSPowerSelect()">
                                     <optgroup label="主流功率规格">
@@ -618,19 +778,19 @@
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>PCS数量 <button class="auto-calc-btn" onclick="autoCalcPCSCount()" title="根据总功率自动计算">🔄自动</button></label>
+                            <label data-i18n="pcsCount">PCS数量 <button class="auto-calc-btn" onclick="autoCalcPCSCount()" title="根据总功率自动计算">🔄自动</button></label>
                             <div class="input-with-unit">
                                 <input type="number" id="pcs_count" value="19" min="1">
                                 <span class="unit">台</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>PCS单价</label>
+                            <label data-i18n="pcsPrice">PCS单价</label>
                             <div class="input-with-unit">
                                 <input type="number" id="pcs_unit_price" value="28" min="0" step="1">
                                 <span class="unit">EUR/kW</span>
                             </div>
-                            <span class="hint">2025年德国市场均价25-35€/kW</span>
+                            <span class="hint" data-i18n="pcsPriceHint">2025年德国市场均价25-35€/kW</span>
                         </div>
                     </div>
                 </div>
@@ -639,11 +799,11 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🔄</span>
-                        <h3>中压变压器</h3>
+                        <h3 data-i18n="mvTransformer">中压变压器</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>中压变型号</label>
+                            <label data-i18n="mvTransformerModel">中压变型号</label>
                             <select id="mv_transformer_model" onchange="updateMVTransformerSpecs()">
                                 <optgroup label="干式变压器 (室内/集装箱) - 德国常用">
                                     <option value="Dry_2500" data-voltage="20" data-capacity="2500" data-price="18000">干式 20kV/2500kVA</option>
@@ -672,10 +832,10 @@
                                     <option value="CUSTOM" data-voltage="20" data-capacity="6300" data-price="35000">自定义</option>
                                 </optgroup>
                             </select>
-                            <span class="hint">德国常用20kV电压等级</span>
+                            <span class="hint" data-i18n="mvTransformerHint">德国常用20kV电压等级</span>
                         </div>
                         <div class="input-group">
-                            <label>电压等级</label>
+                            <label data-i18n="voltageLevel">电压等级</label>
                             <select id="mv_transformer_voltage">
                                 <option value="10">10 kV (中国常用)</option>
                                 <option value="20" selected>20 kV (德国常用)</option>
@@ -684,7 +844,7 @@
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>变压器容量</label>
+                            <label data-i18n="transformerCapacity">变压器容量</label>
                             <div class="input-combo">
                                 <select id="mv_capacity_select" onchange="onMVCapacitySelect()">
                                     <optgroup label="主流容量规格">
@@ -707,19 +867,19 @@
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>变压器数量 <button class="auto-calc-btn" onclick="autoCalcMVCount()" title="与PCS数量同步">🔄自动</button></label>
+                            <label data-i18n="transformerCount">变压器数量 <button class="auto-calc-btn" onclick="autoCalcMVCount()" title="与PCS数量同步">🔄自动</button></label>
                             <div class="input-with-unit">
                                 <input type="number" id="mv_transformer_count" value="19" min="1">
                                 <span class="unit">台</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>中压变单价</label>
+                            <label data-i18n="transformerPrice">中压变单价</label>
                             <div class="input-with-unit">
                                 <input type="number" id="mv_transformer_price" value="35000" min="0">
                                 <span class="unit">EUR/台</span>
                             </div>
-                            <span class="hint">德国市场干式变压器价格</span>
+                            <span class="hint" data-i18n="transformerPriceHint">德国市场干式变压器价格</span>
                         </div>
                     </div>
                 </div>
@@ -728,11 +888,11 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">⬆️</span>
-                        <h3>升压变压器</h3>
+                        <h3 data-i18n="hvTransformer">升压变压器</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>升压变型号</label>
+                            <label data-i18n="hvTransformerModel">升压变型号</label>
                             <select id="hv_transformer_model" onchange="updateHVTransformerSpecs()">
                                 <optgroup label="110kV等级 (德国常用)">
                                     <option value="110kV_50MVA" data-capacity="50" data-price="420000">110kV/50MVA 油浸式</option>
@@ -765,10 +925,10 @@
                                     <option value="CUSTOM" data-capacity="120" data-price="750000">自定义</option>
                                 </optgroup>
                             </select>
-                            <span class="hint">德国100MW项目通常接入110kV电网</span>
+                            <span class="hint" data-i18n="hvTransformerHint">德国100MW项目通常接入110kV电网</span>
                         </div>
                         <div class="input-group">
-                            <label>升压变容量</label>
+                            <label data-i18n="hvTransformerCapacity">升压变容量</label>
                             <div class="input-combo">
                                 <select id="hv_capacity_select" onchange="onHVCapacitySelect()">
                                     <optgroup label="110kV等级">
@@ -799,19 +959,19 @@
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>升压变数量 <button class="auto-calc-btn" onclick="autoCalcHVCount()" title="根据总容量自动计算">🔄自动</button></label>
+                            <label data-i18n="hvTransformerCount">升压变数量 <button class="auto-calc-btn" onclick="autoCalcHVCount()" title="根据总容量自动计算">🔄自动</button></label>
                             <div class="input-with-unit">
                                 <input type="number" id="hv_transformer_count" value="1" min="1">
                                 <span class="unit">台</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>升压变单价</label>
+                            <label data-i18n="hvTransformerPrice">升压变单价</label>
                             <div class="input-with-unit">
                                 <input type="number" id="hv_transformer_price" value="750000" min="0">
                                 <span class="unit">EUR/台</span>
                             </div>
-                            <span class="hint">110kV/120MVA德国市场价格</span>
+                            <span class="hint" data-i18n="hvTransformerPriceHint">110kV/120MVA德国市场价格</span>
                         </div>
                     </div>
                 </div>
@@ -820,64 +980,64 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🖥️</span>
-                        <h3>控制与辅助设备</h3>
+                        <h3 data-i18n="controlEquipment">控制与辅助设备</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>EMS能量管理系统</label>
+                            <label data-i18n="emsSystem">EMS能量管理系统</label>
                             <div class="input-with-unit">
                                 <input type="number" id="ems_cost" value="200000" min="0" step="1000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">100MW项目EMS系统费用</span>
+                            <span class="hint" data-i18n="emsHint">100MW项目EMS系统费用</span>
                         </div>
                         <div class="input-group">
-                            <label>SCADA监控系统</label>
+                            <label data-i18n="scadaSystem">SCADA监控系统</label>
                             <div class="input-with-unit">
                                 <input type="number" id="scada_cost" value="120000" min="0" step="1000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">含远程监控与数据采集</span>
+                            <span class="hint" data-i18n="scadaHint">含远程监控与数据采集</span>
                         </div>
                         <div class="input-group">
-                            <label>开关柜(中压)</label>
+                            <label data-i18n="switchgear">开关柜(中压)</label>
                             <div class="input-with-unit">
                                 <input type="number" id="switchgear_price" value="18000" min="0" step="100">
                                 <span class="unit">EUR/面</span>
                             </div>
-                            <span class="hint">20kV中压开关柜</span>
+                            <span class="hint" data-i18n="switchgearHint">20kV中压开关柜</span>
                         </div>
                         <div class="input-group">
-                            <label>开关柜数量</label>
+                            <label data-i18n="switchgearCount">开关柜数量</label>
                             <div class="input-with-unit">
                                 <input type="number" id="switchgear_count" value="25" min="1">
                                 <span class="unit">面</span>
                             </div>
-                            <span class="hint">根据PCS数量和配置确定</span>
+                            <span class="hint" data-i18n="switchgearCountHint">根据PCS数量和配置确定</span>
                         </div>
                         <div class="input-group">
-                            <label>集电线路</label>
+                            <label data-i18n="collectorLine">集电线路</label>
                             <div class="input-with-unit">
                                 <input type="number" id="collector_line_cost" value="250000" min="0" step="1000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">中压电缆及附件</span>
+                            <span class="hint" data-i18n="collectorLineHint">中压电缆及附件</span>
                         </div>
                         <div class="input-group">
-                            <label>热管理系统</label>
+                            <label data-i18n="thermalSystem">热管理系统</label>
                             <div class="input-with-unit">
                                 <input type="number" id="thermal_cost" value="20" min="0" step="1">
                                 <span class="unit">EUR/kWh</span>
                             </div>
-                            <span class="hint">液冷/空调系统(德国气候)</span>
+                            <span class="hint" data-i18n="thermalSystemHint">液冷/空调系统(德国气候)</span>
                         </div>
                         <div class="input-group">
-                            <label>消防系统</label>
+                            <label data-i18n="fireSystem">消防系统</label>
                             <div class="input-with-unit">
                                 <input type="number" id="fire_protection_cost" value="12" min="0" step="1">
                                 <span class="unit">EUR/kWh</span>
                             </div>
-                            <span class="hint">气体灭火+监测系统</span>
+                            <span class="hint" data-i18n="fireSystemHint">气体灭火+监测系统</span>
                         </div>
                     </div>
                 </div>
@@ -886,90 +1046,89 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🔌</span>
-                        <h3>电网接入</h3>
+                        <h3 data-i18n="gridConnection">电网接入</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>变电站建设/扩容</label>
+                            <label data-i18n="substation">变电站建设/扩容</label>
                             <div class="input-with-unit">
                                 <input type="number" id="substation_cost" value="800000" min="0" step="10000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">110kV变电站间隔扩建费</span>
+                            <span class="hint" data-i18n="substationHint">110kV变电站间隔扩建费</span>
                         </div>
                         <div class="input-group">
-                            <label>接入线路</label>
+                            <label data-i18n="gridLine">接入线路</label>
                             <div class="input-with-unit">
                                 <input type="number" id="grid_line_cost" value="500000" min="0" step="10000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">110kV架空/电缆线路</span>
+                            <span class="hint" data-i18n="gridLineHint">110kV架空/电缆线路</span>
                         </div>
                         <div class="input-group">
-                            <label>并网申请与研究费</label>
+                            <label data-i18n="gridStudy">并网申请与研究费</label>
                             <div class="input-with-unit">
                                 <input type="number" id="grid_study_cost" value="80000" min="0" step="1000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">Netzverträglichkeitsprüfung</span>
+                            <span class="hint" data-i18n="gridStudyHint">Netzverträglichkeitsprüfung</span>
                         </div>
                         <div class="input-group">
-                            <label>计量与保护设备</label>
+                            <label data-i18n="metering">计量与保护设备</label>
                             <div class="input-with-unit">
                                 <input type="number" id="metering_cost" value="100000" min="0" step="1000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">符合德国电网规范要求</span>
+                            <span class="hint" data-i18n="meteringHint">符合德国电网规范要求</span>
                         </div>
                     </div>
                 </div>
-
-                <!-- 土地与基建 -->
+              <!-- 土地与基建 -->
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🏗️</span>
-                        <h3>土地与基础建设</h3>
+                        <h3 data-i18n="landInfrastructure">土地与基础建设</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>土地获取成本</label>
+                            <label data-i18n="landAcquisition">土地获取成本</label>
                             <div class="input-with-unit">
                                 <input type="number" id="land_acquisition_cost" value="50" min="0" step="10">
                                 <span class="unit">EUR/kW</span>
                             </div>
-                            <span class="hint">德国工业用地购买或长期租赁</span>
+                            <span class="hint" data-i18n="landAcquisitionHint">德国工业用地购买或长期租赁</span>
                         </div>
                         <div class="input-group">
-                            <label>混凝土基础</label>
+                            <label data-i18n="concreteFoundation">混凝土基础</label>
                             <div class="input-with-unit">
                                 <input type="number" id="concrete_cost" value="25" min="0" step="1">
                                 <span class="unit">EUR/kW</span>
                             </div>
-                            <span class="hint">设备基础及电缆沟</span>
+                            <span class="hint" data-i18n="concreteFoundationHint">设备基础及电缆沟</span>
                         </div>
                         <div class="input-group">
-                            <label>围栏与安防</label>
+                            <label data-i18n="fenceSecurity">围栏与安防</label>
                             <div class="input-with-unit">
                                 <input type="number" id="fence_cost" value="80000" min="0" step="1000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">含监控和门禁系统</span>
+                            <span class="hint" data-i18n="fenceSecurityHint">含监控和门禁系统</span>
                         </div>
                         <div class="input-group">
-                            <label>道路建设</label>
+                            <label data-i18n="roadConstruction">道路建设</label>
                             <div class="input-with-unit">
                                 <input type="number" id="road_cost" value="120000" min="0" step="1000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">场内道路及出入口</span>
+                            <span class="hint" data-i18n="roadConstructionHint">场内道路及出入口</span>
                         </div>
                         <div class="input-group">
-                            <label>排水系统</label>
+                            <label data-i18n="drainageSystem">排水系统</label>
                             <div class="input-with-unit">
                                 <input type="number" id="drainage_cost" value="50000" min="0" step="1000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">雨水收集及排放系统</span>
+                            <span class="hint" data-i18n="drainageSystemHint">雨水收集及排放系统</span>
                         </div>
                     </div>
                 </div>
@@ -978,32 +1137,32 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">👷</span>
-                        <h3>安装与施工管理</h3>
+                        <h3 data-i18n="installationConstruction">安装与施工管理</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>机电安装</label>
+                            <label data-i18n="mechanicalInstallation">机电安装</label>
                             <div class="input-with-unit">
                                 <input type="number" id="installation_cost_pct" value="6" min="0" max="20" step="0.5">
                                 <span class="unit">%设备费</span>
                             </div>
-                            <span class="hint">德国本地安装人工费用较高</span>
+                            <span class="hint" data-i18n="mechanicalInstallationHint">德国本地安装人工费用较高</span>
                         </div>
                         <div class="input-group">
-                            <label>施工管理费</label>
+                            <label data-i18n="constructionManagement">施工管理费</label>
                             <div class="input-with-unit">
                                 <input type="number" id="construction_mgmt_pct" value="2.5" min="0" max="10" step="0.5">
                                 <span class="unit">%设备费</span>
                             </div>
-                            <span class="hint">现场监理与协调</span>
+                            <span class="hint" data-i18n="constructionManagementHint">现场监理与协调</span>
                         </div>
                         <div class="input-group">
-                            <label>调试费用</label>
+                            <label data-i18n="commissioningCost">调试费用</label>
                             <div class="input-with-unit">
                                 <input type="number" id="commissioning_cost" value="150000" min="0" step="10000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">含并网测试和性能验收</span>
+                            <span class="hint" data-i18n="commissioningCostHint">含并网测试和性能验收</span>
                         </div>
                     </div>
                 </div>
@@ -1012,40 +1171,40 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🛡️</span>
-                        <h3>建设期保险</h3>
+                        <h3 data-i18n="constructionInsurance">建设期保险</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>建设工程一切险(CAR)</label>
+                            <label data-i18n="carInsurance">建设工程一切险(CAR)</label>
                             <div class="input-with-unit">
                                 <input type="number" id="car_insurance_pct" value="0.30" min="0" max="2" step="0.05">
                                 <span class="unit">%设备费</span>
                             </div>
-                            <span class="hint">Bauleistungsversicherung</span>
+                            <span class="hint" data-i18n="carInsuranceHint">Bauleistungsversicherung</span>
                         </div>
                         <div class="input-group">
-                            <label>安装工程一切险(EAR)</label>
+                            <label data-i18n="earInsurance">安装工程一切险(EAR)</label>
                             <div class="input-with-unit">
                                 <input type="number" id="ear_insurance_pct" value="0.20" min="0" max="2" step="0.05">
                                 <span class="unit">%设备费</span>
                             </div>
-                            <span class="hint">Montageversicherung</span>
+                            <span class="hint" data-i18n="earInsuranceHint">Montageversicherung</span>
                         </div>
                         <div class="input-group">
-                            <label>货物运输保险</label>
+                            <label data-i18n="cargoInsurance">货物运输保险</label>
                             <div class="input-with-unit">
                                 <input type="number" id="cargo_insurance_pct" value="0.15" min="0" max="1" step="0.05">
                                 <span class="unit">%设备费</span>
                             </div>
-                            <span class="hint">Transportversicherung</span>
+                            <span class="hint" data-i18n="cargoInsuranceHint">Transportversicherung</span>
                         </div>
                         <div class="input-group">
-                            <label>第三方责任险</label>
+                            <label data-i18n="liabilityInsurance">第三方责任险</label>
                             <div class="input-with-unit">
                                 <input type="number" id="liability_insurance" value="50000" min="0" step="5000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">Haftpflichtversicherung</span>
+                            <span class="hint" data-i18n="liabilityInsuranceHint">Haftpflichtversicherung</span>
                         </div>
                     </div>
                 </div>
@@ -1054,64 +1213,64 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">📋</span>
-                        <h3>开发与业主费用</h3>
+                        <h3 data-i18n="developmentOwnerCosts">开发与业主费用</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>SPV公司收购成本</label>
+                            <label data-i18n="spvAcquisition">SPV公司收购成本</label>
                             <div class="input-with-unit">
                                 <input type="number" id="spv_acquisition_cost" value="50000" min="0" step="5000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">特殊目的公司收购及相关费用</span>
+                            <span class="hint" data-i18n="spvAcquisitionHint">特殊目的公司收购及相关费用</span>
                         </div>
                         <div class="input-group">
-                            <label>许可与规划费</label>
+                            <label data-i18n="permitPlanning">许可与规划费</label>
                             <div class="input-with-unit">
                                 <input type="number" id="permit_cost" value="180000" min="0" step="10000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">BImSchG许可申请费用</span>
+                            <span class="hint" data-i18n="permitPlanningHint">BImSchG许可申请费用</span>
                         </div>
                         <div class="input-group">
-                            <label>环境咨询费</label>
+                            <label data-i18n="environmentalConsulting">环境咨询费</label>
                             <div class="input-with-unit">
                                 <input type="number" id="environmental_cost" value="60000" min="0" step="5000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">环境影响评估(UVP)</span>
+                            <span class="hint" data-i18n="environmentalConsultingHint">环境影响评估(UVP)</span>
                         </div>
                         <div class="input-group">
-                            <label>项目管理费</label>
+                            <label data-i18n="projectManagement">项目管理费</label>
                             <div class="input-with-unit">
                                 <input type="number" id="project_mgmt_pct" value="2" min="0" max="10" step="0.5">
                                 <span class="unit">%总投资</span>
                             </div>
-                            <span class="hint">业主工程管理团队</span>
+                            <span class="hint" data-i18n="projectManagementHint">业主工程管理团队</span>
                         </div>
                         <div class="input-group">
-                            <label>法律咨询费</label>
+                            <label data-i18n="legalConsulting">法律咨询费</label>
                             <div class="input-with-unit">
                                 <input type="number" id="legal_cost" value="100000" min="0" step="5000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">合同、许可、融资法律服务</span>
+                            <span class="hint" data-i18n="legalConsultingHint">合同、许可、融资法律服务</span>
                         </div>
                         <div class="input-group">
-                            <label>工程设计费</label>
+                            <label data-i18n="engineeringDesign">工程设计费</label>
                             <div class="input-with-unit">
                                 <input type="number" id="engineering_pct" value="2.5" min="0" max="10" step="0.5">
                                 <span class="unit">%设备费</span>
                             </div>
-                            <span class="hint">详细工程设计(FEED)</span>
+                            <span class="hint" data-i18n="engineeringDesignHint">详细工程设计(FEED)</span>
                         </div>
                         <div class="input-group">
-                            <label>不可预见费</label>
+                            <label data-i18n="contingency">不可预见费</label>
                             <div class="input-with-unit">
                                 <input type="number" id="contingency_pct" value="5" min="0" max="15" step="0.5">
                                 <span class="unit">%小计</span>
                             </div>
-                            <span class="hint">银行通常要求5-10%</span>
+                            <span class="hint" data-i18n="contingencyHint">银行通常要求5-10%</span>
                         </div>
                     </div>
                 </div>
@@ -1120,16 +1279,16 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🔧</span>
-                        <h3>拆除准备金（按年摊销）</h3>
+                        <h3 data-i18n="decommissioningReserve">拆除准备金（按年摊销）</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>拆除准备金总额</label>
+                            <label data-i18n="decommissioningTotal">拆除准备金总额</label>
                             <div class="input-with-unit">
                                 <input type="number" id="decommissioning_total" value="500000" min="0" step="10000">
                                 <span class="unit">EUR</span>
                             </div>
-                            <span class="hint">按运营年限平均摊销计入OPEX</span>
+                            <span class="hint" data-i18n="decommissioningTotalHint">按运营年限平均摊销计入OPEX</span>
                         </div>
                     </div>
                 </div>
@@ -1138,16 +1297,16 @@
                 <div class="param-card wide">
                     <div class="card-header">
                         <span class="card-icon">💶</span>
-                        <h3>CAPEX明细</h3>
+                        <h3 data-i18n="capexDetails">CAPEX明细</h3>
                     </div>
                     <div class="card-body">
                         <table class="capex-table">
                             <thead>
                                 <tr>
-                                    <th>项目</th>
-                                    <th>单价</th>
-                                    <th>数量/容量</th>
-                                    <th>金额(万EUR)</th>
+                                    <th data-i18n="capexItem">项目</th>
+                                    <th data-i18n="capexUnitPrice">单价</th>
+                                    <th data-i18n="capexQuantity">数量/容量</th>
+                                    <th data-i18n="capexAmount">金额(万EUR)</th>
                                 </tr>
                             </thead>
                             <tbody id="capex_breakdown">
@@ -1155,7 +1314,7 @@
                             </tbody>
                             <tfoot>
                                 <tr class="total-row">
-                                    <td colspan="3">总投资(静态)</td>
+                                    <td colspan="3" data-i18n="capexTotal">总投资(静态)</td>
                                     <td id="total_capex">-</td>
                                 </tr>
                             </tfoot>
@@ -1168,69 +1327,69 @@
         <!-- OPEX设定界面 -->
         <section id="opex" class="tab-content">
             <div class="section-header">
-                <h2>📋 运营成本设定 (OPEX)</h2>
-                <p class="section-desc">设置各项年度运营费用</p>
+                <h2 data-i18n="opexSectionTitle">📋 运营成本设定 (OPEX)</h2>
+                <p class="section-desc" data-i18n="opexSectionDesc">设置各项年度运营费用</p>
             </div>
 
             <div class="params-grid">
                 <div class="param-card wide">
                     <div class="card-header">
                         <span class="card-icon">🛠️</span>
-                        <h3>运营费用基准设定</h3>
+                        <h3 data-i18n="opexBaseSettings">运营费用基准设定</h3>
                     </div>
                     <div class="card-body">
                         <table class="opex-table">
                             <thead>
                                 <tr>
-                                    <th>费用类别</th>
-                                    <th>计费基准</th>
-                                    <th>首年费率/金额</th>
-                                    <th>年增长率(%)</th>
-                                    <th>说明</th>
+                                    <th data-i18n="opexCategory">费用类别</th>
+                                    <th data-i18n="opexBasis">计费基准</th>
+                                    <th data-i18n="opexFirstYearRate">首年费率/金额</th>
+                                    <th data-i18n="opexAnnualGrowth">年增长率(%)</th>
+                                    <th data-i18n="opexDescription">说明</th>
                                 </tr>
                             </thead>
                             <tbody>
                                 <tr>
-                                    <td>技术与运维 (Technical O&M)</td>
+                                    <td data-i18n="opexTechnical">技术与运维 (Technical O&M)</td>
                                     <td>EUR/kW/年</td>
                                     <td><input type="number" id="opex_technical" value="6" min="0" step="0.1" title="德国市场主流价格5-8€/kW/年"></td>
                                     <td><input type="number" id="opex_technical_esc" value="2" min="-5" max="10" step="0.1"></td>
-                                    <td>设备监控与现场维护 (德国5-8€/kW/年)</td>
+                                    <td data-i18n="opexTechnicalDesc">设备监控与现场维护 (德国5-8€/kW/年)</td>
                                 </tr>
                                 <tr>
-                                    <td>保险费用 (Insurance)</td>
+                                    <td data-i18n="opexInsurance">保险费用 (Insurance)</td>
                                     <td>CAPEX的%/年</td>
                                     <td><input type="number" id="opex_insurance" value="0.4" min="0" step="0.01" title="德国储能项目资产险0.35-0.5%"></td>
                                     <td><input type="number" id="opex_insurance_esc" value="1.5" min="-5" max="10" step="0.1"></td>
-                                    <td>资产综合保险 (Sachversicherung 0.35-0.5%)</td>
+                                    <td data-i18n="opexInsuranceDesc">资产综合保险 (Sachversicherung 0.35-0.5%)</td>
                                 </tr>
                                 <tr>
-                                    <td>电网运营费 (Grid Fees)</td>
+                                    <td data-i18n="opexGrid">电网运营费 (Grid Fees)</td>
                                     <td>EUR/MW/年</td>
                                     <td><input type="number" id="opex_grid" value="12000" min="0" step="100" title="德国电网使用费10-15k€/MW/年"></td>
                                     <td><input type="number" id="opex_grid_esc" value="2" min="-5" max="10" step="0.1"></td>
-                                    <td>Netzentgelte 年度输配电费 (10-15k€/MW)</td>
+                                    <td data-i18n="opexGridDesc">Netzentgelte 年度输配电费 (10-15k€/MW)</td>
                                 </tr>
                                 <tr>
-                                    <td>土地租赁 (Land Lease)</td>
+                                    <td data-i18n="opexLand">土地租赁 (Land Lease)</td>
                                     <td>EUR/年(总计)</td>
                                     <td><input type="number" id="opex_land" value="60000" min="0" step="1000" title="德国工业用地租金因地区差异大"></td>
                                     <td><input type="number" id="opex_land_esc" value="2" min="-5" max="10" step="0.1"></td>
-                                    <td>Pachtgebühren 年租金 (视地区而定)</td>
+                                    <td data-i18n="opexLandDesc">Pachtgebühren 年租金 (视地区而定)</td>
                                 </tr>
                                 <tr>
-                                    <td>商务与管理 (Commercial O&M)</td>
+                                    <td data-i18n="opexCommercial">商务与管理 (Commercial O&M)</td>
                                     <td>EUR/MW/年</td>
                                     <td><input type="number" id="opex_commercial" value="4000" min="0" step="100" title="财务、税务、合同管理"></td>
                                     <td><input type="number" id="opex_commercial_esc" value="2" min="-5" max="10" step="0.1"></td>
-                                    <td>财务结算、税务及合同管理 (3-5k€/MW)</td>
+                                    <td data-i18n="opexCommercialDesc">财务结算、税务及合同管理 (3-5k€/MW)</td>
                                 </tr>
                                 <tr>
-                                    <td>其他运营费</td>
+                                    <td data-i18n="opexOther">其他运营费</td>
                                     <td>EUR/MW/年</td>
                                     <td><input type="number" id="opex_other" value="1500" min="0" step="100" title="备品备件、杂费等"></td>
                                     <td><input type="number" id="opex_other_esc" value="2" min="-5" max="10" step="0.1"></td>
-                                    <td>备品备件、杂费等 (1-2k€/MW)</td>
+                                    <td data-i18n="opexOtherDesc">备品备件、杂费等 (1-2k€/MW)</td>
                                 </tr>
                             </tbody>
                         </table>
@@ -1241,22 +1400,22 @@
                 <div class="param-card wide">
                     <div class="card-header">
                         <span class="card-icon">📊</span>
-                        <h3>OPEX年度明细表</h3>
+                        <h3 data-i18n="opexYearlyDetails">OPEX年度明细表</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-scroll">
                             <table class="yearly-table" id="opex_yearly_table">
                                 <thead>
                                     <tr>
-                                        <th>年份</th>
-                                        <th>技术运维</th>
-                                        <th>保险费</th>
-                                        <th>电网费</th>
-                                        <th>土地租赁</th>
-                                        <th>商务管理</th>
-                                        <th>其他</th>
-                                        <th>拆除准备金</th>
-                                        <th>合计</th>
+                                        <th data-i18n="year">年份</th>
+                                        <th data-i18n="opexYearlyTechnical">技术运维</th>
+                                        <th data-i18n="opexYearlyInsurance">保险费</th>
+                                        <th data-i18n="opexYearlyGrid">电网费</th>
+                                        <th data-i18n="opexYearlyLand">土地租赁</th>
+                                        <th data-i18n="opexYearlyCommercial">商务管理</th>
+                                        <th data-i18n="opexYearlyOther">其他</th>
+                                        <th data-i18n="opexYearlyDecommissioning">拆除准备金</th>
+                                        <th data-i18n="opexYearlyTotal">合计</th>
                                     </tr>
                                 </thead>
                                 <tbody id="opex_yearly_body">
@@ -1272,8 +1431,8 @@
         <!-- 收入预测界面 -->
         <section id="revenue" class="tab-content">
             <div class="section-header">
-                <h2>💵 收入预测</h2>
-                <p class="section-desc">设置Tolling收入和现货交易收入预测</p>
+                <h2 data-i18n="revenueSectionTitle">💵 收入预测</h2>
+                <p class="section-desc" data-i18n="revenueSectionDesc">设置Tolling收入和现货交易收入预测</p>
             </div>
 
             <div class="params-grid">
@@ -1281,18 +1440,18 @@
                 <div class="param-card wide">
                     <div class="card-header">
                         <span class="card-icon">📈</span>
-                        <h3>现货交易收入预测 (非Tolling部分)</h3>
+                        <h3 data-i18n="spotRevenueForecast">现货交易收入预测 (非Tolling部分)</h3>
                     </div>
                     <div class="card-body">
-                        <p class="hint-text">剩余电量参与现货市场交易，请输入每MW每年的预期收入</p>
+                        <p class="hint-text" data-i18n="spotRevenueHint">剩余电量参与现货市场交易，请输入每MW每年的预期收入</p>
                         <div class="table-scroll">
                             <table class="yearly-table" id="spot_price_table">
                                 <thead>
                                     <tr>
-                                        <th>年份</th>
-                                        <th>现货收入单价<br>(EUR/MW/年)</th>
-                                        <th>年份</th>
-                                        <th>现货收入单价<br>(EUR/MW/年)</th>
+                                        <th data-i18n="year">年份</th>
+                                        <th data-i18n="spotPriceUnit">现货收入单价<br>(EUR/MW/年)</th>
+                                        <th data-i18n="year">年份</th>
+                                        <th data-i18n="spotPriceUnit">现货收入单价<br>(EUR/MW/年)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="spot_price_body">
@@ -1301,12 +1460,12 @@
                             </table>
                         </div>
                         <div class="quick-fill">
-                            <label>快速填充: 首年价格</label>
+                            <label data-i18n="quickFillBasePrice">快速填充: 首年价格</label>
                             <input type="number" id="spot_base_price" value="45000" min="0" title="德国2025年现货市场套利收入预期35-55k€/MW/年">
-                            <label>年增长率(%)</label>
+                            <label data-i18n="annualGrowthRate">年增长率(%)</label>
                             <input type="number" id="spot_escalation" value="1.5" min="-10" max="20" step="0.1">
-                            <button class="btn-secondary" onclick="fillSpotPrices()">应用</button>
-                            <span class="hint" style="display:block; margin-top:5px;">德国现货市场套利收入：30-45k€/MW/年 (2025年预期)</span>
+                            <button class="btn-secondary" onclick="fillSpotPrices()" data-i18n="applyButton">应用</button>
+                            <span class="hint" style="display:block; margin-top:5px;" data-i18n="spotRevenueExpected">德国现货市场套利收入：30-45k€/MW/年 (2025年预期)</span>
                         </div>
                     </div>
                 </div>
@@ -1315,18 +1474,18 @@
                 <div class="param-card wide">
                     <div class="card-header">
                         <span class="card-icon">💰</span>
-                        <h3>收入年度明细表</h3>
+                        <h3 data-i18n="revenueYearlyDetails">收入年度明细表</h3>
                     </div>
                     <div class="card-body">
                         <div class="table-scroll">
                             <table class="yearly-table" id="revenue_yearly_table">
                                 <thead>
                                     <tr>
-                                        <th>年份</th>
-                                        <th>可用容量(%)</th>
-                                        <th>Tolling收入<br>(万EUR)</th>
-                                        <th>现货收入<br>(万EUR)</th>
-                                        <th>总收入<br>(万EUR)</th>
+                                        <th data-i18n="year">年份</th>
+                                        <th data-i18n="availableCapacity">可用容量(%)</th>
+                                        <th data-i18n="tollingRevenue">Tolling收入<br>(万EUR)</th>
+                                        <th data-i18n="spotRevenue">现货收入<br>(万EUR)</th>
+                                        <th data-i18n="totalRevenue">总收入<br>(万EUR)</th>
                                     </tr>
                                 </thead>
                                 <tbody id="revenue_yearly_body">
@@ -1344,143 +1503,144 @@
             </div>
         </section>
 
+
         <!-- 财务指标界面 -->
         <section id="indicators" class="tab-content">
             <div class="section-header">
-                <h2>📊 核心财务指标</h2>
-                <p class="section-desc">投资收益及风险评估关键指标</p>
+                <h2 data-i18n="indicatorsSectionTitle">📊 核心财务指标</h2>
+                <p class="section-desc" data-i18n="indicatorsSectionDesc">投资收益及风险评估关键指标</p>
             </div>
 
             <div class="indicators-grid">
                 <div class="indicator-card highlight">
                     <div class="indicator-icon">💰</div>
-                    <div class="indicator-label">投资总额（静态）</div>
+                    <div class="indicator-label" data-i18n="indStaticInvestment">投资总额（静态）</div>
                     <div class="indicator-value" id="ind_static_investment">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card highlight">
                     <div class="indicator-icon">📈</div>
-                    <div class="indicator-label">投资总额（动态）</div>
+                    <div class="indicator-label" data-i18n="indDynamicInvestment">投资总额（动态）</div>
                     <div class="indicator-value" id="ind_dynamic_investment">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">💵</div>
-                    <div class="indicator-label">累计销售收入总额</div>
+                    <div class="indicator-label" data-i18n="indTotalRevenue">累计销售收入总额</div>
                     <div class="indicator-value" id="ind_total_revenue">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">📊</div>
-                    <div class="indicator-label">年均销售收入</div>
+                    <div class="indicator-label" data-i18n="indAvgRevenue">年均销售收入</div>
                     <div class="indicator-value" id="ind_avg_revenue">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">🔢</div>
-                    <div class="indicator-label">前三年合计销售收入</div>
+                    <div class="indicator-label" data-i18n="indFirst3Revenue">前三年合计销售收入</div>
                     <div class="indicator-value" id="ind_first3_revenue">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">💹</div>
-                    <div class="indicator-label">累计利润总额</div>
+                    <div class="indicator-label" data-i18n="indTotalProfit">累计利润总额</div>
                     <div class="indicator-value" id="ind_total_profit">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">📉</div>
-                    <div class="indicator-label">年均利润总额</div>
+                    <div class="indicator-label" data-i18n="indAvgProfit">年均利润总额</div>
                     <div class="indicator-value" id="ind_avg_profit">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">🎯</div>
-                    <div class="indicator-label">前三年合计利润总额</div>
+                    <div class="indicator-label" data-i18n="indFirst3Profit">前三年合计利润总额</div>
                     <div class="indicator-value" id="ind_first3_profit">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">✨</div>
-                    <div class="indicator-label">累计净利润</div>
+                    <div class="indicator-label" data-i18n="indTotalNetProfit">累计净利润</div>
                     <div class="indicator-value" id="ind_total_net_profit">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">⭐</div>
-                    <div class="indicator-label">年均净利润</div>
+                    <div class="indicator-label" data-i18n="indAvgNetProfit">年均净利润</div>
                     <div class="indicator-value" id="ind_avg_net_profit">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">🌟</div>
-                    <div class="indicator-label">前三年合计净利润</div>
+                    <div class="indicator-label" data-i18n="indFirst3NetProfit">前三年合计净利润</div>
                     <div class="indicator-value" id="ind_first3_net_profit">-</div>
                     <div class="indicator-unit">万EUR</div>
                 </div>
                 <div class="indicator-card key-indicator">
                     <div class="indicator-icon">🎯</div>
-                    <div class="indicator-label">全投资内部收益率(税后)</div>
+                    <div class="indicator-label" data-i18n="indProjectIRR">全投资内部收益率(税后)</div>
                     <div class="indicator-value" id="ind_project_irr">-</div>
                     <div class="indicator-unit">%</div>
                 </div>
                 <div class="indicator-card key-indicator">
                     <div class="indicator-icon">🏆</div>
-                    <div class="indicator-label">资本金内部收益率(税后)</div>
+                    <div class="indicator-label" data-i18n="indEquityIRR">资本金内部收益率(税后)</div>
                     <div class="indicator-value" id="ind_equity_irr">-</div>
                     <div class="indicator-unit">%</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">⏱️</div>
-                    <div class="indicator-label">全投资回收期(静态)</div>
+                    <div class="indicator-label" data-i18n="indStaticPayback">全投资回收期(静态)</div>
                     <div class="indicator-value" id="ind_static_payback">-</div>
                     <div class="indicator-unit">年</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">⏳</div>
-                    <div class="indicator-label">资本金回收期(静态)</div>
+                    <div class="indicator-label" data-i18n="indEquityPayback">资本金回收期(静态)</div>
                     <div class="indicator-value" id="ind_equity_payback">-</div>
                     <div class="indicator-unit">年</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">🔄</div>
-                    <div class="indicator-label">全投资回收期(动态-8%)</div>
+                    <div class="indicator-label" data-i18n="indDynamicPayback">全投资回收期(动态-8%)</div>
                     <div class="indicator-value" id="ind_dynamic_payback">-</div>
                     <div class="indicator-unit">年</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">🔁</div>
-                    <div class="indicator-label">资本金回收期(动态-8%)</div>
+                    <div class="indicator-label" data-i18n="indEquityDynamicPayback">资本金回收期(动态-8%)</div>
                     <div class="indicator-value" id="ind_equity_dynamic_payback">-</div>
                     <div class="indicator-unit">年</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">📊</div>
-                    <div class="indicator-label">第三年净资产收益率(ROE)</div>
+                    <div class="indicator-label" data-i18n="indROEYear3">第三年净资产收益率(ROE)</div>
                     <div class="indicator-value" id="ind_roe_year3">-</div>
                     <div class="indicator-unit">%</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">💎</div>
-                    <div class="indicator-label">总投资收益率(ROI)</div>
+                    <div class="indicator-label" data-i18n="indROI">总投资收益率(ROI)</div>
                     <div class="indicator-value" id="ind_roi">-</div>
                     <div class="indicator-unit">%</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">📈</div>
-                    <div class="indicator-label">EBITDA回报率</div>
+                    <div class="indicator-label" data-i18n="indEBITDAReturn">EBITDA回报率</div>
                     <div class="indicator-value" id="ind_ebitda_return">-</div>
                     <div class="indicator-unit">%</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">⚡</div>
-                    <div class="indicator-label">LCOE（平准化度电成本）</div>
+                    <div class="indicator-label" data-i18n="indLCOE">LCOE（平准化度电成本）</div>
                     <div class="indicator-value" id="ind_lcoe">-</div>
                     <div class="indicator-unit">EUR/MWh</div>
                 </div>
                 <div class="indicator-card">
                     <div class="indicator-icon">🛡️</div>
-                    <div class="indicator-label">债务偿付覆盖率(DSCR)</div>
+                    <div class="indicator-label" data-i18n="indDSCR">债务偿付覆盖率(DSCR)</div>
                     <div class="indicator-value" id="ind_dscr">-</div>
                     <div class="indicator-unit">倍</div>
                 </div>
@@ -1490,15 +1650,15 @@
         <!-- 财务报表界面 -->
         <section id="statements" class="tab-content">
             <div class="section-header">
-                <h2>📑 财务报表</h2>
-                <p class="section-desc">利润表、资产负债表、现金流量表</p>
+                <h2 data-i18n="statementsSectionTitle">📑 财务报表</h2>
+                <p class="section-desc" data-i18n="statementsSectionDesc">利润表、资产负债表、现金流量表</p>
             </div>
 
             <div class="statement-tabs">
-                <button class="statement-tab active" onclick="switchStatement('income')">利润表</button>
-                <button class="statement-tab" onclick="switchStatement('balance')">资产负债表</button>
-                <button class="statement-tab" onclick="switchStatement('cashflow')">现金流量表</button>
-                <button class="statement-tab" onclick="switchStatement('loan')">贷款还款计划表</button>
+                <button class="statement-tab active" onclick="switchStatement('income')" data-i18n="statementIncome">利润表</button>
+                <button class="statement-tab" onclick="switchStatement('balance')" data-i18n="statementBalance">资产负债表</button>
+                <button class="statement-tab" onclick="switchStatement('cashflow')" data-i18n="statementCashflow">现金流量表</button>
+                <button class="statement-tab" onclick="switchStatement('loan')" data-i18n="statementLoan">贷款还款计划表</button>
             </div>
 
             <!-- 利润表 -->
@@ -1507,7 +1667,7 @@
                     <table class="statement-table" id="income_table">
                         <thead>
                             <tr>
-                                <th>项目</th>
+                                <th data-i18n="statementItem">项目</th>
                                 <!-- 动态生成年份列 -->
                             </tr>
                         </thead>
@@ -1524,7 +1684,7 @@
                     <table class="statement-table" id="balance_table">
                         <thead>
                             <tr>
-                                <th>项目</th>
+                                <th data-i18n="statementItem">项目</th>
                             </tr>
                         </thead>
                         <tbody id="balance_body">
@@ -1540,7 +1700,7 @@
                     <table class="statement-table" id="cashflow_table">
                         <thead>
                             <tr>
-                                <th>项目</th>
+                                <th data-i18n="statementItem">项目</th>
                             </tr>
                         </thead>
                         <tbody id="cashflow_body">
@@ -1556,12 +1716,12 @@
                     <table class="statement-table" id="loan_table">
                         <thead>
                             <tr>
-                                <th>年份</th>
-                                <th>期初余额</th>
-                                <th>本期利息</th>
-                                <th>本期还本</th>
-                                <th>本期还款额</th>
-                                <th>期末余额</th>
+                                <th data-i18n="loanYear">年份</th>
+                                <th data-i18n="loanOpeningBalance">期初余额</th>
+                                <th data-i18n="loanInterest">本期利息</th>
+                                <th data-i18n="loanPrincipal">本期还本</th>
+                                <th data-i18n="loanPayment">本期还款额</th>
+                                <th data-i18n="loanClosingBalance">期末余额</th>
                             </tr>
                         </thead>
                         <tbody id="loan_body">
@@ -1575,67 +1735,67 @@
         <!-- 敏感性分析界面 -->
         <section id="sensitivity" class="tab-content">
             <div class="section-header">
-                <h2>🔍 敏感性分析</h2>
-                <p class="section-desc">分析关键参数变化对投资收益的影响</p>
+                <h2 data-i18n="sensitivitySectionTitle">🔍 敏感性分析</h2>
+                <p class="section-desc" data-i18n="sensitivitySectionDesc">分析关键参数变化对投资收益的影响</p>
             </div>
 
             <div class="sensitivity-config">
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">⚙️</span>
-                        <h3>分析参数设置</h3>
+                        <h3 data-i18n="sensitivityParams">分析参数设置</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>分析变量1</label>
+                            <label data-i18n="sensitivityVar1">分析变量1</label>
                             <select id="sens_var1">
-                                <option value="capex">投资成本(CAPEX)</option>
-                                <option value="tolling_price">Tolling价格</option>
-                                <option value="spot_price">现货价格</option>
-                                <option value="opex">运营成本(OPEX)</option>
-                                <option value="loan_rate">贷款利率</option>
-                                <option value="degradation">电池衰减率</option>
+                                <option value="capex" data-i18n="sensitivityCapex">投资成本(CAPEX)</option>
+                                <option value="tolling_price" data-i18n="sensitivityTolling">Tolling价格</option>
+                                <option value="spot_price" data-i18n="sensitivitySpot">现货价格</option>
+                                <option value="opex" data-i18n="sensitivityOpex">运营成本(OPEX)</option>
+                                <option value="loan_rate" data-i18n="sensitivityLoanRate">贷款利率</option>
+                                <option value="degradation" data-i18n="sensitivityDegradation">电池衰减率</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>分析变量2 (可选)</label>
+                            <label data-i18n="sensitivityVar2">分析变量2 (可选)</label>
                             <select id="sens_var2">
                                 <option value="">不选择</option>
-                                <option value="capex">投资成本(CAPEX)</option>
-                                <option value="tolling_price">Tolling价格</option>
-                                <option value="spot_price">现货价格</option>
-                                <option value="opex">运营成本(OPEX)</option>
-                                <option value="loan_rate">贷款利率</option>
-                                <option value="degradation">电池衰减率</option>
+                                <option value="capex" data-i18n="sensitivityCapex">投资成本(CAPEX)</option>
+                                <option value="tolling_price" data-i18n="sensitivityTolling">Tolling价格</option>
+                                <option value="spot_price" data-i18n="sensitivitySpot">现货价格</option>
+                                <option value="opex" data-i18n="sensitivityOpex">运营成本(OPEX)</option>
+                                <option value="loan_rate" data-i18n="sensitivityLoanRate">贷款利率</option>
+                                <option value="degradation" data-i18n="sensitivityDegradation">电池衰减率</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>分析目标指标</label>
+                            <label data-i18n="sensitivityTarget">分析目标指标</label>
                             <select id="sens_target">
-                                <option value="project_irr">全投资IRR</option>
-                                <option value="equity_irr">资本金IRR</option>
-                                <option value="npv">项目NPV</option>
-                                <option value="payback">投资回收期</option>
+                                <option value="project_irr" data-i18n="sensitivityProjectIRR">全投资IRR</option>
+                                <option value="equity_irr" data-i18n="sensitivityEquityIRR">资本金IRR</option>
+                                <option value="npv" data-i18n="sensitivityNPV">项目NPV</option>
+                                <option value="payback" data-i18n="sensitivityPayback">投资回收期</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>变化范围</label>
+                            <label data-i18n="sensitivityRange">变化范围</label>
                             <div class="range-inputs">
                                 <input type="number" id="sens_min" value="-30" min="-50" max="0">
                                 <span>%</span>
-                                <span>至</span>
+                                <span data-i18n="sensitivityTo">至</span>
                                 <input type="number" id="sens_max" value="30" min="0" max="50">
                                 <span>%</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>步长</label>
+                            <label data-i18n="sensitivityStep">步长</label>
                             <div class="input-with-unit">
                                 <input type="number" id="sens_step" value="10" min="5" max="20">
                                 <span class="unit">%</span>
                             </div>
                         </div>
-                        <button class="btn-primary" onclick="runSensitivityAnalysis()">运行分析</button>
+                        <button class="btn-primary" onclick="runSensitivityAnalysis()" data-i18n="sensitivityRun">运行分析</button>
                     </div>
                 </div>
 
@@ -1643,11 +1803,11 @@
                 <div class="param-card wide">
                     <div class="card-header">
                         <span class="card-icon">📊</span>
-                        <h3>分析结果</h3>
+                        <h3 data-i18n="sensitivityResults">分析结果</h3>
                     </div>
                     <div class="card-body">
                         <div id="sensitivity_result">
-                            <p class="hint-text">请选择分析参数并点击"运行分析"</p>
+                            <p class="hint-text" data-i18n="sensitivityResultHint">请选择分析参数并点击"运行分析"</p>
                         </div>
                     </div>
                 </div>
@@ -1662,7 +1822,7 @@
             <div class="param-card wide" id="sensitivity_matrix_card" style="display: none;">
                 <div class="card-header">
                     <span class="card-icon">🎯</span>
-                    <h3>双变量敏感性矩阵</h3>
+                    <h3 data-i18n="sensitivityMatrix">双变量敏感性矩阵</h3>
                 </div>
                 <div class="card-body">
                     <div class="table-scroll">
@@ -1681,61 +1841,60 @@
                 <div class="report-logo">
                     <span class="logo-icon">🏦</span>
                     <div class="logo-text">
-                        <h1>项目融资可行性分析报告</h1>
-                        <p>Battery Energy Storage System (BESS) Project Financing Report</p>
+                        <h1 data-i18n="reportTitle">项目融资可行性分析报告</h1>
+                        <p data-i18n="reportSubtitle">Battery Energy Storage System (BESS) Project Financing Report</p>
                     </div>
                 </div>
                 <div class="report-meta">
                     <div class="meta-item">
-                        <span class="meta-label">报告日期</span>
+                        <span class="meta-label" data-i18n="reportDate">报告日期</span>
                         <span class="meta-value" id="report_date">-</span>
                     </div>
                     <div class="meta-item">
-                        <span class="meta-label">报告版本</span>
-                        <span class="meta-value">V1.0</span>
+                        <span class="meta-label" data-i18n="reportVersion">报告版本</span>
+                        <span class="meta-value" data-i18n="reportVersionValue">V1.0</span>
                     </div>
                 </div>
             </div>
-
             <!-- 项目概要 -->
             <div class="report-section">
                 <div class="section-title">
                     <span class="title-icon">📋</span>
-                    <h2>一、项目概要 (Executive Summary)</h2>
+                    <h2 data-i18n="reportSummaryTitle">一、项目概要 (Executive Summary)</h2>
                 </div>
                 <div class="summary-grid">
                     <div class="summary-card">
-                        <div class="summary-header">项目基本信息</div>
+                        <div class="summary-header" data-i18n="projectBasicInfo">项目基本信息</div>
                         <table class="summary-table">
-                            <tr><td>项目名称</td><td id="rpt_project_name">德国独立储能电站项目</td></tr>
-                            <tr><td>项目地点</td><td>德国 (Germany)</td></tr>
-                            <tr><td>装机规模</td><td id="rpt_capacity">-</td></tr>
-                            <tr><td>储能时长</td><td id="rpt_duration">-</td></tr>
-                            <tr><td>运营期限</td><td id="rpt_operation_years">-</td></tr>
-                            <tr><td>项目公司</td><td>SPV GmbH</td></tr>
+                            <tr><td data-i18n="projectName">项目名称</td><td id="rpt_project_name">德国独立储能电站项目</td></tr>
+                            <tr><td data-i18n="projectLocation">项目地点</td><td>德国 (Germany)</td></tr>
+                            <tr><td data-i18n="installedCapacity">装机规模</td><td id="rpt_capacity">-</td></tr>
+                            <tr><td data-i18n="storageDuration">储能时长</td><td id="rpt_duration">-</td></tr>
+                            <tr><td data-i18n="operationYears">运营期限</td><td id="rpt_operation_years">-</td></tr>
+                            <tr><td data-i18n="projectCompany">项目公司</td><td>SPV GmbH</td></tr>
                         </table>
                     </div>
                     <div class="summary-card">
-                        <div class="summary-header">投资与融资结构</div>
+                        <div class="summary-header" data-i18n="investmentStructure">投资与融资结构</div>
                         <table class="summary-table">
-                            <tr><td>项目总投资</td><td id="rpt_total_investment">-</td></tr>
-                            <tr><td>资本金</td><td id="rpt_equity">-</td></tr>
-                            <tr><td>银行贷款</td><td id="rpt_loan">-</td></tr>
-                            <tr><td>资本金比例</td><td id="rpt_equity_ratio">-</td></tr>
-                            <tr><td>贷款期限</td><td id="rpt_loan_term">-</td></tr>
-                            <tr><td>贷款利率</td><td id="rpt_loan_rate">-</td></tr>
+                            <tr><td data-i18n="totalInvestment">项目总投资</td><td id="rpt_total_investment">-</td></tr>
+                            <tr><td data-i18n="equity">资本金</td><td id="rpt_equity">-</td></tr>
+                            <tr><td data-i18n="bankLoan">银行贷款</td><td id="rpt_loan">-</td></tr>
+                            <tr><td data-i18n="equityRatio">资本金比例</td><td id="rpt_equity_ratio">-</td></tr>
+                            <tr><td data-i18n="loanTerm">贷款期限</td><td id="rpt_loan_term">-</td></tr>
+                            <tr><td data-i18n="loanRate">贷款利率</td><td id="rpt_loan_rate">-</td></tr>
                         </table>
                     </div>
                     <div class="summary-card highlight-card">
-                        <div class="summary-header">核心投资指标</div>
+                        <div class="summary-header" data-i18n="coreInvestmentIndicators">核心投资指标</div>
                         <table class="summary-table">
-                            <tr class="key-row"><td>全投资IRR (税后)</td><td id="rpt_project_irr">-</td></tr>
-                            <tr class="key-row"><td>资本金IRR (税后)</td><td id="rpt_equity_irr">-</td></tr>
-                            <tr><td>静态投资回收期</td><td id="rpt_payback">-</td></tr>
-                            <tr><td>动态投资回收期(8%)</td><td id="rpt_dynamic_payback">-</td></tr>
-                            <tr class="key-row"><td>平均DSCR</td><td id="rpt_dscr">-</td></tr>
-                            <tr><td>LCOE（平准化度电成本）</td><td id="rpt_lcoe">-</td></tr>
-                            <tr><td>最低DSCR</td><td id="rpt_min_dscr">-</td></tr>
+                            <tr class="key-row"><td data-i18n="projectIRR">全投资IRR (税后)</td><td id="rpt_project_irr">-</td></tr>
+                            <tr class="key-row"><td data-i18n="equityIRR">资本金IRR (税后)</td><td id="rpt_equity_irr">-</td></tr>
+                            <tr><td data-i18n="staticPayback">静态投资回收期</td><td id="rpt_payback">-</td></tr>
+                            <tr><td data-i18n="dynamicPayback">动态投资回收期(8%)</td><td id="rpt_dynamic_payback">-</td></tr>
+                            <tr class="key-row"><td data-i18n="avgDSCR">平均DSCR</td><td id="rpt_dscr">-</td></tr>
+                            <tr><td data-i18n="lcoe">LCOE（平准化度电成本）</td><td id="rpt_lcoe">-</td></tr>
+                            <tr><td data-i18n="minDSCR">最低DSCR</td><td id="rpt_min_dscr">-</td></tr>
                         </table>
                     </div>
                 </div>
@@ -1745,41 +1904,41 @@
             <div class="report-section">
                 <div class="section-title">
                     <span class="title-icon">💰</span>
-                    <h2>二、收入结构分析 (Revenue Analysis)</h2>
+                    <h2 data-i18n="revenueAnalysisTitle">二、收入结构分析 (Revenue Analysis)</h2>
                 </div>
                 <div class="report-grid">
                     <div class="report-card">
-                        <h3>收入来源构成</h3>
+                        <h3 data-i18n="revenueSourceComposition">收入来源构成</h3>
                         <div class="chart-wrapper">
                             <canvas id="bankRevenueSourceChart"></canvas>
                         </div>
                     </div>
                     <div class="report-card">
-                        <h3>年度收入预测</h3>
+                        <h3 data-i18n="annualRevenueForecast">年度收入预测</h3>
                         <div class="chart-wrapper">
                             <canvas id="bankRevenueYearlyChart"></canvas>
                         </div>
                     </div>
                 </div>
                 <div class="report-card wide">
-                    <h3>收入稳定性评估</h3>
+                    <h3 data-i18n="revenueStabilityAssessment">收入稳定性评估</h3>
                     <div class="stability-grid">
                         <div class="stability-item">
-                            <div class="stability-label">Tolling合同覆盖</div>
+                            <div class="stability-label" data-i18n="tollingCoverage">Tolling合同覆盖</div>
                             <div class="stability-bar">
                                 <div class="bar-fill" id="tolling_coverage_bar"></div>
                             </div>
                             <div class="stability-value" id="rpt_tolling_coverage">-</div>
                         </div>
                         <div class="stability-item">
-                            <div class="stability-label">Tolling收入占比</div>
+                            <div class="stability-label" data-i18n="tollingRatio">Tolling收入占比</div>
                             <div class="stability-bar">
                                 <div class="bar-fill bar-secondary" id="tolling_ratio_bar"></div>
                             </div>
                             <div class="stability-value" id="rpt_tolling_ratio">-</div>
                         </div>
                         <div class="stability-item">
-                            <div class="stability-label">收入波动系数</div>
+                            <div class="stability-label" data-i18n="revenueVolatility">收入波动系数</div>
                             <div class="stability-value" id="rpt_revenue_volatility">-</div>
                         </div>
                     </div>
@@ -1790,36 +1949,36 @@
             <div class="report-section">
                 <div class="section-title">
                     <span class="title-icon">🛡️</span>
-                    <h2>三、偿债能力分析 (Debt Service Analysis)</h2>
+                    <h2 data-i18n="debtServiceAnalysisTitle">三、偿债能力分析 (Debt Service Analysis)</h2>
                 </div>
                 <div class="report-grid">
                     <div class="report-card">
-                        <h3>年度DSCR趋势</h3>
+                        <h3 data-i18n="annualDSCRTrend">年度DSCR趋势</h3>
                         <div class="chart-wrapper">
                             <canvas id="bankDSCRChart"></canvas>
                         </div>
                     </div>
                     <div class="report-card">
-                        <h3>现金流覆盖分析</h3>
+                        <h3 data-i18n="cashFlowCoverageAnalysis">现金流覆盖分析</h3>
                         <div class="chart-wrapper">
                             <canvas id="bankCashCoverageChart"></canvas>
                         </div>
                     </div>
                 </div>
                 <div class="report-card wide">
-                    <h3>贷款偿还计划表</h3>
+                    <h3 data-i18n="loanRepaymentSchedule">贷款偿还计划表</h3>
                     <div class="table-scroll">
                         <table class="bank-table" id="bank_loan_schedule">
                             <thead>
                                 <tr>
-                                    <th>年份</th>
-                                    <th>期初本金余额<br>(万EUR)</th>
-                                    <th>年度利息<br>(万EUR)</th>
-                                    <th>年度还本<br>(万EUR)</th>
-                                    <th>年度还款额<br>(万EUR)</th>
-                                    <th>期末本金余额<br>(万EUR)</th>
-                                    <th>EBITDA<br>(万EUR)</th>
-                                    <th>DSCR</th>
+                                    <th data-i18n="year">年份</th>
+                                    <th data-i18n="openingPrincipalBalance">期初本金余额<br>(万EUR)</th>
+                                    <th data-i18n="annualInterest">年度利息<br>(万EUR)</th>
+                                    <th data-i18n="annualPrincipal">年度还本<br>(万EUR)</th>
+                                    <th data-i18n="annualPayment">年度还款额<br>(万EUR)</th>
+                                    <th data-i18n="closingPrincipalBalance">期末本金余额<br>(万EUR)</th>
+                                    <th data-i18n="ebitda">EBITDA<br>(万EUR)</th>
+                                    <th data-i18n="dscr">DSCR</th>
                                 </tr>
                             </thead>
                             <tbody id="bank_loan_body">
@@ -1834,17 +1993,17 @@
             <div class="report-section">
                 <div class="section-title">
                     <span class="title-icon">📈</span>
-                    <h2>四、盈利能力分析 (Profitability Analysis)</h2>
+                    <h2 data-i18n="profitabilityAnalysisTitle">四、盈利能力分析 (Profitability Analysis)</h2>
                 </div>
                 <div class="report-grid">
                     <div class="report-card">
-                        <h3>年度利润趋势</h3>
+                        <h3 data-i18n="annualProfitTrend">年度利润趋势</h3>
                         <div class="chart-wrapper">
                             <canvas id="bankProfitChart"></canvas>
                         </div>
                     </div>
                     <div class="report-card">
-                        <h3>累计现金流</h3>
+                        <h3 data-i18n="cumulativeCashFlow">累计现金流</h3>
                         <div class="chart-wrapper">
                             <canvas id="bankCumulativeCFChart"></canvas>
                         </div>
@@ -1853,19 +2012,19 @@
                 <div class="profitability-summary">
                     <div class="profit-metric">
                         <div class="metric-value" id="rpt_avg_ebitda">-</div>
-                        <div class="metric-label">年均EBITDA<br>(万EUR)</div>
+                        <div class="metric-label" data-i18n="avgEBITDA">年均EBITDA<br>(万EUR)</div>
                     </div>
                     <div class="profit-metric">
                         <div class="metric-value" id="rpt_avg_net_profit">-</div>
-                        <div class="metric-label">年均净利润<br>(万EUR)</div>
+                        <div class="metric-label" data-i18n="avgNetProfit">年均净利润<br>(万EUR)</div>
                     </div>
                     <div class="profit-metric">
                         <div class="metric-value" id="rpt_ebitda_margin">-</div>
-                        <div class="metric-label">EBITDA利润率<br>(%)</div>
+                        <div class="metric-label" data-i18n="ebitdaMargin">EBITDA利润率<br>(%)</div>
                     </div>
                     <div class="profit-metric">
                         <div class="metric-value" id="rpt_net_margin">-</div>
-                        <div class="metric-label">净利润率<br>(%)</div>
+                        <div class="metric-label" data-i18n="netMargin">净利润率<br>(%)</div>
                     </div>
                 </div>
             </div>
@@ -1874,24 +2033,24 @@
             <div class="report-section">
                 <div class="section-title">
                     <span class="title-icon">⚠️</span>
-                    <h2>五、风险分析与压力测试 (Risk Analysis)</h2>
+                    <h2 data-i18n="riskAnalysisTitle">五、风险分析与压力测试 (Risk Analysis)</h2>
                 </div>
                 <div class="report-card wide">
-                    <h3>关键指标敏感性分析</h3>
+                    <h3 data-i18n="sensitivityAnalysisTitle">关键指标敏感性分析</h3>
                     <div class="chart-wrapper large">
                         <canvas id="bankSensitivityChart"></canvas>
                     </div>
                 </div>
                 <div class="report-grid">
                     <div class="report-card">
-                        <h3>压力测试情景</h3>
+                        <h3 data-i18n="stressTestScenarios">压力测试情景</h3>
                         <table class="stress-test-table">
                             <thead>
                                 <tr>
-                                    <th>情景</th>
-                                    <th>假设条件</th>
-                                    <th>项目IRR</th>
-                                    <th>最低DSCR</th>
+                                    <th data-i18n="scenario">情景</th>
+                                    <th data-i18n="assumptions">假设条件</th>
+                                    <th data-i18n="projectIRR">项目IRR</th>
+                                    <th data-i18n="minDSCR">最低DSCR</th>
                                 </tr>
                             </thead>
                             <tbody id="stress_test_body">
@@ -1900,27 +2059,27 @@
                         </table>
                     </div>
                     <div class="report-card">
-                        <h3>风险评估矩阵</h3>
+                        <h3 data-i18n="riskAssessmentMatrix">风险评估矩阵</h3>
                         <div class="risk-matrix">
                             <div class="risk-item low">
                                 <span class="risk-icon">✅</span>
-                                <span class="risk-text">市场风险: 低</span>
-                                <span class="risk-note">Tolling合同锁定</span>
+                                <span class="risk-text" data-i18n="marketRisk">市场风险: 低</span>
+                                <span class="risk-note" data-i18n="marketRiskNote">Tolling合同锁定</span>
                             </div>
                             <div class="risk-item low">
                                 <span class="risk-icon">✅</span>
-                                <span class="risk-text">技术风险: 低</span>
-                                <span class="risk-note">成熟锂电技术</span>
+                                <span class="risk-text" data-i18n="technicalRisk">技术风险: 低</span>
+                                <span class="risk-note" data-i18n="technicalRiskNote">成熟锂电技术</span>
                             </div>
                             <div class="risk-item medium">
                                 <span class="risk-icon">⚠️</span>
-                                <span class="risk-text">运营风险: 中</span>
-                                <span class="risk-note">电池衰减管理</span>
+                                <span class="risk-text" data-i18n="operationalRisk">运营风险: 中</span>
+                                <span class="risk-note" data-i18n="operationalRiskNote">电池衰减管理</span>
                             </div>
                             <div class="risk-item low">
                                 <span class="risk-icon">✅</span>
-                                <span class="risk-text">政策风险: 低</span>
-                                <span class="risk-note">德国能源转型支持</span>
+                                <span class="risk-text" data-i18n="policyRisk">政策风险: 低</span>
+                                <span class="risk-note" data-i18n="policyRiskNote">德国能源转型支持</span>
                             </div>
                         </div>
                     </div>
@@ -1931,17 +2090,17 @@
             <div class="report-section">
                 <div class="section-title">
                     <span class="title-icon">📊</span>
-                    <h2>六、财务结构分析 (Financial Structure)</h2>
+                    <h2 data-i18n="financialStructureAnalysisTitle">六、财务结构分析 (Financial Structure)</h2>
                 </div>
                 <div class="report-grid">
                     <div class="report-card">
-                        <h3>资产负债率趋势</h3>
+                        <h3 data-i18n="leverageRatioTrend">资产负债率趋势</h3>
                         <div class="chart-wrapper">
                             <canvas id="bankLeverageChart"></canvas>
                         </div>
                     </div>
                     <div class="report-card">
-                        <h3>净资产收益率(ROE)趋势</h3>
+                        <h3 data-i18n="roeTrend">净资产收益率(ROE)趋势</h3>
                         <div class="chart-wrapper">
                             <canvas id="bankROEChart"></canvas>
                         </div>
@@ -1953,23 +2112,23 @@
             <div class="report-section">
                 <div class="section-title">
                     <span class="title-icon">✅</span>
-                    <h2>七、结论与建议 (Conclusion)</h2>
+                    <h2 data-i18n="conclusionTitle">七、结论与建议 (Conclusion)</h2>
                 </div>
                 <div class="conclusion-box">
                     <div class="conclusion-rating" id="conclusion_rating">
                         <span class="rating-icon">⭐</span>
-                        <span class="rating-text">投资评级: <strong id="rpt_rating">-</strong></span>
+                        <span class="rating-text" data-i18n="investmentRating">投资评级: <strong id="rpt_rating">-</strong></span>
                     </div>
                     <div class="conclusion-content">
-                        <h4>项目优势:</h4>
+                        <h4 data-i18n="projectStrengths">项目优势:</h4>
                         <ul id="project_strengths">
                             <!-- 动态生成 -->
                         </ul>
-                        <h4>关注事项:</h4>
+                        <h4 data-i18n="projectConcerns">关注事项:</h4>
                         <ul id="project_concerns">
                             <!-- 动态生成 -->
                         </ul>
-                        <h4>融资建议:</h4>
+                        <h4 data-i18n="financingRecommendations">融资建议:</h4>
                         <p id="financing_recommendation">-</p>
                     </div>
                 </div>
@@ -1979,12 +2138,12 @@
             <div class="report-section">
                 <div class="section-title">
                     <span class="title-icon">📑</span>
-                    <h2>附录：财务预测明细表 (Appendix)</h2>
+                    <h2 data-i18n="appendixTitle">附录：财务预测明细表 (Appendix)</h2>
                 </div>
                 <div class="appendix-tabs">
-                    <button class="appendix-tab active" onclick="switchAppendix('cashflow_proj')">现金流预测</button>
-                    <button class="appendix-tab" onclick="switchAppendix('income_proj')">损益预测</button>
-                    <button class="appendix-tab" onclick="switchAppendix('balance_proj')">资产负债预测</button>
+                    <button class="appendix-tab active" onclick="switchAppendix('cashflow_proj')" data-i18n="cashFlowForecast">现金流预测</button>
+                    <button class="appendix-tab" onclick="switchAppendix('income_proj')" data-i18n="incomeForecast">损益预测</button>
+                    <button class="appendix-tab" onclick="switchAppendix('balance_proj')" data-i18n="balanceSheetForecast">资产负债预测</button>
                 </div>
                 <div id="appendix_cashflow_proj" class="appendix-content active">
                     <div class="table-scroll">
@@ -2026,8 +2185,8 @@
 
             <!-- 报告页脚 -->
             <div class="report-footer">
-                <p>本报告由德国独立储能电站投资测算系统自动生成，仅供融资决策参考。</p>
-                <p>This report is auto-generated for financing decision reference only.</p>
+                <p data-i18n="reportFooterZh">本报告由德国独立储能电站投资测算系统自动生成，仅供融资决策参考。</p>
+                <p data-i18n="reportFooterEn">This report is auto-generated for financing decision reference only.</p>
             </div>
         </section>
     </main>
@@ -2036,131 +2195,130 @@
     <div id="helpModal" class="modal" style="display: none;">
         <div class="modal-content help-modal-content">
             <div class="modal-header">
-                <h2>📖 使用帮助</h2>
+                <h2 data-i18n="helpModalTitle">📖 使用帮助</h2>
                 <button class="modal-close" onclick="closeHelp()">&times;</button>
             </div>
             <div class="modal-body help-body">
                 <div class="help-tabs">
-                    <button class="help-tab active" onclick="switchHelpTab('quickstart')">快速开始</button>
-                    <button class="help-tab" onclick="switchHelpTab('parameters')">参数设定</button>
-                    <button class="help-tab" onclick="switchHelpTab('features')">功能说明</button>
-                    <button class="help-tab" onclick="switchHelpTab('finance')">财务知识</button>
-                    <button class="help-tab" onclick="switchHelpTab('tips')">使用技巧</button>
+                    <button class="help-tab active" onclick="switchHelpTab('quickstart')" data-i18n="helpTabQuickstart">快速开始</button>
+                    <button class="help-tab" onclick="switchHelpTab('parameters')" data-i18n="helpTabParameters">参数设定</button>
+                    <button class="help-tab" onclick="switchHelpTab('features')" data-i18n="helpTabFeatures">功能说明</button>
+                    <button class="help-tab" onclick="switchHelpTab('finance')" data-i18n="helpTabFinance">财务知识</button>
+                    <button class="help-tab" onclick="switchHelpTab('tips')" data-i18n="helpTabTips">使用技巧</button>
                 </div>
                 
                 <div id="help-quickstart" class="help-tab-content active">
-                    <h3>🚀 快速开始</h3>
+                    <h3 data-i18n="quickstartTitle">🚀 快速开始</h3>
                     <ol>
-                        <li><strong>登录系统</strong>：使用您的用户名和密码登录系统</li>
-                        <li><strong>设定参数</strong>：在"边界设定"标签页中设置项目基础参数
+                        <li data-i18n="quickstartStep1"><strong>登录系统</strong>：使用您的用户名和密码登录系统</li>
+                        <li data-i18n="quickstartStep2"><strong>设定参数</strong>：在"边界设定"标签页中设置项目基础参数
                             <ul>
-                                <li>电站功率和容量</li>
-                                <li>电池型号（选择后会自动填充衰减参数）</li>
-                                <li>设备配置和价格</li>
-                                <li>融资参数</li>
+                                <li data-i18n="quickstartParam1">电站功率和容量</li>
+                                <li data-i18n="quickstartParam2">电池型号（选择后会自动填充衰减参数）</li>
+                                <li data-i18n="quickstartParam3">设备配置和价格</li>
+                                <li data-i18n="quickstartParam4">融资参数</li>
                             </ul>
                         </li>
-                        <li><strong>设定OPEX</strong>：在"OPEX设定"标签页中设置年度运营成本</li>
-                        <li><strong>设定收入</strong>：在"收入预测"标签页中设置收入来源和价格</li>
-                        <li><strong>查看结果</strong>：点击"计算"按钮或修改参数后自动计算，查看财务指标和报表</li>
+                        <li data-i18n="quickstartStep3"><strong>设定OPEX</strong>：在"OPEX设定"标签页中设置年度运营成本</li>
+                        <li data-i18n="quickstartStep4"><strong>设定收入</strong>：在"收入预测"标签页中设置收入来源和价格</li>
+                        <li data-i18n="quickstartStep5"><strong>查看结果</strong>：点击"计算"按钮或修改参数后自动计算，查看财务指标和报表</li>
                     </ol>
                     <div class="help-note">
-                        <strong>💡 提示：</strong>系统支持参数自动计算，修改参数后会在500毫秒后自动更新结果，无需手动点击计算按钮。
+                        <strong data-i18n="quickstartTip">💡 提示：</strong>
+                        <span data-i18n="quickstartTipContent">系统支持参数自动计算，修改参数后会在500毫秒后自动更新结果，无需手动点击计算按钮。</span>
                     </div>
                 </div>
-                
                 <div id="help-parameters" class="help-tab-content" style="display: none;">
-                    <h3>⚙️ 参数设定说明</h3>
+                    <h3 data-i18n="parametersTitle">⚙️ 参数设定说明</h3>
                     
-                    <h4>1. 电站基础参数</h4>
+                    <h4 data-i18n="parametersBasicParams">1. 电站基础参数</h4>
                     <ul>
-                        <li><strong>电站装机功率</strong>：储能系统的额定功率（MW）</li>
-                        <li><strong>电站储能容量</strong>：储能系统的总容量（MWh）</li>
-                        <li><strong>储能时长</strong>：自动计算（容量/功率），通常为2-4小时</li>
-                        <li><strong>运营年限</strong>：项目运营周期，通常为15-20年</li>
-                        <li><strong>首年电池可用容量</strong>：新电池的初始可用容量百分比</li>
+                        <li data-i18n="parametersPower"><strong>电站装机功率</strong>：储能系统的额定功率（MW）</li>
+                        <li data-i18n="parametersCapacity"><strong>电站储能容量</strong>：储能系统的总容量（MWh）</li>
+                        <li data-i18n="parametersDuration"><strong>储能时长</strong>：自动计算（容量/功率），通常为2-4小时</li>
+                        <li data-i18n="parametersOperationYears"><strong>运营年限</strong>：项目运营周期，通常为15-20年</li>
+                        <li data-i18n="parametersInitialCapacity"><strong>首年电池可用容量</strong>：新电池的初始可用容量百分比</li>
                     </ul>
                     
-                    <h4>2. 容量衰减设定</h4>
+                    <h4 data-i18n="parametersDegradation">2. 容量衰减设定</h4>
                     <ul>
-                        <li><strong>衰减模式</strong>：
+                        <li data-i18n="parametersDegradationMode"><strong>衰减模式</strong>：
                             <ul>
-                                <li>线性衰减：固定年衰减率，适用于大多数LFP电池</li>
-                                <li>非线性衰减：前期衰减快，后期衰减慢</li>
-                                <li>循环次数衰减：基于循环次数计算容量损失</li>
+                                <li data-i18n="parametersLinearDegradation">线性衰减：固定年衰减率，适用于大多数LFP电池</li>
+                                <li data-i18n="parametersNonlinearDegradation">非线性衰减：前期衰减快，后期衰减慢</li>
+                                <li data-i18n="parametersCycleBasedDegradation">循环次数衰减：基于循环次数计算容量损失</li>
                             </ul>
                         </li>
-                        <li><strong>自动填充</strong>：选择电池型号后，系统会自动填充该型号的默认衰减参数</li>
+                        <li data-i18n="parametersAutoFill"><strong>自动填充</strong>：选择电池型号后，系统会自动填充该型号的默认衰减参数</li>
                     </ul>
                     
-                    <h4>3. 电池系统</h4>
+                    <h4 data-i18n="parametersBatterySystem">3. 电池系统</h4>
                     <ul>
-                        <li><strong>电池柜型号</strong>：选择电池厂家和型号，系统会自动填充价格和衰减参数</li>
-                        <li><strong>电池单价</strong>：每MWh的电池价格（万EUR），会根据选择的型号自动填充</li>
-                        <li><strong>电池柜数量</strong>：系统根据总容量和单柜容量自动计算</li>
+                        <li data-i18n="parametersBatteryModel"><strong>电池柜型号</strong>：选择电池厂家和型号，系统会自动填充价格和衰减参数</li>
+                        <li data-i18n="parametersBatteryPrice"><strong>电池单价</strong>：每MWh的电池价格（万EUR），会根据选择的型号自动填充</li>
+                        <li data-i18n="parametersBatteryCount"><strong>电池柜数量</strong>：系统根据总容量和单柜容量自动计算</li>
                     </ul>
                     
-                    <h4>4. 融资参数</h4>
+                    <h4 data-i18n="parametersFinancing">4. 融资参数</h4>
                     <ul>
-                        <li><strong>资本金比例</strong>：德国项目通常为25-30%</li>
-                        <li><strong>贷款年限</strong>：通常为10-15年</li>
-                        <li><strong>贷款利率</strong>：2025年欧洲市场基准利率约4-5%</li>
-                        <li><strong>还款方式</strong>：等额本金或等额本息</li>
+                        <li data-i18n="parametersEquityRatio"><strong>资本金比例</strong>：德国项目通常为25-30%</li>
+                        <li data-i18n="parametersLoanTerm"><strong>贷款年限</strong>：通常为10-15年</li>
+                        <li data-i18n="parametersLoanRate"><strong>贷款利率</strong>：2025年欧洲市场基准利率约4-5%</li>
+                        <li data-i18n="parametersRepaymentMethod"><strong>还款方式</strong>：等额本金或等额本息</li>
                     </ul>
                     
-                    <h4>5. CAPEX设定</h4>
+                    <h4 data-i18n="parametersCapex">5. CAPEX设定</h4>
                     <ul>
-                        <li>系统会自动根据设备配置计算各项CAPEX</li>
-                        <li>包括：设备费、电网接入、土地基建、安装施工、保险、开发费用等</li>
-                        <li>所有参数修改后，CAPEX明细表会自动更新</li>
+                        <li data-i18n="parametersCapexAuto">系统会自动根据设备配置计算各项CAPEX</li>
+                        <li data-i18n="parametersCapexItems">包括：设备费、电网接入、土地基建、安装施工、保险、开发费用等</li>
+                        <li data-i18n="parametersCapexUpdate">所有参数修改后，CAPEX明细表会自动更新</li>
                     </ul>
                 </div>
                 
                 <div id="help-features" class="help-tab-content" style="display: none;">
-                    <h3>✨ 功能说明</h3>
+                    <h3 data-i18n="featuresTitle">✨ 功能说明</h3>
                     
-                    <h4>1. 自动计算功能</h4>
+                    <h4 data-i18n="featuresAutoCalc">1. 自动计算功能</h4>
                     <ul>
-                        <li>修改任何参数后，系统会在500毫秒后自动重新计算</li>
-                        <li>无需手动点击"计算"按钮</li>
-                        <li>所有表格和图表会自动更新</li>
+                        <li data-i18n="featuresAutoCalc1">修改任何参数后，系统会在500毫秒后自动重新计算</li>
+                        <li data-i18n="featuresAutoCalc2">无需手动点击"计算"按钮</li>
+                        <li data-i18n="featuresAutoCalc3">所有表格和图表会自动更新</li>
                     </ul>
                     
-                    <h4>2. 数据格式化</h4>
+                    <h4 data-i18n="featuresFormatting">2. 数据格式化</h4>
                     <ul>
-                        <li>所有数值使用德国千分位格式显示（1.234.567,89）</li>
-                        <li>金额单位：万EUR</li>
-                        <li>百分比自动格式化</li>
+                        <li data-i18n="featuresFormatting1">所有数值使用德国千分位格式显示（1.234.567,89）</li>
+                        <li data-i18n="featuresFormatting2">金额单位：万EUR</li>
+                        <li data-i18n="featuresFormatting3">百分比自动格式化</li>
                     </ul>
                     
-                    <h4>3. 模型保存与导入</h4>
+                    <h4 data-i18n="featuresSaveImport">3. 模型保存与导入</h4>
                     <ul>
-                        <li><strong>保存模型</strong>：点击"保存"按钮，将当前所有参数保存为JSON文件</li>
-                        <li><strong>导入模型</strong>：点击"导入"按钮，加载之前保存的模型参数</li>
-                        <li>方便不同场景的参数对比和方案管理</li>
+                        <li data-i18n="featuresSaveModel"><strong>保存模型</strong>：点击"保存"按钮，将当前所有参数保存为JSON文件</li>
+                        <li data-i18n="featuresImportModel"><strong>导入模型</strong>：点击"导入"按钮，加载之前保存的模型参数</li>
+                        <li data-i18n="featuresCompareScenarios">方便不同场景的参数对比和方案管理</li>
                     </ul>
                     
-                    <h4>4. 报表导出</h4>
+                    <h4 data-i18n="featuresExport">4. 报表导出</h4>
                     <ul>
-                        <li><strong>导出报表</strong>：生成完整的财务分析报告（PDF格式）</li>
-                        <li>包含：项目概览、CAPEX明细、财务指标、财务报表等</li>
-                        <li>适用于向投资方、银行等机构展示</li>
+                        <li data-i18n="featuresExportReport"><strong>导出报表</strong>：生成完整的财务分析报告（PDF格式）</li>
+                        <li data-i18n="featuresExportContent">包含：项目概览、CAPEX明细、财务指标、财务报表等</li>
+                        <li data-i18n="featuresExportPurpose">适用于向投资方、银行等机构展示</li>
                     </ul>
                     
-                    <h4>5. 敏感性分析</h4>
+                    <h4 data-i18n="featuresSensitivity">5. 敏感性分析</h4>
                     <ul>
-                        <li>分析关键参数变化对财务指标的影响</li>
-                        <li>支持多参数同时变化分析</li>
-                        <li>生成敏感性分析图表</li>
+                        <li data-i18n="featuresSensitivity1">分析关键参数变化对财务指标的影响</li>
+                        <li data-i18n="featuresSensitivity2">支持多参数同时变化分析</li>
+                        <li data-i18n="featuresSensitivity3">生成敏感性分析图表</li>
                     </ul>
                     
-                    <h4>6. 融资报告</h4>
+                    <h4 data-i18n="featuresFinancingReport">6. 融资报告</h4>
                     <ul>
-                        <li>生成银行融资所需的财务报告</li>
-                        <li>包含：项目概览、财务指标、现金流预测、偿债能力分析等</li>
+                        <li data-i18n="featuresFinancingReport1">生成银行融资所需的财务报告</li>
+                        <li data-i18n="featuresFinancingReport2">包含：项目概览、财务指标、现金流预测、偿债能力分析等</li>
                     </ul>
                 </div>
-                
                 <div id="help-finance" class="help-tab-content" style="display: none;">
                     <h3>📚 财务知识专栏</h3>
                     
@@ -2693,12 +2851,248 @@
             </div>
         </div>
     </div>
-
     <!-- 页脚 -->
     <footer class="footer">
         <p>德国独立储能电站投资测算系统 v1.0 | 财务模型仅供参考，请结合实际情况决策</p>
     </footer>
 
     <script src="financial-model.js"></script>
+    <!-- 语言切换逻辑 -->
+    <script>
+        // 语言映射表（和登录页、注册页保持一致）
+        const langMap = {
+            zh: {
+                // 导航栏
+                index: {
+                    brandText: "德国独立储能电站投资测算系统",
+                    navParameters: "边界设定",
+                    navOpex: "OPEX设定",
+                    navRevenue: "收入预测",
+                    navIndicators: "财务指标",
+                    navStatements: "财务报表",
+                    navSensitivity: "敏感性分析",
+                    navBankReport: "融资报告",
+                    helpBtn: "帮助",
+                    importBtn: "导入",
+                    saveBtn: "保存",
+                    exportReportBtn: "导出",
+                    exportExcelBtn: "Excel",
+                    calculateBtn: "计算",
+                    logoutBtn: "退出",
+                    
+                    // 边界设定界面
+                    parameters: {
+                        sectionTitle: "📊 项目边界条件设定",
+                        sectionDesc: "设置储能电站的基础参数和设备配置",
+                        basicParamsCard: "电站基础参数",
+                        powerLabel: "电站装机功率",
+                        powerHint: "德国大型储能项目典型规模",
+                        capacityLabel: "电站储能容量",
+                        capacityHint: "2小时储能配置",
+                        durationLabel: "储能时长",
+                        operationYearsLabel: "电站运营年限",
+                        operationYearsHint: "行业标准运营周期",
+                        initialCapacityLabel: "首年电池可用容量",
+                        
+                        degradationCard: "容量衰减设定",
+                        degradationModeLabel: "衰减模式",
+                        degradationModeHint: "根据电池特性选择衰减模式",
+                        degradationRateLabel: "年电池容量衰减率",
+                        degradationRateHint: "线性衰减模式：固定年衰减率",
+                        firstYearDegradationLabel: "首年衰减率",
+                        firstYearDegradationHint: "非线性衰减：首年衰减率（通常较高）",
+                        annualDecreaseLabel: "年衰减率递减幅度",
+                        annualDecreaseHint: "非线性衰减：每年衰减率递减幅度",
+                        cyclesPerDegradationLabel: "每1000次循环衰减率",
+                        cyclesPerDegradationHint: "循环次数衰减：每1000次循环的容量损失",
+                        annualCyclesLabel: "年运行循环次数",
+                        annualCyclesHint: "用于循环次数衰减模式计算",
+                        capacityThresholdLabel: "容量保持率阈值",
+                        capacityThresholdHint: "低于此阈值建议更换电池"
+                    }
+                }
+            },
+            en: {
+                // 导航栏
+                index: {
+                    brandText: "German Independent Energy Storage Power Plant Investment Calculation System",
+                    navParameters: "Boundary Settings",
+                    navOpex: "OPEX Settings",
+                    navRevenue: "Revenue Forecast",
+                    navIndicators: "Financial Indicators",
+                    navStatements: "Financial Statements",
+                    navSensitivity: "Sensitivity Analysis",
+                    navBankReport: "Financing Report",
+                    helpBtn: "Help",
+                    importBtn: "Import",
+                    saveBtn: "Save",
+                    exportReportBtn: "Export",
+                    exportExcelBtn: "Excel",
+                    calculateBtn: "Calculate",
+                    logoutBtn: "Logout",
+                    
+                    // 边界设定界面
+                    parameters: {
+                        sectionTitle: "📊 Project Boundary Conditions",
+                        sectionDesc: "Set basic parameters and equipment configuration for the energy storage power plant",
+                        basicParamsCard: "Basic Power Plant Parameters",
+                        powerLabel: "Installed Power Capacity",
+                        powerHint: "Typical scale for large energy storage projects in Germany",
+                        capacityLabel: "Energy Storage Capacity",
+                        capacityHint: "2-hour storage configuration",
+                        durationLabel: "Storage Duration",
+                        operationYearsLabel: "Operation Years",
+                        operationYearsHint: "Industry standard operation cycle",
+                        initialCapacityLabel: "Initial Battery Available Capacity",
+                        
+                        degradationCard: "Capacity Degradation Settings",
+                        degradationModeLabel: "Degradation Mode",
+                        linearDegradation: "Linear Degradation (Fixed Annual Rate)",
+                        nonlinearDegradation: "Nonlinear Degradation (Fast at First, Slow Later)",
+                        cycleBasedDegradation: "Cycle-Based Degradation",
+                        degradationModeHint: "Select degradation mode based on battery characteristics",
+                        degradationRateLabel: "Annual Battery Capacity Degradation Rate",
+                        degradationRateHint: "Linear degradation mode: fixed annual degradation rate",
+                        firstYearDegradationLabel: "First Year Degradation Rate",
+                        firstYearDegradationHint: "Nonlinear degradation: first year degradation rate (usually higher)",
+                        annualDecreaseLabel: "Annual Decrease in Degradation Rate",
+                        annualDecreaseHint: "Nonlinear degradation: annual decrease in degradation rate",
+                        cyclesPerDegradationLabel: "Degradation Rate per 1000 Cycles",
+                        cyclesPerDegradationHint: "Cycle-based degradation: capacity loss per 1000 cycles",
+                        annualCyclesLabel: "Annual Operation Cycles",
+                        annualCyclesHint: "Used for cycle-based degradation mode calculation",
+                        capacityThresholdLabel: "Capacity Retention Threshold",
+                        capacityThresholdHint: "Battery replacement recommended below this threshold"
+                    }
+                }
+            },
+            de: {
+                // 导航栏
+                index: {
+                    brandText: "Deutsches unabhängiges Energiespeicher-Kraftwerk-Investitionsberechnungssystem",
+                    navParameters: "Grenzwerteinstellungen",
+                    navOpex: "OPEX-Einstellungen",
+                    navRevenue: "Einnahmenprognose",
+                    navIndicators: "Finanzindikatoren",
+                    navStatements: "Finanzberichte",
+                    navSensitivity: "Sensitivitätsanalyse",
+                    navBankReport: "Finanzierungsbericht",
+                    helpBtn: "Hilfe",
+                    importBtn: "Importieren",
+                    saveBtn: "Speichern",
+                    exportReportBtn: "Exportieren",
+                    exportExcelBtn: "Excel",
+                    calculateBtn: "Berechnen",
+                    logoutBtn: "Abmelden",
+                    
+                    // 边界设定界面
+                    parameters: {
+                        sectionTitle: "📊 Projektgrenzbedingungseinstellungen",
+                        sectionDesc: "Stellen Sie die Grundparameter und die Gerätekonfiguration des Energiespeicher-Kraftwerks ein",
+                        basicParamsCard: "Grundlegende Kraftwerksparameter",
+                        powerLabel: "Installierte Leistung",
+                        powerHint: "Typische Größe für große Energiespeicherprojekte in Deutschland",
+                        capacityLabel: "Energiespeicherkapazität",
+                        capacityHint: "2-Stunden-Speicher-Konfiguration",
+                        durationLabel: "Speicherdauer",
+                        operationYearsLabel: "Betriebsjahre",
+                        operationYearsHint: "Branchenstandardbetriebszyklus",
+                        initialCapacityLabel: "Erstjährige verfügbare Batteriekapazität",
+                        
+                        degradationCard: "Kapazitätsabbaueinstellungen",
+                        degradationModeLabel: "Abbaumodus",
+                        linearDegradation: "Lineare Degradation (feste jährliche Rate)",
+                        nonlinearDegradation: "Nichtlineare Degradation (zuerst schnell, später langsam)",
+                        cycleBasedDegradation: "Zyklusbasierte Degradation",
+                        degradationModeHint: "Wählen Sie den Abbaumodus basierend auf den Batterieeigenschaften",
+                        degradationRateLabel: "Jährliche Batteriekapazitätsabbaurate",
+                        degradationRateHint: "Linearer Abbaumodus: feste jährliche Abbaurate",
+                        firstYearDegradationLabel: "Erstjährige Abbaurate",
+                        firstYearDegradationHint: "Nichtlineare Degradation: Erstjährige Abbaurate (normalerweise höher)",
+                        annualDecreaseLabel: "Jährliche Abnahme der Abbaurate",
+                        annualDecreaseHint: "Nichtlineare Degradation: jährliche Abnahme der Abbaurate",
+                        cyclesPerDegradationLabel: "Abbaurate pro 1000 Zyklen",
+                        cyclesPerDegradationHint: "Zyklusbasierte Degradation: Kapazitätsverlust pro 1000 Zyklen",
+                        annualCyclesLabel: "Jährliche Betriebszyklen",
+                        annualCyclesHint: "Verwendet für die zyklusbasierte Abbaumodusberechnung",
+                        capacityThresholdLabel: "Kapazitätserhaltungsschwelle",
+                        capacityThresholdHint: "Batterieersatz empfohlen unterhalb dieser Schwelle"
+                    }
+                }
+            }
+        };
+
+        // 全局语言变量 + 初始化
+        let currentLang = localStorage.getItem('selectedLang') || 'zh';
+
+        document.addEventListener('DOMContentLoaded', function() {
+            // 绑定语言切换事件
+            bindLangSwitchEvent();
+            // 初始化语言状态（自动应用登录页选择的语言）
+            updateLangBtnStatus();
+            updatePageLang(currentLang);
+        });
+
+        // 绑定语言切换事件
+        function bindLangSwitchEvent() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                // 先移除可能重复的事件，避免冲突
+                btn.removeEventListener('click', handleLangClick);
+                // 重新绑定事件
+                btn.addEventListener('click', handleLangClick);
+            });
+        }
+
+        // 语言切换点击处理函数
+        function handleLangClick() {
+            currentLang = this.dataset.lang;
+            // 保存到localStorage，实现登录/注册页同步
+            localStorage.setItem('selectedLang', currentLang);
+            // 更新按钮状态和页面文字
+            updateLangBtnStatus();
+            updatePageLang(currentLang);
+        }
+
+        // 更新语言按钮激活状态
+        function updateLangBtnStatus() {
+            document.querySelectorAll('.lang-btn').forEach(btn => {
+                btn.classList.remove('active');
+                if (btn.dataset.lang === currentLang) {
+                    btn.classList.add('active');
+                }
+            });
+        }
+
+        // 核心：更新页面所有文字
+        function updatePageLang(lang) {
+            const langData = langMap[lang];
+            if (!langData) return;
+
+            // 更新页面文字
+            document.querySelectorAll('[data-i18n]').forEach(el => {
+                const keyPath = el.dataset.i18n.split('.');
+                let text = langData;
+                
+                // 遍历键路径找到对应的值
+                for (const key of keyPath) {
+                    if (text && text[key]) {
+                        text = text[key];
+                    } else {
+                        // 尝试直接在langData中查找（处理顶级键）
+                        if (langData[key]) {
+                            text = langData[key];
+                        } else {
+                            text = null;
+                        }
+                        break;
+                    }
+                }
+                
+                if (text) {
+                    el.textContent = text;
+                }
+            });
+        }
+    </script>
 </body>
 </html>
