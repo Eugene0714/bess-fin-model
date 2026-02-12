@@ -618,8 +618,6 @@
                     登 录 系 统
                 </button>
 
-                <p class="attempts-count" id="attemptsCount"></p>
-
                 <div class="register-link">
                     <!-- 🌟 添加多语言标记 -->
                     <span class="register-link-text" data-i18n="registerLinkText">还没有账号？</span>
@@ -637,22 +635,7 @@
         </div>
     </div>
 
-    <div class="modal-overlay" id="lockModal">
-        <div class="modal-content">
-            <div class="modal-icon">🔐</div>
-            <!-- 🌟 添加多语言标记 -->
-            <h2 class="modal-title" data-i18n="lockModalTitle">账户已锁定</h2>
-            <p class="modal-text" data-i18n="lockModalText">
-                您已连续 5 次输入错误密码，<br>
-                账户已被临时锁定。<br>
-                请联系管理员解锁：
-            </p>
-            <div class="modal-email">📧 zhangliu@temax.e</div>
-            <br>
-            <!-- 🌟 添加多语言标记 -->
-            <button class="modal-btn" onclick="closeModal()" data-i18n="lockModalBtn">我知道了</button>
-        </div>
-    </div>
+    <!-- 移除账户锁定模态框 -->
 
     <script>
         // 保留原有预设账号（兼容旧逻辑）
@@ -662,9 +645,7 @@
             'demo': 'demo'
         };
 
-        const MAX_ATTEMPTS = 5;
-        let loginAttempts = parseInt(localStorage.getItem('loginAttempts') || '0');
-        let isLocked = localStorage.getItem('isLocked') === 'true';
+        // 移除账户锁定功能相关变量
 
         // 后端接口地址（对接json-server）
         const API_URL = 'http://localhost:3000/users';
@@ -681,13 +662,8 @@
                 registerLinkText: "还没有账号？",
                 registerLink: "立即注册",
                 footerText: "© 2025 Beijing Zhongheng Technology Co., Ltd.<br>如需技术支持，请联系 <a href='mailto:lingxiao385@gmail.com'>lingxiao385@gmail.com</a>",
-                lockModalTitle: "账户已锁定",
-                lockModalText: "您已连续 5 次输入错误密码，<br>账户已被临时锁定。<br>请联系管理员解锁：",
-                lockModalBtn: "我知道了",
                 errorDefault: "用户名或密码错误",
-                errorNetwork: "登录失败：请检查后端服务是否已启动",
-                errorAttempts: "用户名或密码错误，您还有 {count} 次尝试机会",
-                attemptsDisplay: "已尝试 {current} 次，还剩 {remaining} 次机会"
+                errorNetwork: "登录失败：请检查后端服务是否已启动"
             },
             en: {
                 systemTitle: "Germany Independent Energy Storage Power Station Investment Calculation System",
@@ -699,13 +675,8 @@
                 registerLinkText: "Don't have an account?",
                 registerLink: "Register Now",
                 footerText: "© 2025 Beijing Zhongheng Technology Co., Ltd.<br>For technical support, please contact <a href='mailto:lingxiao385@gmail.com'>lingxiao385@gmail.com</a>",
-                lockModalTitle: "Account Locked",
-                lockModalText: "You have entered the wrong password 5 times in a row,<br>your account has been temporarily locked.<br>Please contact administrator to unlock:",
-                lockModalBtn: "I Understand",
                 errorDefault: "Username or password is incorrect",
-                errorNetwork: "Login failed: Please check if the backend service is running",
-                errorAttempts: "Username or password is incorrect, you have {count} attempts left",
-                attemptsDisplay: "Attempted {current} times, {remaining} attempts left"
+                errorNetwork: "Login failed: Please check if the backend service is running"
             },
             de: {
                 systemTitle: "Investitionsberechnungsystem für unabhängige Energiespeicheranlagen in Deutschland",
@@ -717,13 +688,8 @@
                 registerLinkText: "Haben Sie kein Konto?",
                 registerLink: "Jetzt registrieren",
                 footerText: "© 2025 Beijing Zhongheng Technology Co., Ltd.<br>Für technischen Support kontaktieren Sie <a href='mailto:lingxiao385@gmail.com'>lingxiao385@gmail.com</a>",
-                lockModalTitle: "Konto gesperrt",
-                lockModalText: "Sie haben das falsche Passwort 5 Mal in Folge eingegeben,<br>Ihr Konto wurde vorübergehend gesperrt.<br>Bitte kontaktieren Sie den Administrator zur Entsperrung:",
-                lockModalBtn: "Verstanden",
                 errorDefault: "Benutzername oder Passwort ist falsch",
-                errorNetwork: "Anmeldung fehlgeschlagen: Bitte prüfen Sie, ob der Backend-Dienst läuft",
-                errorAttempts: "Benutzername oder Passwort ist falsch, Sie haben {count} Versuche übrig",
-                attemptsDisplay: "{current} Versuche unternommen, {remaining} Versuche übrig"
+                errorNetwork: "Anmeldung fehlgeschlagen: Bitte prüfen Sie, ob der Backend-Dienst läuft"
             }
         };
 
@@ -735,16 +701,9 @@
             updateLangBtnStatus();
             updatePageLang(currentLang);
 
-            if (isLocked) {
-                showLockModal();
-                disableForm();
-            }
-
             if (sessionStorage.getItem('isLoggedIn') === 'true') {
                 window.location.href = 'index.html';
             }
-
-            updateAttemptsDisplay();
         });
 
         // 🌟 3. 新增：语言切换按钮点击事件
@@ -786,11 +745,6 @@
                     el.placeholder = langData[key];
                 }
             });
-
-            // 更新尝试次数显示（如果有）
-            if (loginAttempts > 0 && loginAttempts < MAX_ATTEMPTS) {
-                updateAttemptsDisplay();
-            }
         }
 
         // 🌟 6. 新增：多语言错误提示
@@ -813,29 +767,11 @@
             }, 10);
         }
 
-        // 🌟 7. 改造：更新尝试次数显示（支持多语言）
-        function updateAttemptsDisplay() {
-            const attemptsDiv = document.getElementById('attemptsCount');
-            const langData = langMap[currentLang];
-            
-            if (loginAttempts > 0 && loginAttempts < MAX_ATTEMPTS) {
-                const message = langData.attemptsDisplay
-                    .replace('{current}', loginAttempts)
-                    .replace('{remaining}', MAX_ATTEMPTS - loginAttempts);
-                attemptsDiv.textContent = message;
-            } else {
-                attemptsDiv.textContent = '';
-            }
-        }
+        // 移除尝试次数显示函数
 
-        // 🌟 核心修改：异步登录逻辑，对接后端接口（仅修改提示语调用）
+        // 🌟 核心修改：异步登录逻辑，对接后端接口（移除账户锁定功能）
         async function handleLogin(event) {
             event.preventDefault();
-
-            if (isLocked) {
-                showLockModal();
-                return false;
-            }
 
             const username = document.getElementById('username').value.trim();
             const password = document.getElementById('password').value;
@@ -871,8 +807,6 @@
                 // 4. 登录结果处理
                 if (userFound) {
                     // 登录成功
-                    loginAttempts = 0;
-                    localStorage.setItem('loginAttempts', '0');
                     sessionStorage.setItem('isLoggedIn', 'true');
                     sessionStorage.setItem('username', username);
                     
@@ -885,20 +819,8 @@
                     }, 800);
                 } else {
                     // 登录失败
-                    loginAttempts++;
-                    localStorage.setItem('loginAttempts', loginAttempts.toString());
-
-                    if (loginAttempts >= MAX_ATTEMPTS) {
-                        isLocked = true;
-                        localStorage.setItem('isLocked', 'true');
-                        showLockModal();
-                        disableForm();
-                    } else {
-                        // 🌟 多语言失败提示
-                        showError('errorAttempts', { count: MAX_ATTEMPTS - loginAttempts });
-                    }
-
-                    updateAttemptsDisplay();
+                    // 🌟 多语言失败提示
+                    showError('errorDefault');
                 }
             } catch (error) {
                 // 网络错误/服务未启动
@@ -922,21 +844,7 @@
             document.getElementById('errorMessage').classList.remove('show');
         }
 
-        function showLockModal() {
-            document.getElementById('lockModal').classList.add('show');
-        }
-
-        function closeModal() {
-            document.getElementById('lockModal').classList.remove('show');
-        }
-
-        function disableForm() {
-            document.getElementById('username').disabled = true;
-            document.getElementById('password').disabled = true;
-            document.getElementById('loginBtn').disabled = true;
-            // 🌟 多语言锁定提示
-            document.getElementById('loginBtn').textContent = currentLang === 'zh' ? '账户已锁定' : currentLang === 'en' ? 'Account Locked' : 'Konto gesperrt';
-        }
+        // 移除与账户锁定相关的辅助函数
 
         document.getElementById('username').addEventListener('input', hideError);
         document.getElementById('password').addEventListener('input', hideError);
