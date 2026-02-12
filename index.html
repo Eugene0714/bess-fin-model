@@ -361,36 +361,36 @@
                                 <input type="number" id="equity_ratio" value="25" min="10" max="100">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">德国项目融资典型比例25-30%</span>
+                            <span class="hint" data-i18n="hintEquityRatio">德国项目融资典型比例25-30%</span>
                         </div>
                         <div class="input-group">
-                            <label>贷款年限</label>
+                            <label data-i18n="labelLoanYears">贷款年限</label>
                             <div class="input-with-unit">
                                 <input type="number" id="loan_years" value="12" min="1" max="25">
                                 <span class="unit">年</span>
                             </div>
-                            <span class="hint">德国银行储能项目常见贷款期限</span>
+                            <span class="hint" data-i18n="hintLoanYears">德国银行储能项目常见贷款期限</span>
                         </div>
                         <div class="input-group">
-                            <label>贷款利率</label>
+                            <label data-i18n="labelLoanRate">贷款利率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="loan_rate" value="4.5" min="0" max="20" step="0.1">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">2025年欧洲市场基准利率水平</span>
+                            <span class="hint" data-i18n="hintLoanRate">2025年欧洲市场基准利率水平</span>
                         </div>
                         <div class="input-group">
-                            <label>还款宽限期</label>
+                            <label data-i18n="labelGracePeriod">还款宽限期</label>
                             <div class="input-with-unit">
                                 <input type="number" id="grace_period" value="1" min="0" max="5">
                                 <span class="unit">年</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>还款方式</label>
+                            <label data-i18n="labelRepaymentMethod">还款方式</label>
                             <select id="repayment_method">
-                                <option value="equal_principal">等额本金</option>
-                                <option value="equal_payment">等额本息</option>
+                                <option value="equal_principal" data-i18n="optionEqualPrincipal">等额本金</option>
+                                <option value="equal_payment" data-i18n="optionEqualPayment">等额本息</option>
                             </select>
                         </div>
                     </div>
@@ -400,32 +400,32 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🏗️</span>
-                        <h3>建设期与通胀参数</h3>
+                        <h3 data-i18n="cardConstruction">建设期与通胀参数</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>建设期</label>
+                            <label data-i18n="labelConstructionPeriod">建设期</label>
                             <div class="input-with-unit">
                                 <input type="number" id="construction_period" value="1" min="0.5" max="3" step="0.5">
                                 <span class="unit">年</span>
                             </div>
-                            <span class="hint">项目从开工到投产的时间</span>
+                            <span class="hint" data-i18n="hintConstructionPeriod">项目从开工到投产的时间</span>
                         </div>
                         <div class="input-group">
-                            <label>建设期资金占用比例</label>
+                            <label data-i18n="labelConstructionFundUsage">建设期资金占用比例</label>
                             <div class="input-with-unit">
                                 <input type="number" id="construction_fund_usage" value="50" min="30" max="100" step="5">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">建设期平均资金占用比例（用于计算建设期利息）</span>
+                            <span class="hint" data-i18n="hintConstructionFundUsage">建设期平均资金占用比例（用于计算建设期利息）</span>
                         </div>
                         <div class="input-group">
-                            <label>通货膨胀率</label>
+                            <label data-i18n="labelInflationRate">通货膨胀率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="inflation_rate" value="2.0" min="0" max="10" step="0.1">
                                 <span class="unit">%/年</span>
                             </div>
-                            <span class="hint">用于OPEX年度增长计算（德国2025年通胀率约2%）</span>
+                            <span class="hint" data-i18n="hintInflationRate">用于OPEX年度增长计算（德国2025年通胀率约2%）</span>
                         </div>
                     </div>
                 </div>
@@ -434,33 +434,33 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">📉</span>
-                        <h3>折旧摊销参数</h3>
+                        <h3 data-i18n="cardDepreciation">折旧摊销参数</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>固定资产折旧年限</label>
+                            <label data-i18n="labelDepreciationYears">固定资产折旧年限</label>
                             <div class="input-with-unit">
                                 <input type="number" id="depreciation_years" value="15" min="5" max="25">
                                 <span class="unit">年</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>残值率</label>
+                            <label data-i18n="labelSalvageRate">残值率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="salvage_rate" value="5" min="0" max="20">
                                 <span class="unit">%</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>折旧方法</label>
+                            <label data-i18n="labelDepreciationMethod">折旧方法</label>
                             <select id="depreciation_method">
-                                <option value="straight_line">直线法</option>
-                                <option value="double_declining">双倍余额递减法</option>
-                                <option value="sum_of_years">年数总和法</option>
+                                <option value="straight_line" data-i18n="optionStraightLine">直线法</option>
+                                <option value="double_declining" data-i18n="optionDoubleDeclining">双倍余额递减法</option>
+                                <option value="sum_of_years" data-i18n="optionSumOfYears">年数总和法</option>
                             </select>
                         </div>
                         <div class="input-group">
-                            <label>无形资产摊销年限</label>
+                            <label data-i18n="labelAmortizationYears">无形资产摊销年限</label>
                             <div class="input-with-unit">
                                 <input type="number" id="amortization_years" value="20" min="5" max="30">
                                 <span class="unit">年</span>
@@ -473,25 +473,25 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">⚙️</span>
-                        <h3>效率参数</h3>
+                        <h3 data-i18n="cardEfficiency">效率参数</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>充电效率</label>
+                            <label data-i18n="labelChargeEfficiency">充电效率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="charge_efficiency" value="95" min="80" max="100" step="0.1">
                                 <span class="unit">%</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>放电效率</label>
+                            <label data-i18n="labelDischargeEfficiency">放电效率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="discharge_efficiency" value="95" min="80" max="100" step="0.1">
                                 <span class="unit">%</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>系统综合效率(RTE)</label>
+                            <label data-i18n="labelRTE">系统综合效率(RTE)</label>
                             <div class="input-with-unit">
                                 <input type="number" id="rte" value="90.25" readonly>
                                 <span class="unit">%</span>
@@ -504,43 +504,43 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🏛️</span>
-                        <h3>税费参数</h3>
+                        <h3 data-i18n="cardTaxes">税费参数</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>企业所得税率(Körperschaftsteuer)</label>
+                            <label data-i18n="labelCorporateTaxRate">企业所得税率(Körperschaftsteuer)</label>
                             <div class="input-with-unit">
                                 <input type="number" id="corporate_tax_rate" value="15" min="0" max="35">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">德国法定企业所得税率</span>
+                            <span class="hint" data-i18n="hintCorporateTaxRate">德国法定企业所得税率</span>
                         </div>
                         <div class="input-group">
-                            <label>团结附加税率(Solidaritätszuschlag)</label>
+                            <label data-i18n="labelSolidarityTaxRate">团结附加税率(Solidaritätszuschlag)</label>
                             <div class="input-with-unit">
                                 <input type="number" id="solidarity_tax_rate" value="5.5" min="0" max="10" step="0.1">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">按企业所得税额的5.5%计算</span>
+                            <span class="hint" data-i18n="hintSolidarityTaxRate">按企业所得税额的5.5%计算</span>
                         </div>
                         <div class="input-group">
-                            <label>贸易税率(Gewerbesteuer)</label>
+                            <label data-i18n="labelTradeTaxRate">贸易税率(Gewerbesteuer)</label>
                             <div class="input-with-unit">
                                 <input type="number" id="trade_tax_rate" value="14" min="0" max="20">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">德国各地市政税率不同(7-17%)</span>
+                            <span class="hint" data-i18n="hintTradeTaxRate">德国各地市政税率不同(7-17%)</span>
                         </div>
                         <div class="input-group">
-                            <label>增值税率(MwSt/VAT)</label>
+                            <label data-i18n="labelVATRate">增值税率(MwSt/VAT)</label>
                             <div class="input-with-unit">
                                 <input type="number" id="vat_rate" value="19" min="0" max="25">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">德国标准增值税率</span>
+                            <span class="hint" data-i18n="hintVATRate">德国标准增值税率</span>
                         </div>
                         <div class="input-group">
-                            <label>其他税费</label>
+                            <label data-i18n="labelOtherTaxRate">其他税费</label>
                             <div class="input-with-unit">
                                 <input type="number" id="other_tax_rate" value="0" min="0" max="10">
                                 <span class="unit">%</span>
@@ -553,40 +553,40 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">📋</span>
-                        <h3>Tolling运营参数</h3>
+                        <h3 data-i18n="cardTolling">Tolling运营参数</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>Tolling合同年限</label>
+                            <label data-i18n="labelTollingYears">Tolling合同年限</label>
                             <div class="input-with-unit">
                                 <input type="number" id="tolling_years" value="10" min="0" max="20">
                                 <span class="unit">年</span>
                             </div>
-                            <span class="hint">德国储能Tolling合约典型期限</span>
+                            <span class="hint" data-i18n="hintTollingYears">德国储能Tolling合约典型期限</span>
                         </div>
                         <div class="input-group">
-                            <label>Tolling容量占比</label>
+                            <label data-i18n="labelTollingRatio">Tolling容量占比</label>
                             <div class="input-with-unit">
                                 <input type="number" id="tolling_ratio" value="80" min="0" max="100">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">银行融资通常要求70-90%</span>
+                            <span class="hint" data-i18n="hintTollingRatio">银行融资通常要求70-90%</span>
                         </div>
                         <div class="input-group">
-                            <label>Tolling价格(首年)</label>
+                            <label data-i18n="labelTollingPrice">Tolling价格(首年)</label>
                             <div class="input-with-unit">
                                 <input type="number" id="tolling_price" value="95" min="0" step="0.1" title="德国2025年Tolling价格80-110€/kW/年">
                                 <span class="unit">EUR/kW/年</span>
                             </div>
-                            <span class="hint">德国2025年市场价格70-90€/kW</span>
+                            <span class="hint" data-i18n="hintTollingPrice">德国2025年市场价格70-90€/kW</span>
                         </div>
                         <div class="input-group">
-                            <label>Tolling价格年增长率</label>
+                            <label data-i18n="labelTollingEscalation">Tolling价格年增长率</label>
                             <div class="input-with-unit">
                                 <input type="number" id="tolling_escalation" value="2.0" min="-5" max="10" step="0.1">
                                 <span class="unit">%</span>
                             </div>
-                            <span class="hint">通胀调整系数</span>
+                            <span class="hint" data-i18n="hintTollingEscalation">通胀调整系数</span>
                         </div>
                     </div>
                 </div>
@@ -594,8 +594,8 @@
 
             <!-- 设备配置 -->
             <div class="section-header" style="margin-top: 30px;">
-                <h2>🔌 设备配置</h2>
-                <p class="section-desc">配置储能系统主要设备参数</p>
+                <h2 data-i18n="sectionEquipment">🔌 设备配置</h2>
+                <p class="section-desc" data-i18n="descEquipment">配置储能系统主要设备参数</p>
             </div>
 
             <div class="params-grid">
@@ -603,73 +603,73 @@
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🔋</span>
-                        <h3>电池系统</h3>
+                        <h3 data-i18n="cardBatterySystem">电池系统</h3>
                     </div>
                     <div class="card-body">
                         <div class="input-group">
-                            <label>电池柜型号</label>
+                            <label data-i18n="labelBatteryModel">电池柜型号</label>
                             <select id="battery_model" onchange="updateBatterySpecs()">
-                                <optgroup label="宁德时代 CATL (欧洲主流)">
-                                    <option value="CATL_EnerOne_Plus" data-capacity="5.0" data-price="85" selected>CATL EnerOne Plus 5MWh (314Ah) ★推荐</option>
-                                    <option value="CATL_EnerC_Plus" data-capacity="6.25" data-price="82">CATL EnerC Plus 6.25MWh (314Ah)</option>
-                                    <option value="CATL_EnerD" data-capacity="5.0" data-price="88">CATL EnerD 5MWh (530Ah)</option>
-                                    <option value="CATL_TENER" data-capacity="6.25" data-price="80">CATL TENER 6.25MWh (LFP)</option>
+                                <optgroup label="宁德时代 CATL (欧洲主流)" data-i18n="labelCATL">
+                                    <option value="CATL_EnerOne_Plus" data-capacity="5.0" data-price="85" selected data-i18n="optionCATLEnerOnePlus">CATL EnerOne Plus 5MWh (314Ah) ★推荐</option>
+                                    <option value="CATL_EnerC_Plus" data-capacity="6.25" data-price="82" data-i18n="optionCATLEnerCPlus">CATL EnerC Plus 6.25MWh (314Ah)</option>
+                                    <option value="CATL_EnerD" data-capacity="5.0" data-price="88" data-i18n="optionCATLEnerD">CATL EnerD 5MWh (530Ah)</option>
+                                    <option value="CATL_TENER" data-capacity="6.25" data-price="80" data-i18n="optionCATLTENER">CATL TENER 6.25MWh (LFP)</option>
                                 </optgroup>
-                                <optgroup label="比亚迪 BYD (欧洲认可度高)">
-                                    <option value="BYD_MC_Cube" data-capacity="2.8" data-price="90">BYD MC Cube 2.8MWh (280Ah)</option>
-                                    <option value="BYD_Cube_Pro" data-capacity="3.7" data-price="88">BYD Cube Pro 3.7MWh (302Ah)</option>
-                                    <option value="BYD_BatteryBox" data-capacity="1.34" data-price="95">BYD Battery-Box Premium 1.34MWh</option>
+                                <optgroup label="比亚迪 BYD (欧洲认可度高)" data-i18n="labelBYD">
+                                    <option value="BYD_MC_Cube" data-capacity="2.8" data-price="90" data-i18n="optionBYD_MC_Cube">BYD MC Cube 2.8MWh (280Ah)</option>
+                                    <option value="BYD_Cube_Pro" data-capacity="3.7" data-price="88" data-i18n="optionBYD_Cube_Pro">BYD Cube Pro 3.7MWh (302Ah)</option>
+                                    <option value="BYD_BatteryBox" data-capacity="1.34" data-price="95" data-i18n="optionBYD_BatteryBox">BYD Battery-Box Premium 1.34MWh</option>
                                 </optgroup>
-                                <optgroup label="亿纬锂能 EVE">
-                                    <option value="EVE_LF560K" data-capacity="5.0" data-price="83">EVE LF560K 5MWh (560Ah)</option>
-                                    <option value="EVE_LF280K" data-capacity="3.35" data-price="85">EVE LF280K 3.35MWh (280Ah)</option>
-                                    <option value="EVE_LF314K" data-capacity="3.76" data-price="84">EVE LF314K 3.76MWh (314Ah)</option>
+                                <optgroup label="亿纬锂能 EVE" data-i18n="labelEVE">
+                                    <option value="EVE_LF560K" data-capacity="5.0" data-price="83" data-i18n="optionEVE_LF560K">EVE LF560K 5MWh (560Ah)</option>
+                                    <option value="EVE_LF280K" data-capacity="3.35" data-price="85" data-i18n="optionEVE_LF280K">EVE LF280K 3.35MWh (280Ah)</option>
+                                    <option value="EVE_LF314K" data-capacity="3.76" data-price="84" data-i18n="optionEVE_LF314K">EVE LF314K 3.76MWh (314Ah)</option>
                                 </optgroup>
-                                <optgroup label="瑞浦兰钧 REPT">
-                                    <option value="REPT_320Ah" data-capacity="3.84" data-price="82">REPT 320Ah 3.84MWh</option>
-                                    <option value="REPT_345Ah" data-capacity="4.14" data-price="81">REPT 345Ah 4.14MWh</option>
+                                <optgroup label="瑞浦兰钧 REPT" data-i18n="labelREPT">
+                                    <option value="REPT_320Ah" data-capacity="3.84" data-price="82" data-i18n="optionREPT_320Ah">REPT 320Ah 3.84MWh</option>
+                                    <option value="REPT_345Ah" data-capacity="4.14" data-price="81" data-i18n="optionREPT_345Ah">REPT 345Ah 4.14MWh</option>
                                 </optgroup>
-                                <optgroup label="海辰储能 HiTHIUM">
-                                    <option value="HiTHIUM_314Ah" data-capacity="3.76" data-price="83">海辰 314Ah 3.76MWh</option>
-                                    <option value="HiTHIUM_560Ah" data-capacity="5.02" data-price="80">海辰 560Ah 5.02MWh</option>
+                                <optgroup label="海辰储能 HiTHIUM" data-i18n="labelHiTHIUM">
+                                    <option value="HiTHIUM_314Ah" data-capacity="3.76" data-price="83" data-i18n="optionHiTHIUM_314Ah">海辰 314Ah 3.76MWh</option>
+                                    <option value="HiTHIUM_560Ah" data-capacity="5.02" data-price="80" data-i18n="optionHiTHIUM_560Ah">海辰 560Ah 5.02MWh</option>
                                 </optgroup>
-                                <optgroup label="国轩高科 Gotion">
-                                    <option value="Gotion_280Ah" data-capacity="3.35" data-price="85">国轩 280Ah 3.35MWh</option>
-                                    <option value="Gotion_314Ah" data-capacity="3.76" data-price="83">国轩 314Ah 3.76MWh</option>
+                                <optgroup label="国轩高科 Gotion" data-i18n="labelGotion">
+                                    <option value="Gotion_280Ah" data-capacity="3.35" data-price="85" data-i18n="optionGotion_280Ah">国轩 280Ah 3.35MWh</option>
+                                    <option value="Gotion_314Ah" data-capacity="3.76" data-price="83" data-i18n="optionGotion_314Ah">国轩 314Ah 3.76MWh</option>
                                 </optgroup>
-                                <optgroup label="三星SDI Samsung (韩系)">
-                                    <option value="Samsung_E3" data-capacity="3.92" data-price="98">Samsung SDI E3 3.92MWh</option>
+                                <optgroup label="三星SDI Samsung (韩系)" data-i18n="labelSamsung">
+                                    <option value="Samsung_E3" data-capacity="3.92" data-price="98" data-i18n="optionSamsung_E3">Samsung SDI E3 3.92MWh</option>
                                 </optgroup>
-                                <optgroup label="LG新能源 LGES (韩系)">
-                                    <option value="LGES_RESU" data-capacity="3.5" data-price="100">LG RESU Prime 3.5MWh</option>
+                                <optgroup label="LG新能源 LGES (韩系)" data-i18n="labelLGES">
+                                    <option value="LGES_RESU" data-capacity="3.5" data-price="100" data-i18n="optionLGES_RESU">LG RESU Prime 3.5MWh</option>
                                 </optgroup>
-                                <optgroup label="其他">
-                                    <option value="CUSTOM" data-capacity="5.0" data-price="85">自定义</option>
+                                <optgroup label="其他" data-i18n="labelOtherBattery">
+                                    <option value="CUSTOM" data-capacity="5.0" data-price="85" data-i18n="optionCustomBattery">自定义</option>
                                 </optgroup>
                             </select>
-                            <span class="hint">2025年德国市场主流供应商</span>
+                            <span class="hint" data-i18n="hintBatteryModel">2025年德国市场主流供应商</span>
                         </div>
                         <div class="input-group">
-                            <label>单柜容量</label>
+                            <label data-i18n="labelBatteryCapacity">单柜容量</label>
                             <div class="input-combo">
                                 <select id="battery_capacity_select" onchange="onBatteryCapacitySelect()">
-                                    <optgroup label="主流容量规格">
-                                        <option value="1.34">1.34 MWh</option>
-                                        <option value="2.5">2.5 MWh</option>
-                                        <option value="2.8">2.8 MWh</option>
-                                        <option value="3.35">3.35 MWh</option>
-                                        <option value="3.5">3.5 MWh</option>
-                                        <option value="3.7">3.7 MWh</option>
-                                        <option value="3.76">3.76 MWh</option>
-                                        <option value="3.84">3.84 MWh</option>
-                                        <option value="3.92">3.92 MWh</option>
-                                        <option value="4.14">4.14 MWh</option>
-                                        <option value="5.0" selected>5.0 MWh ★主流</option>
-                                        <option value="5.02">5.02 MWh</option>
-                                        <option value="6.25">6.25 MWh</option>
+                                    <optgroup label="主流容量规格" data-i18n="labelMainstreamCapacities">
+                                        <option value="1.34" data-i18n="optionCapacity1_34">1.34 MWh</option>
+                                        <option value="2.5" data-i18n="optionCapacity2_5">2.5 MWh</option>
+                                        <option value="2.8" data-i18n="optionCapacity2_8">2.8 MWh</option>
+                                        <option value="3.35" data-i18n="optionCapacity3_35">3.35 MWh</option>
+                                        <option value="3.5" data-i18n="optionCapacity3_5">3.5 MWh</option>
+                                        <option value="3.7" data-i18n="optionCapacity3_7">3.7 MWh</option>
+                                        <option value="3.76" data-i18n="optionCapacity3_76">3.76 MWh</option>
+                                        <option value="3.84" data-i18n="optionCapacity3_84">3.84 MWh</option>
+                                        <option value="3.92" data-i18n="optionCapacity3_92">3.92 MWh</option>
+                                        <option value="4.14" data-i18n="optionCapacity4_14">4.14 MWh</option>
+                                        <option value="5.0" selected data-i18n="optionCapacity5_0">5.0 MWh ★主流</option>
+                                        <option value="5.02" data-i18n="optionCapacity5_02">5.02 MWh</option>
+                                        <option value="6.25" data-i18n="optionCapacity6_25">6.25 MWh</option>
                                     </optgroup>
-                                    <optgroup label="其他">
-                                        <option value="custom">手动输入</option>
+                                    <optgroup label="其他" data-i18n="labelOtherCapacities">
+                                        <option value="custom" data-i18n="optionCustomCapacity">手动输入</option>
                                     </optgroup>
                                 </select>
                                 <div class="input-with-unit">
@@ -679,19 +679,19 @@
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>电池柜数量 <button class="auto-calc-btn" onclick="autoCalcBatteryCount()" title="根据总容量自动计算">🔄自动</button></label>
+                            <label data-i18n="labelBatteryCount">电池柜数量 <button class="auto-calc-btn" onclick="autoCalcBatteryCount()" title="根据总容量自动计算" data-i18n="btnAutoCalc">🔄自动</button></label>
                             <div class="input-with-unit">
                                 <input type="number" id="battery_cabinet_count" value="40" min="1">
                                 <span class="unit">台</span>
                             </div>
                         </div>
                         <div class="input-group">
-                            <label>电池系统单价</label>
+                            <label data-i18n="labelBatteryPrice">电池系统单价</label>
                             <div class="input-with-unit">
                                 <input type="number" id="battery_unit_price" value="75" min="0" step="1" title="德国2025年电池系统价格65-90€/kWh">
                                 <span class="unit">EUR/kWh</span>
                             </div>
-                            <span class="hint">2025年德国市场均价80-95€/kWh</span>
+                            <span class="hint" data-i18n="hintBatteryPrice">2025年德国市场均价80-95€/kWh</span>
                         </div>
                     </div>
                 </div>
@@ -705,46 +705,46 @@
                         <div class="input-group">
                             <label data-i18n="pcsModel">PCS型号</label>
                             <select id="pcs_model" onchange="updatePCSSpecs()">
-                                <optgroup label="阳光电源 Sungrow (德国市场份额领先)">
-                                    <option value="Sungrow_ST5220" data-power="5.5" data-price="28" selected>Sungrow ST5220KWH 5.5MW ★推荐</option>
-                                    <option value="Sungrow_ST3440" data-power="3.45" data-price="30">Sungrow ST3440KWH 3.45MW</option>
-                                    <option value="Sungrow_ST2752" data-power="2.75" data-price="32">Sungrow ST2752KWH 2.75MW</option>
-                                    <option value="Sungrow_SC5000" data-power="5.0" data-price="26">Sungrow SC5000UD-MV 5MW (集中式)</option>
+                                <optgroup label="阳光电源 Sungrow (德国市场份额领先)" data-i18n="optgroupSungrow">
+                                    <option value="Sungrow_ST5220" data-power="5.5" data-price="28" selected data-i18n="optionSungrowST5220">Sungrow ST5220KWH 5.5MW ★推荐</option>
+                                    <option value="Sungrow_ST3440" data-power="3.45" data-price="30" data-i18n="optionSungrowST3440">Sungrow ST3440KWH 3.45MW</option>
+                                    <option value="Sungrow_ST2752" data-power="2.75" data-price="32" data-i18n="optionSungrowST2752">Sungrow ST2752KWH 2.75MW</option>
+                                    <option value="Sungrow_SC5000" data-power="5.0" data-price="26" data-i18n="optionSungrowSC5000">Sungrow SC5000UD-MV 5MW (集中式)</option>
                                 </optgroup>
-                                <optgroup label="华为 Huawei">
-                                    <option value="Huawei_LUNA2000" data-power="2.0" data-price="35">Huawei LUNA2000-2.0MW</option>
-                                    <option value="Huawei_SmartString" data-power="2.5" data-price="33">Huawei Smart String ESS 2.5MW</option>
-                                    <option value="Huawei_FusionPower" data-power="5.0" data-price="28">Huawei FusionPower 5MW</option>
+                                <optgroup label="华为 Huawei" data-i18n="optgroupHuawei">
+                                    <option value="Huawei_LUNA2000" data-power="2.0" data-price="35" data-i18n="optionHuaweiLUNA2000">Huawei LUNA2000-2.0MW</option>
+                                    <option value="Huawei_SmartString" data-power="2.5" data-price="33" data-i18n="optionHuaweiSmartString">Huawei Smart String ESS 2.5MW</option>
+                                    <option value="Huawei_FusionPower" data-power="5.0" data-price="28" data-i18n="optionHuaweiFusionPower">Huawei FusionPower 5MW</option>
                                 </optgroup>
-                                <optgroup label="科华数能 KSTAR">
-                                    <option value="KSTAR_PCS3450" data-power="3.45" data-price="29">科华 BluE-S 3450kW</option>
-                                    <option value="KSTAR_PCS2500" data-power="2.5" data-price="30">科华 BluE-S 2500kW</option>
-                                    <option value="KSTAR_PCS5000" data-power="5.0" data-price="26">科华 BluE-M 5000kW</option>
+                                <optgroup label="科华数能 KSTAR" data-i18n="optgroupKSTAR">
+                                    <option value="KSTAR_PCS3450" data-power="3.45" data-price="29" data-i18n="optionKSTARPCS3450">科华 BluE-S 3450kW</option>
+                                    <option value="KSTAR_PCS2500" data-power="2.5" data-price="30" data-i18n="optionKSTARPCS2500">科华 BluE-S 2500kW</option>
+                                    <option value="KSTAR_PCS5000" data-power="5.0" data-price="26" data-i18n="optionKSTARPCS5000">科华 BluE-M 5000kW</option>
                                 </optgroup>
-                                <optgroup label="上能电气 Sineng">
-                                    <option value="Sineng_ESC3450" data-power="3.45" data-price="29">上能 ESC-3450kW</option>
-                                    <option value="Sineng_ESC5000" data-power="5.0" data-price="27">上能 ESC-5000kW</option>
+                                <optgroup label="上能电气 Sineng" data-i18n="optgroupSineng">
+                                    <option value="Sineng_ESC3450" data-power="3.45" data-price="29" data-i18n="optionSinengESC3450">上能 ESC-3450kW</option>
+                                    <option value="Sineng_ESC5000" data-power="5.0" data-price="27" data-i18n="optionSinengESC5000">上能 ESC-5000kW</option>
                                 </optgroup>
-                                <optgroup label="阳光电源 Sungrow (集中式)">
-                                    <option value="Sungrow_SC8000" data-power="8.0" data-price="24">Sungrow SC8000UD-MV 8MW</option>
+                                <optgroup label="阳光电源 Sungrow (集中式)" data-i18n="optgroupSungrowCentral">
+                                    <option value="Sungrow_SC8000" data-power="8.0" data-price="24" data-i18n="optionSungrowSC8000">Sungrow SC8000UD-MV 8MW</option>
                                 </optgroup>
-                                <optgroup label="特变电工 TBEA">
-                                    <option value="TBEA_TC3450" data-power="3.45" data-price="29">特变 TC-3450ESS 3.45MW</option>
-                                    <option value="TBEA_TC5000" data-power="5.0" data-price="26">特变 TC-5000ESS 5MW</option>
+                                <optgroup label="特变电工 TBEA" data-i18n="optgroupTBEA">
+                                    <option value="TBEA_TC3450" data-power="3.45" data-price="29" data-i18n="optionTBEATC3450">特变 TC-3450ESS 3.45MW</option>
+                                    <option value="TBEA_TC5000" data-power="5.0" data-price="26" data-i18n="optionTBEATC5000">特变 TC-5000ESS 5MW</option>
                                 </optgroup>
-                                <optgroup label="盛弘股份 Shoto">
-                                    <option value="Shoto_PCS3450" data-power="3.45" data-price="30">盛弘 ETC-3450 3.45MW</option>
+                                <optgroup label="盛弘股份 Shoto" data-i18n="optgroupShoto">
+                                    <option value="Shoto_PCS3450" data-power="3.45" data-price="30" data-i18n="optionShotoPCS3450">盛弘 ETC-3450 3.45MW</option>
                                 </optgroup>
-                                <optgroup label="南瑞继保 NR">
-                                    <option value="NR_PCS3450" data-power="3.45" data-price="31">南瑞继保 PCS-3450 3.45MW</option>
+                                <optgroup label="南瑞继保 NR" data-i18n="optgroupNR">
+                                    <option value="NR_PCS3450" data-power="3.45" data-price="31" data-i18n="optionNRPCS3450">南瑞继保 PCS-3450 3.45MW</option>
                                 </optgroup>
-                                <optgroup label="欧洲品牌 (合规性好)">
-                                    <option value="SMA_Sunny" data-power="2.5" data-price="42">SMA Sunny Central Storage 2.5MW</option>
-                                    <option value="ABB_PCS" data-power="3.0" data-price="45">ABB PCS-3000 3MW</option>
-                                    <option value="Siemens_Siestorage" data-power="2.0" data-price="48">Siemens Siestorage 2MW</option>
+                                <optgroup label="欧洲品牌 (合规性好)" data-i18n="optgroupEuropeanBrands">
+                                    <option value="SMA_Sunny" data-power="2.5" data-price="42" data-i18n="optionSMASunny">SMA Sunny Central Storage 2.5MW</option>
+                                    <option value="ABB_PCS" data-power="3.0" data-price="45" data-i18n="optionABBPSS">ABB PCS-3000 3MW</option>
+                                    <option value="Siemens_Siestorage" data-power="2.0" data-price="48" data-i18n="optionSiemensSiestorage">Siemens Siestorage 2MW</option>
                                 </optgroup>
-                                <optgroup label="其他">
-                                    <option value="CUSTOM" data-power="5.0" data-price="28">自定义</option>
+                                <optgroup label="其他" data-i18n="optgroupOtherPCS">
+                                    <option value="CUSTOM" data-power="5.0" data-price="28" data-i18n="optionCustomPCS">自定义</option>
                                 </optgroup>
                             </select>
                             <span class="hint" data-i18n="pcsHint">2025年德国市场主流PCS供应商</span>
@@ -753,7 +753,7 @@
                             <label data-i18n="pcsPower">单台PCS功率</label>
                             <div class="input-combo">
                                 <select id="pcs_power_select" onchange="onPCSPowerSelect()">
-                                    <optgroup label="主流功率规格">
+                                    <optgroup label="主流功率规格" data-i18n="optgroupMainstreamPower">
                                         <option value="1.25">1.25 MW</option>
                                         <option value="1.5">1.5 MW</option>
                                         <option value="2.0">2.0 MW</option>
@@ -767,8 +767,8 @@
                                         <option value="6.0">6.0 MW</option>
                                         <option value="8.0">8.0 MW</option>
                                     </optgroup>
-                                    <optgroup label="其他">
-                                        <option value="custom">手动输入</option>
+                                    <optgroup label="其他" data-i18n="optgroupOtherPower">
+                                        <option value="custom" data-i18n="optionCustomPower">手动输入</option>
                                     </optgroup>
                                 </select>
                                 <div class="input-with-unit">
@@ -805,30 +805,30 @@
                         <div class="input-group">
                             <label data-i18n="mvTransformerModel">中压变型号</label>
                             <select id="mv_transformer_model" onchange="updateMVTransformerSpecs()">
-                                <optgroup label="干式变压器 (室内/集装箱) - 德国常用">
+                                <optgroup label="干式变压器 (室内/集装箱) - 德国常用" data-i18n="optgroupDryTransformer">
                                     <option value="Dry_2500" data-voltage="20" data-capacity="2500" data-price="18000">干式 20kV/2500kVA</option>
                                     <option value="Dry_3150" data-voltage="20" data-capacity="3150" data-price="22000">干式 20kV/3150kVA</option>
                                     <option value="Dry_4000" data-voltage="20" data-capacity="4000" data-price="25000">干式 20kV/4000kVA</option>
                                     <option value="Dry_5000" data-voltage="20" data-capacity="5000" data-price="28000">干式 20kV/5000kVA</option>
                                     <option value="Dry_6300" data-voltage="20" data-capacity="6300" data-price="35000" selected>干式 20kV/6300kVA ★推荐</option>
                                 </optgroup>
-                                <optgroup label="油浸式变压器 (户外)">
+                                <optgroup label="油浸式变压器 (户外)" data-i18n="optgroupOilTransformer">
                                     <option value="Oil_2500" data-voltage="20" data-capacity="2500" data-price="15000">油浸 20kV/2500kVA</option>
                                     <option value="Oil_3150" data-voltage="20" data-capacity="3150" data-price="18000">油浸 20kV/3150kVA</option>
                                     <option value="Oil_4000" data-voltage="20" data-capacity="4000" data-price="20000">油浸 20kV/4000kVA</option>
                                     <option value="Oil_5000" data-voltage="20" data-capacity="5000" data-price="24000">油浸 20kV/5000kVA</option>
                                 </optgroup>
-                                <optgroup label="欧洲品牌 (德国本土认证)">
+                                <optgroup label="欧洲品牌 (德国本土认证)" data-i18n="optgroupEuropeanTransformer">
                                     <option value="Siemens_GEAFOL" data-voltage="20" data-capacity="6300" data-price="45000">西门子 GEAFOL 6300kVA</option>
                                     <option value="ABB_Dry" data-voltage="20" data-capacity="5000" data-price="38000">ABB 干式 5000kVA</option>
                                     <option value="Schneider_Trihal" data-voltage="20" data-capacity="4000" data-price="32000">施耐德 Trihal 4000kVA</option>
                                 </optgroup>
-                                <optgroup label="国产品牌">
+                                <optgroup label="国产品牌" data-i18n="optgroupChineseTransformer">
                                     <option value="TBEA_SCB" data-voltage="20" data-capacity="5000" data-price="26000">特变电工 SCB 5000kVA</option>
                                     <option value="BTW_SC" data-voltage="20" data-capacity="5000" data-price="24000">北京变压器 SC 5000kVA</option>
                                     <option value="JiangSu_SCB" data-voltage="20" data-capacity="6300" data-price="32000">江苏华鹏 SCB 6300kVA</option>
                                 </optgroup>
-                                <optgroup label="其他">
+                                <optgroup label="其他" data-i18n="optgroupOtherTransformer">
                                     <option value="CUSTOM" data-voltage="20" data-capacity="6300" data-price="35000">自定义</option>
                                 </optgroup>
                             </select>
@@ -847,7 +847,7 @@
                             <label data-i18n="transformerCapacity">变压器容量</label>
                             <div class="input-combo">
                                 <select id="mv_capacity_select" onchange="onMVCapacitySelect()">
-                                    <optgroup label="主流容量规格">
+                                    <optgroup label="主流容量规格" data-i18n="optgroupMainstreamCapacity">
                                         <option value="1600">1600 kVA</option>
                                         <option value="2000">2000 kVA</option>
                                         <option value="2500">2500 kVA</option>
@@ -856,8 +856,8 @@
                                         <option value="5000">5000 kVA</option>
                                         <option value="6300" selected>6300 kVA ★主流</option>
                                     </optgroup>
-                                    <optgroup label="其他">
-                                        <option value="custom">手动输入</option>
+                                    <optgroup label="其他" data-i18n="optgroupOtherCapacity">
+                                        <option value="custom" data-i18n="optionCustomCapacity">手动输入</option>
                                     </optgroup>
                                 </select>
                                 <div class="input-with-unit">
@@ -894,7 +894,7 @@
                         <div class="input-group">
                             <label data-i18n="hvTransformerModel">升压变型号</label>
                             <select id="hv_transformer_model" onchange="updateHVTransformerSpecs()">
-                                <optgroup label="110kV等级 (德国常用)">
+                                <optgroup label="110kV等级 (德国常用)" data-i18n="optgroupHV110kV">
                                     <option value="110kV_50MVA" data-capacity="50" data-price="420000">110kV/50MVA 油浸式</option>
                                     <option value="110kV_63MVA" data-capacity="63" data-price="480000">110kV/63MVA 油浸式</option>
                                     <option value="110kV_80MVA" data-capacity="80" data-price="580000">110kV/80MVA 油浸式</option>
@@ -902,26 +902,26 @@
                                     <option value="110kV_120MVA" data-capacity="120" data-price="750000" selected>110kV/120MVA 油浸式 ★推荐</option>
                                     <option value="110kV_150MVA" data-capacity="150" data-price="900000">110kV/150MVA 油浸式</option>
                                 </optgroup>
-                                <optgroup label="220kV等级 (大型项目)">
+                                <optgroup label="220kV等级 (大型项目)" data-i18n="optgroupHV220kV">
                                     <option value="220kV_120MVA" data-capacity="120" data-price="1100000">220kV/120MVA 油浸式</option>
                                     <option value="220kV_150MVA" data-capacity="150" data-price="1300000">220kV/150MVA 油浸式</option>
                                     <option value="220kV_180MVA" data-capacity="180" data-price="1500000">220kV/180MVA 油浸式</option>
                                     <option value="220kV_240MVA" data-capacity="240" data-price="1800000">220kV/240MVA 油浸式</option>
                                 </optgroup>
-                                <optgroup label="380kV等级 (德国高压电网)">
+                                <optgroup label="380kV等级 (德国高压电网)" data-i18n="optgroupHV380kV">
                                     <option value="380kV_200MVA" data-capacity="200" data-price="2300000">380kV/200MVA 油浸式</option>
                                     <option value="380kV_300MVA" data-capacity="300" data-price="3000000">380kV/300MVA 油浸式</option>
                                 </optgroup>
-                                <optgroup label="欧洲制造商 (本土认证)">
+                                <optgroup label="欧洲制造商 (本土认证)" data-i18n="optgroupEuropeanHVManufacturer">
                                     <option value="Siemens_110_120" data-capacity="120" data-price="850000">西门子 110kV/120MVA</option>
                                     <option value="ABB_110_120" data-capacity="120" data-price="880000">ABB 110kV/120MVA</option>
                                     <option value="Schneider_110_100" data-capacity="100" data-price="720000">施耐德 110kV/100MVA</option>
                                 </optgroup>
-                                <optgroup label="其他制造商">
+                                <optgroup label="其他制造商" data-i18n="optgroupOtherHVManufacturer">
                                     <option value="TBEA_110_120" data-capacity="120" data-price="680000">特变电工 110kV/120MVA</option>
                                     <option value="XD_110_120" data-capacity="120" data-price="650000">西电 110kV/120MVA</option>
                                 </optgroup>
-                                <optgroup label="其他">
+                                <optgroup label="其他" data-i18n="optgroupOtherHV">
                                     <option value="CUSTOM" data-capacity="120" data-price="750000">自定义</option>
                                 </optgroup>
                             </select>
@@ -931,7 +931,7 @@
                             <label data-i18n="hvTransformerCapacity">升压变容量</label>
                             <div class="input-combo">
                                 <select id="hv_capacity_select" onchange="onHVCapacitySelect()">
-                                    <optgroup label="110kV等级">
+                                    <optgroup label="110kV等级" data-i18n="optgroupHVCapacity110kV">
                                         <option value="50">50 MVA</option>
                                         <option value="63">63 MVA</option>
                                         <option value="80">80 MVA</option>
@@ -939,17 +939,17 @@
                                         <option value="120" selected>120 MVA ★主流</option>
                                         <option value="150">150 MVA</option>
                                     </optgroup>
-                                    <optgroup label="220kV等级">
+                                    <optgroup label="220kV等级" data-i18n="optgroupHVCapacity220kV">
                                         <option value="180">180 MVA</option>
                                         <option value="200">200 MVA</option>
                                         <option value="240">240 MVA</option>
                                     </optgroup>
-                                    <optgroup label="380kV等级">
+                                    <optgroup label="380kV等级" data-i18n="optgroupHVCapacity380kV">
                                         <option value="300">300 MVA</option>
                                         <option value="400">400 MVA</option>
                                     </optgroup>
-                                    <optgroup label="其他">
-                                        <option value="custom">手动输入</option>
+                                    <optgroup label="其他" data-i18n="optgroupHVCapacityOther">
+                                        <option value="custom" data-i18n="optionCustomHVCapacity">手动输入</option>
                                     </optgroup>
                                 </select>
                                 <div class="input-with-unit">
