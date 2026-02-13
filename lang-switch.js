@@ -66,9 +66,13 @@
         const langData = getLangData(currentLang);
         
         // 遍历所有带data-i18n标记的元素
-        document.querySelectorAll('[data-i18n]').forEach(el => {
+        const i18nElements = document.querySelectorAll('[data-i18n]');
+        console.log('Found ' + i18nElements.length + ' elements with data-i18n attribute');
+        
+        i18nElements.forEach(el => {
             const key = el.dataset.i18n;
             if (langData[key]) {
+                console.log('Updating element with key: ' + key + ' to: ' + langData[key]);
                 // 对于optgroup元素，更新label属性
                 if (el.tagName === 'OPTGROUP') {
                     el.label = langData[key];
@@ -79,9 +83,13 @@
         });
 
         // 处理占位符（支持两种格式：data-i18nPlaceholder 和 data-i18n-placeholder）
-        document.querySelectorAll('[data-i18nPlaceholder], [data-i18n-placeholder]').forEach(el => {
+        const placeholderElements = document.querySelectorAll('[data-i18nPlaceholder], [data-i18n-placeholder]');
+        console.log('Found ' + placeholderElements.length + ' elements with placeholder attributes');
+        
+        placeholderElements.forEach(el => {
             const key = el.dataset.i18nPlaceholder || el.dataset['i18n-placeholder'];
             if (langData[key]) {
+                console.log('Updating placeholder with key: ' + key + ' to: ' + langData[key]);
                 el.placeholder = langData[key];
             }
         });
@@ -101,11 +109,35 @@
         window.addEventListener('load', initLangSwitch);
     }
 
+    // 监听DOM变化，支持动态加载的内容
+    if (typeof MutationObserver !== 'undefined') {
+        const observer = new MutationObserver(function(mutations) {
+            mutations.forEach(function(mutation) {
+                // 检查是否有新的元素被添加
+                if (mutation.addedNodes.length > 0) {
+                    // 延迟执行，确保新元素已经完全加载
+                    setTimeout(updatePageLang, 100);
+                }
+            });
+        });
+
+        // 观察整个文档的变化
+        observer.observe(document.body, {
+            childList: true,
+            subtree: true
+        });
+    }
+
     // 暴露全局方法（可选，方便其他脚本调用）
     window.switchLanguage = function(lang) {
         currentLang = lang;
         localStorage.setItem('selectedLang', lang);
         updateLangBtnStatus();
+        updatePageLang();
+    };
+
+    // 暴露全局方法，方便内容面板加载后调用
+    window.updatePageLanguage = function() {
         updatePageLang();
     };
 })();
