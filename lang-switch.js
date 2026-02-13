@@ -62,13 +62,13 @@
                     el.innerHTML = window.languages[currentLang][key];
                 }
             }
+        });
 
-            // 处理占位符（如果有）
-            if (el.dataset.i18nPlaceholder) {
-                const phKey = el.dataset.i18nPlaceholder;
-                if (window.languages && window.languages[currentLang] && window.languages[currentLang][phKey]) {
-                    el.placeholder = window.languages[currentLang][phKey];
-                }
+        // 处理占位符（支持两种格式：data-i18nPlaceholder 和 data-i18n-placeholder）
+        document.querySelectorAll('[data-i18nPlaceholder], [data-i18n-placeholder]').forEach(el => {
+            const key = el.dataset.i18nPlaceholder || el.dataset['i18n-placeholder'];
+            if (window.languages && window.languages[currentLang] && window.languages[currentLang][key]) {
+                el.placeholder = window.languages[currentLang][key];
             }
         });
     }
