@@ -3,7 +3,17 @@
     // 1. 初始化语言（优先读取localStorage）
     let currentLang = localStorage.getItem('selectedLang') || 'zh';
 
-    // 2. 动态创建语言切换按钮（如果不存在）
+    // 2. 获取翻译数据（支持两种格式：window.languages 和 languages）
+    function getLangData(lang) {
+        if (window.languages && window.languages[lang]) {
+            return window.languages[lang];
+        } else if (typeof languages !== 'undefined' && languages[lang]) {
+            return languages[lang];
+        }
+        return {};
+    }
+
+    // 3. 动态创建语言切换按钮（如果不存在）
     function createLangSwitcher() {
         // 如果已存在，直接绑定点击事件
         if (document.querySelector('.language-switcher')) {
@@ -25,7 +35,7 @@
         bindLangClickEvent();
     }
 
-    // 3. 绑定语言切换点击事件
+    // 4. 绑定语言切换点击事件
     function bindLangClickEvent() {
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.removeEventListener('click', handleLangClick);
@@ -33,7 +43,7 @@
         });
     }
 
-    // 4. 语言切换处理函数
+    // 5. 语言切换处理函数
     function handleLangClick() {
         currentLang = this.dataset.lang;
         localStorage.setItem('selectedLang', currentLang);
@@ -41,7 +51,7 @@
         updatePageLang(); // 刷新页面所有翻译文字
     }
 
-    // 5. 更新按钮激活状态
+    // 6. 更新按钮激活状态
     function updateLangBtnStatus() {
         document.querySelectorAll('.lang-btn').forEach(btn => {
             btn.classList.remove('active');
@@ -51,19 +61,19 @@
         });
     }
 
-    // 6. 核心：更新页面所有翻译文字
+    // 7. 核心：更新页面所有翻译文字
     function updatePageLang() {
+        const langData = getLangData(currentLang);
+        
         // 遍历所有带data-i18n标记的元素
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.dataset.i18n;
-
-            // 从全局翻译表取值
-            if (window.languages && window.languages[currentLang] && window.languages[currentLang][key]) {
+            if (langData[key]) {
                 // 对于optgroup元素，更新label属性
                 if (el.tagName === 'OPTGROUP') {
-                    el.label = window.languages[currentLang][key];
+                    el.label = langData[key];
                 } else {
-                    el.innerHTML = window.languages[currentLang][key];
+                    el.innerHTML = langData[key];
                 }
             }
         });
@@ -71,13 +81,13 @@
         // 处理占位符（支持两种格式：data-i18nPlaceholder 和 data-i18n-placeholder）
         document.querySelectorAll('[data-i18nPlaceholder], [data-i18n-placeholder]').forEach(el => {
             const key = el.dataset.i18nPlaceholder || el.dataset['i18n-placeholder'];
-            if (window.languages && window.languages[currentLang] && window.languages[currentLang][key]) {
-                el.placeholder = window.languages[currentLang][key];
+            if (langData[key]) {
+                el.placeholder = langData[key];
             }
         });
     }
 
-    // 7. 初始化函数（页面加载后执行）
+    // 8. 初始化函数（页面加载后执行）
     function initLangSwitch() {
         createLangSwitcher(); // 动态创建按钮
         updateLangBtnStatus(); // 初始化按钮状态
