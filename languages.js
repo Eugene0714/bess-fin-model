@@ -1,5 +1,5 @@
 // 语言文件 - 包含中文、英文和德文的翻译
-const languages = {
+window.languages = {
     zh: {
         // 导航栏
         brandText: "德国独立储能电站投资测算系统",
