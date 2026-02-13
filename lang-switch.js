@@ -3,11 +3,15 @@
     // 1. 初始化语言（优先读取localStorage）
     let currentLang = localStorage.getItem('selectedLang') || 'zh';
 
-    // 2. 动态创建语言切换按钮（无需手动加HTML）
+    // 2. 动态创建语言切换按钮（如果不存在）
     function createLangSwitcher() {
-        // 如果已存在，不再重复创建
-        if (document.querySelector('.language-switcher')) return;
+        // 如果已存在，直接绑定点击事件
+        if (document.querySelector('.language-switcher')) {
+            bindLangClickEvent();
+            return;
+        }
 
+        // 如果不存在，创建新的语言切换按钮
         const switcher = document.createElement('div');
         switcher.className = 'language-switcher';
         switcher.innerHTML = `
