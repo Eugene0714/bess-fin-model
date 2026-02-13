@@ -75,6 +75,20 @@
             }
         }
 
+        /* 修复推荐标签多语言样式 */
+        .plan-option.popular::before {
+            content: var(--popular-text, '推荐');
+            position: absolute;
+            top: -10px;
+            right: 20px;
+            padding: 4px 12px;
+            background: linear-gradient(135deg, #00d4aa, #00a88a);
+            color: #fff;
+            font-size: 11px;
+            font-weight: 600;
+            border-radius: 10px;
+        }
+
         /* 原有注册页样式（完整保留） */
         .brand-section {
             flex: 1;
@@ -368,19 +382,6 @@
             background: rgba(0, 212, 170, 0.1);
         }
 
-        .plan-option.popular::before {
-            content: '推荐';
-            position: absolute;
-            top: -10px;
-            right: 20px;
-            padding: 4px 12px;
-            background: linear-gradient(135deg, #00d4aa, #00a88a);
-            color: #fff;
-            font-size: 11px;
-            font-weight: 600;
-            border-radius: 10px;
-        }
-
         .plan-header {
             display: flex;
             justify-content: space-between;
@@ -635,7 +636,7 @@
 <body>
     <!-- 语言切换按钮（和登录页完全一致） -->
     <div class="language-switcher">
-        <button class="lang-btn" data-lang="zh">中文</button>
+        <button class="lang-btn active" data-lang="zh">中文</button>
         <button class="lang-btn" data-lang="en">English</button>
         <button class="lang-btn" data-lang="de">Deutsch</button>
     </div>
@@ -1143,12 +1144,11 @@
                 }
             });
 
-            // 更新"推荐"标签
+            // 更新"推荐"标签（修复多语言显示）
             const popularLabels = { zh: '推荐', en: 'Popular', de: 'Beliebt' };
-            const popularStyle = document.querySelector('.plan-option.popular')?.style;
-            if (popularStyle) {
-                popularStyle.setProperty('--popular-text', `"${popularLabels[lang]}"`);
-                document.querySelector('.plan-option.popular::before').content = popularLabels[lang];
+            const popularEl = document.querySelector('.plan-option.popular');
+            if (popularEl) {
+                popularEl.style.setProperty('--popular-text', `"${popularLabels[lang]}"`);
             }
 
             // 更新密码强度文字
@@ -1164,6 +1164,11 @@
             msg.querySelector('.message-text').textContent = text;
             msg.querySelector('.message-icon').textContent = type === 'success' ? '✓' : '⚠️';
             msg.className = `message show ${type}`;
+            
+            // 3秒后自动隐藏提示框
+            setTimeout(() => {
+                hideMessage();
+            }, 3000);
         }
 
         // 9. 注册逻辑（对接后端服务）
@@ -1241,10 +1246,13 @@
             }
             
             const btn = document.getElementById('sendCodeBtn');
+            if (btn.disabled) return; // 防止重复点击
+            
             btn.disabled = true;
             btn.textContent = langMap[currentLang]['sendCodeBtn'] + '...';
             
             try {
+                // 模拟接口请求延迟
                 await new Promise(resolve => setTimeout(resolve, 1000));
                 showMessage('msg_codeSent', 'success');
                 startCodeCountdown();
@@ -1342,6 +1350,9 @@
                 f.classList.remove('active');
                 if (i + 1 === currentStep) f.classList.add('active');
             });
+            
+            // 滚动到表单顶部（移动端友好）
+            document.querySelector('.register-form').scrollIntoView({ behavior: 'smooth' });
         }
 
         // 套餐选择
