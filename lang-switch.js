@@ -52,18 +52,22 @@
         // 遍历所有带data-i18n标记的元素
         document.querySelectorAll('[data-i18n]').forEach(el => {
             const key = el.dataset.i18n;
-            const [module, field] = key.split('.'); // 格式：index.dashboardTitle
 
             // 从全局翻译表取值
-            if (window.langMap[module] && window.langMap[module][field]) {
-                el.innerHTML = window.langMap[module][field][currentLang];
+            if (window.languages && window.languages[currentLang] && window.languages[currentLang][key]) {
+                // 对于optgroup元素，更新label属性
+                if (el.tagName === 'OPTGROUP') {
+                    el.label = window.languages[currentLang][key];
+                } else {
+                    el.innerHTML = window.languages[currentLang][key];
+                }
             }
 
             // 处理占位符（如果有）
             if (el.dataset.i18nPlaceholder) {
-                const [phModule, phField] = el.dataset.i18nPlaceholder.split('.');
-                if (window.langMap[phModule] && window.langMap[phModule][phField]) {
-                    el.placeholder = window.langMap[phModule][phField][currentLang];
+                const phKey = el.dataset.i18nPlaceholder;
+                if (window.languages && window.languages[currentLang] && window.languages[currentLang][phKey]) {
+                    el.placeholder = window.languages[currentLang][phKey];
                 }
             }
         });
