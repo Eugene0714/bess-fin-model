@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script>
-        // 登录验证 - 页面加载前检查
+        // 登录验证 - 页面加载前检查（保留业务必需的内联脚本）
         (function() {
             if (sessionStorage.getItem('isLoggedIn') !== 'true') {
                 window.location.href = 'login.html';
@@ -15,7 +15,7 @@
         })();
     </script>
     
-    <!-- 语言切换代码 -->
+    <!-- 语言切换按钮样式（保留，与动态创建的按钮匹配） -->
     <style>
         /* 语言切换按钮样式（和登录页完全一致） */
         .language-switcher {
@@ -69,153 +69,105 @@
         }
     </style>
     
-    <!-- 引入外部语言文件 -->
+    <!-- 1. 先加载语言字典（适配lang-switch.js的window.langMap） -->
     <script src="languages.js"></script>
-    <script src="lang-switch.js"></script>
-</head>
-<body>
-    <!-- 语言切换按钮（和登录页完全一致） -->
-    <div class="language-switcher">
-        <button class="lang-btn active" data-lang="zh">中文</button>
-        <button class="lang-btn" data-lang="en">English</button>
-        <button class="lang-btn" data-lang="de">Deutsch</button>
-    </div>
-    
+    <!-- 2. 适配：将原languages对象映射为lang-switch.js需要的langMap格式 -->
     <script>
-        // 全局语言变量
-        let currentLang = localStorage.getItem('selectedLang') || 'zh';
-
-        document.addEventListener('DOMContentLoaded', function() {
-            // 初始化语言切换
-            updateLangBtnStatus();
-            updatePageLang(currentLang);
-
-            // 绑定语言切换事件
-            bindLangSwitchEvent();
-        });
-
-        // 绑定语言切换事件
-        function bindLangSwitchEvent() {
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.addEventListener('click', function() {
-                    currentLang = this.dataset.lang;
-                    localStorage.setItem('selectedLang', currentLang);
-                    updateLangBtnStatus();
-                    updatePageLang(currentLang);
-                });
-            });
-        }
-
-        // 更新语言按钮激活状态
-        function updateLangBtnStatus() {
-            document.querySelectorAll('.lang-btn').forEach(btn => {
-                btn.classList.remove('active');
-                if (btn.dataset.lang === currentLang) {
-                    btn.classList.add('active');
-                }
-            });
-        }
-
-        // 更新页面所有文字
-        function updatePageLang(lang) {
-            const langData = languages[lang];
-            
-            // 更新所有带有data-i18n属性的元素
-            document.querySelectorAll('[data-i18n]').forEach(el => {
-                const key = el.dataset.i18n;
-                if (langData[key]) {
-                    // 对于按钮，保留图标部分，只更新文本
-                    if (el.classList.contains('action-btn') || el.classList.contains('calculate-btn') || el.classList.contains('logout-btn')) {
-                        // 保留第一个<span>标签（图标），更新后面的文本
-                        const iconSpan = el.querySelector('span');
-                        if (iconSpan) {
-                            el.innerHTML = iconSpan.outerHTML + ' ' + langData[key];
-                        } else {
-                            el.textContent = langData[key];
+        // 转换原languages结构为lang-switch.js依赖的langMap结构
+        // 原languages格式：{zh: {key: value}, en: {key: value}, de: {key: value}}
+        // 转换后langMap格式：{common: {key: {zh: value, en: value, de: value}}}
+        window.langMap = {
+            common: {}
+        };
+        if (window.languages) {
+            // 遍历所有语言
+            ['zh', 'en', 'de'].forEach(lang => {
+                const langData = window.languages[lang];
+                if (langData) {
+                    // 遍历所有翻译key
+                    Object.keys(langData).forEach(key => {
+                        if (!window.langMap.common[key]) {
+                            window.langMap.common[key] = {};
                         }
-                    } else if (el.classList.contains('nav-link')) {
-                        // 对于导航链接，直接更新文本
-                        el.textContent = langData[key];
-                    } else if (el.classList.contains('brand-text')) {
-                        // 对于品牌文本，直接更新文本
-                        el.textContent = langData[key];
-                    } else if (el.tagName === 'OPTGROUP') {
-                        // 对于optgroup元素，更新label属性
-                        el.label = langData[key];
-                    } else {
-                        // 其他元素，直接更新文本
-                        el.textContent = langData[key];
-                    }
+                        window.langMap.common[key][lang] = langData[key];
+                    });
                 }
             });
         }
     </script>
+    <!-- 3. 引入独立的语言切换核心脚本（defer确保DOM加载完成后执行） -->
+    <script src="lang-switch.js" defer></script>
+</head>
+<body>
+    <!-- 移除手动编写的语言切换按钮（由lang-switch.js动态创建） -->
+    
     <!-- 导航栏 -->
     <nav class="navbar">
         <div class="nav-brand">
             <span class="brand-icon">⚡</span>
-<span class="brand-text" data-i18n="brandText">德国独立储能电站投资测算系统</span>
+            <!-- 修改data-i18n格式为：模块.字段（匹配langMap结构） -->
+            <span class="brand-text" data-i18n="common.brandText">德国独立储能电站投资测算系统</span>
         </div>
         <div class="nav-links">
-<!-- 边界设定 -->
-<a href="#" class="nav-link active" data-tab="parameters" data-i18n="navParameters">边界设定</a>
+            <!-- 边界设定 -->
+            <a href="#" class="nav-link active" data-tab="parameters" data-i18n="common.navParameters">边界设定</a>
 
-<!-- OPEX设定 -->
-<a href="#" class="nav-link" data-tab="opex" data-i18n="navOpex">OPEX设定</a>
+            <!-- OPEX设定 -->
+            <a href="#" class="nav-link" data-tab="opex" data-i18n="common.navOpex">OPEX设定</a>
 
-<!-- 收入预测 -->
-<a href="#" class="nav-link" data-tab="revenue" data-i18n="navRevenue">收入预测</a>
+            <!-- 收入预测 -->
+            <a href="#" class="nav-link" data-tab="revenue" data-i18n="common.navRevenue">收入预测</a>
 
-<!-- 财务指标 -->
-<a href="#" class="nav-link" data-tab="indicators" data-i18n="navIndicators">财务指标</a>
+            <!-- 财务指标 -->
+            <a href="#" class="nav-link" data-tab="indicators" data-i18n="common.navIndicators">财务指标</a>
 
-<!-- 财务报表 -->
-<a href="#" class="nav-link" data-tab="statements" data-i18n="navStatements">财务报表</a>
+            <!-- 财务报表 -->
+            <a href="#" class="nav-link" data-tab="statements" data-i18n="common.navStatements">财务报表</a>
 
-<!-- 敏感性分析 -->
-<a href="#" class="nav-link" data-tab="sensitivity" data-i18n="navSensitivity">敏感性分析</a>
+            <!-- 敏感性分析 -->
+            <a href="#" class="nav-link" data-tab="sensitivity" data-i18n="common.navSensitivity">敏感性分析</a>
 
-<!-- 融资报告 -->
-<a href="#" class="nav-link" data-tab="bankReport" data-i18n="navBankReport">融资报告</a>
+            <!-- 融资报告 -->
+            <a href="#" class="nav-link" data-tab="bankReport" data-i18n="common.navBankReport">融资报告</a>
         </div>
         <div class="nav-actions">
-<!-- 帮助按钮 -->
-<button class="action-btn help-btn" onclick="showHelp()" title="使用帮助" data-i18n="btnHelp">
-  <span>?</span> 帮助
-</button>
+            <!-- 帮助按钮 -->
+            <button class="action-btn help-btn" onclick="showHelp()" title="使用帮助" data-i18n="common.btnHelp">
+                <span>?</span> 帮助
+            </button>
 
-<!-- 导入模型按钮 -->
-<button class="action-btn" onclick="importModel()" title="导入模型" data-i18n="btnImport">
-  <span>⬆</span> 导入
-</button>
+            <!-- 导入模型按钮 -->
+            <button class="action-btn" onclick="importModel()" title="导入模型" data-i18n="common.btnImport">
+                <span>⬆</span> 导入
+            </button>
 
-<!-- 保存模型按钮 -->
-<button class="action-btn" onclick="saveModel()" title="保存模型" data-i18n="btnSave">
-  <span>💾</span> 保存
-</button>
+            <!-- 保存模型按钮 -->
+            <button class="action-btn" onclick="saveModel()" title="保存模型" data-i18n="common.btnSave">
+                <span>💾</span> 保存
+            </button>
 
-<!-- 导出报表按钮 -->
-<button class="action-btn" onclick="exportReport()" title="导出报表" data-i18n="btnExport">
-  <span>📤</span> 导出
-</button>
+            <!-- 导出报表按钮 -->
+            <button class="action-btn" onclick="exportReport()" title="导出报表" data-i18n="common.btnExport">
+                <span>📤</span> 导出
+            </button>
 
-<!-- 导出Excel按钮 -->
-<button class="action-btn" onclick="exportExcel()" title="导出Excel" data-i18n="btnExcel">
-  <span>📊</span> Excel
-</button>
+            <!-- 导出Excel按钮 -->
+            <button class="action-btn" onclick="exportExcel()" title="导出Excel" data-i18n="common.btnExcel">
+                <span>📊</span> Excel
+            </button>
 
-<!-- 计算按钮 -->
-<button class="calculate-btn" onclick="calculateAll()" data-i18n="btnCalculate">
-  <span>🔄</span> 计算
-</button>
+            <!-- 计算按钮 -->
+            <button class="calculate-btn" onclick="calculateAll()" data-i18n="common.btnCalculate">
+                <span>🔄</span> 计算
+            </button>
 
-<!-- 退出按钮 -->
-<button class="logout-btn" onclick="logout()" title="退出登录" data-i18n="btnLogout">
-  退出
-</button>
+            <!-- 退出按钮 -->
+            <button class="logout-btn" onclick="logout()" title="退出登录" data-i18n="common.btnLogout">
+                退出
+            </button>
 
-<!-- 隐藏的文件输入 -->
-<input type="file" id="modelFileInput" accept=".json" style="display:none" onchange="handleModelImport(event)">
+            <!-- 隐藏的文件输入 -->
+            <input type="file" id="modelFileInput" accept=".json" style="display:none" onchange="handleModelImport(event)">
         </div>
     </nav>
 
