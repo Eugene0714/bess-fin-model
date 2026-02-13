@@ -138,18 +138,13 @@
                     } else if (el.classList.contains('brand-text')) {
                         // 对于品牌文本，直接更新文本
                         el.textContent = langData[key];
+                    } else if (el.tagName === 'OPTGROUP') {
+                        // 对于optgroup元素，更新label属性
+                        el.label = langData[key];
                     } else {
                         // 其他元素，直接更新文本
                         el.textContent = langData[key];
                     }
-                }
-            });
-
-            // 更新select元素中的选项
-            document.querySelectorAll('select option[data-i18n]').forEach(option => {
-                const key = option.dataset.i18n;
-                if (langData[key]) {
-                    option.textContent = langData[key];
                 }
             });
         }
@@ -225,7 +220,7 @@
 
     <!-- 主内容区 -->
     <main class="main-content">
-       <!-- 边界设定界面 -->
+           <!-- 边界设定界面 -->
         <section id="parameters" class="tab-content active">
             <div class="section-header">
                 <h2 data-i18n="sectionParameters">📊 项目边界条件设定</h2>
@@ -695,7 +690,7 @@
                         </div>
                     </div>
                 </div>
-                <!-- PCS系统 -->
+                                <!-- PCS系统 -->
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">⚡</span>
@@ -1083,7 +1078,7 @@
                         </div>
                     </div>
                 </div>
-              <!-- 土地与基建 -->
+                              <!-- 土地与基建 -->
                 <div class="param-card">
                     <div class="card-header">
                         <span class="card-icon">🏗️</span>
@@ -1502,7 +1497,7 @@
                 <canvas id="revenueChart"></canvas>
             </div>
         </section>
-
+        
 
         <!-- 财务指标界面 -->
         <section id="indicators" class="tab-content">
@@ -1856,7 +1851,7 @@
                     </div>
                 </div>
             </div>
-            <!-- 项目概要 -->
+                        <!-- 项目概要 -->
             <div class="report-section">
                 <div class="section-title">
                     <span class="title-icon">📋</span>
@@ -2189,7 +2184,7 @@
                 <p data-i18n="reportFooterEn">This report is auto-generated for financing decision reference only.</p>
             </div>
         </section>
-    </main>
+            </main>
 
     <!-- 帮助模态框 -->
     <div id="helpModal" class="modal" style="display: none;">
@@ -2228,7 +2223,7 @@
                         <span data-i18n="quickstartTipContent">系统支持参数自动计算，修改参数后会在500毫秒后自动更新结果，无需手动点击计算按钮。</span>
                     </div>
                 </div>
-                <div id="help-parameters" class="help-tab-content" style="display: none;">
+                                <div id="help-parameters" class="help-tab-content" style="display: none;">
                     <h3 data-i18n="parametersTitle">⚙️ 参数设定说明</h3>
                     
                     <h4 data-i18n="parametersBasicParams">1. 电站基础参数</h4>
@@ -2319,7 +2314,7 @@
                         <li data-i18n="featuresFinancingReport2">包含：项目概览、财务指标、现金流预测、偿债能力分析等</li>
                     </ul>
                 </div>
-                <div id="help-finance" class="help-tab-content" style="display: none;">
+                                <div id="help-finance" class="help-tab-content" style="display: none;">
                     <h3>📚 财务知识专栏</h3>
                     
                     <div class="finance-section">
@@ -2851,13 +2846,13 @@
             </div>
         </div>
     </div>
-    <!-- 页脚 -->
+        <!-- 页脚 -->
     <footer class="footer">
         <p>德国独立储能电站投资测算系统 v1.0 | 财务模型仅供参考，请结合实际情况决策</p>
     </footer>
 
     <script src="financial-model.js"></script>
-    <!-- 语言切换逻辑 -->
+        <!-- 语言切换逻辑 -->
     <script>
         // 语言映射表（和登录页、注册页保持一致）
         const langMap = {
