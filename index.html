@@ -69,34 +69,11 @@
         }
     </style>
     
-    <!-- 1. 先加载语言字典（适配lang-switch.js的window.langMap） -->
+    <!-- 核心修改：删除多余的格式转换，直接加载翻译数据 + 语言切换脚本 -->
+    <!-- 1. 先加载语言数据文件（languages.js 里是 window.languages 格式） -->
     <script src="languages.js"></script>
-    <!-- 2. 适配：将原languages对象映射为lang-switch.js需要的langMap格式 -->
-    <script>
-        // 转换原languages结构为lang-switch.js依赖的langMap结构
-        // 原languages格式：{zh: {key: value}, en: {key: value}, de: {key: value}}
-        // 转换后langMap格式：{common: {key: {zh: value, en: value, de: value}}}
-        window.langMap = {
-            common: {}
-        };
-        if (window.languages) {
-            // 遍历所有语言
-            ['zh', 'en', 'de'].forEach(lang => {
-                const langData = window.languages[lang];
-                if (langData) {
-                    // 遍历所有翻译key
-                    Object.keys(langData).forEach(key => {
-                        if (!window.langMap.common[key]) {
-                            window.langMap.common[key] = {};
-                        }
-                        window.langMap.common[key][lang] = langData[key];
-                    });
-                }
-            });
-        }
-    </script>
-    <!-- 3. 引入独立的语言切换核心脚本（defer确保DOM加载完成后执行） -->
-    <script src="lang-switch.js" defer></script>
+    <!-- 2. 引入语言切换核心脚本（移除defer，保证执行顺序；原脚本已内置DOM加载监听） -->
+    <script src="lang-switch.js"></script>
 </head>
 <body>
     <!-- 移除手动编写的语言切换按钮（由lang-switch.js动态创建） -->
