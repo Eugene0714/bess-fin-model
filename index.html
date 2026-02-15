@@ -69,14 +69,16 @@
         }
     </style>
     
-    <!-- 核心修改：删除多余的格式转换，直接加载翻译数据 + 语言切换脚本 -->
-    <!-- 1. 先加载语言数据文件（languages.js 里是 window.languages 格式） -->
+    <!-- 加载语言数据文件 -->
     <script src="languages.js"></script>
-    <!-- 2. 引入语言切换核心脚本（移除defer，保证执行顺序；原脚本已内置DOM加载监听） -->
-    <script src="lang-switch.js"></script>
 </head>
 <body>
-    <!-- 移除手动编写的语言切换按钮（由lang-switch.js动态创建） -->
+    <!-- 语言切换按钮 -->
+    <div class="language-switcher">
+        <button class="lang-btn" data-lang="zh">中文</button>
+        <button class="lang-btn" data-lang="en">English</button>
+        <button class="lang-btn" data-lang="de">Deutsch</button>
+    </div>
     
     <!-- 导航栏 -->
     <nav class="navbar">
@@ -2990,31 +2992,26 @@
 
         // 核心：更新页面所有文字
         function updatePageLang(lang) {
-            const langData = langMap[lang];
+            const langData = window.languages[lang];
             if (!langData) return;
 
             // 更新页面文字
             document.querySelectorAll('[data-i18n]').forEach(el => {
-                const keyPath = el.dataset.i18n.split('.');
-                let text = langData;
-                
-                // 遍历键路径找到对应的值
-                for (const key of keyPath) {
-                    if (text && text[key]) {
-                        text = text[key];
-                    } else {
-                        // 尝试直接在langData中查找（处理顶级键）
-                        if (langData[key]) {
-                            text = langData[key];
-                        } else {
-                            text = null;
-                        }
-                        break;
-                    }
+                let key = el.dataset.i18n;
+                // 移除 "common." 前缀
+                if (key.startsWith('common.')) {
+                    key = key.substring(7);
                 }
                 
+                let text = langData[key];
+                
                 if (text) {
-                    el.textContent = text;
+                    // 对于optgroup元素，更新label属性
+                    if (el.tagName === 'OPTGROUP') {
+                        el.label = text;
+                    } else {
+                        el.innerHTML = text;
+                    }
                 }
             });
         }
