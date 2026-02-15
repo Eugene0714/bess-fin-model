@@ -70,7 +70,11 @@
         console.log('Found ' + i18nElements.length + ' elements with data-i18n attribute');
         
         i18nElements.forEach(el => {
-            const key = el.dataset.i18n;
+            let key = el.dataset.i18n;
+            // 移除 "common." 前缀
+            if (key.startsWith('common.')) {
+                key = key.substring(7);
+            }
             if (langData[key]) {
                 console.log('Updating element with key: ' + key + ' to: ' + langData[key]);
                 // 对于optgroup元素，更新label属性
@@ -87,7 +91,11 @@
         console.log('Found ' + placeholderElements.length + ' elements with placeholder attributes');
         
         placeholderElements.forEach(el => {
-            const key = el.dataset.i18nPlaceholder || el.dataset['i18n-placeholder'];
+            let key = el.dataset.i18nPlaceholder || el.dataset['i18n-placeholder'];
+            // 移除 "common." 前缀
+            if (key && key.startsWith('common.')) {
+                key = key.substring(7);
+            }
             if (langData[key]) {
                 console.log('Updating placeholder with key: ' + key + ' to: ' + langData[key]);
                 el.placeholder = langData[key];
